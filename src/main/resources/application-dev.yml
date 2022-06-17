@@ -20,5 +20,5 @@ spring:
       active-directory:
         enabled: true
         credential:
-          client-id: 6a9a4d75-a43e-4876-ab0b-d0fed656a498
-          app-id-uri: ${APP_ID_URI}
+          client-id: b0af945e-16b5-4d2b-9552-0000699bd970
+          app-id-uri: 24ef7252-49ae-4771-b2a2-56f48ace5e3f
