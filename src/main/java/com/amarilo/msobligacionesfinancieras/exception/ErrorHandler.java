@@ -17,7 +17,7 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<Object> onException(Exception ex) {
         log.error(ex.getMessage(), ex);
-        return ResponseEntity.ok(new ErrorDto(1, "Acceso Denegado"));
+        return ResponseEntity.ok(new ErrorDto(1, "Ha ocurrido un error en el sistema, por favor comunicarse con el administrador"));
     }
 
     @ExceptionHandler({AccessDeniedException.class})
