@@ -1,4 +1,4 @@
-package com.amarilo.msobligacionesfinancieras.infraestructure.entity.financethird;
+package com.amarilo.msobligacionesfinancieras.domain.financethird;
 
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.GenericMasterEntity;
 import lombok.AllArgsConstructor;

@@ -1,6 +1,6 @@
 package com.amarilo.msobligacionesfinancieras.infraestructure;
 
-import com.amarilo.msobligacionesfinancieras.infraestructure.entity.financethird.FinanceThirdTypeEntity;
+import com.amarilo.msobligacionesfinancieras.domain.financethird.FinanceThirdTypeEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

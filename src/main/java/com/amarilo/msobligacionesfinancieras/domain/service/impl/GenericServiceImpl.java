@@ -52,7 +52,7 @@ public class GenericServiceImpl implements GenericService {
         return GenericMasterMapper.INSTANCE.genericMasterListToGenericMasterDtoList(
                 financeThirdTypeRepository.findAll()
                         .stream()
-                        .map(x -> (GenericMasterEntity) x)
+                        .map(GenericMasterEntity.class::cast)
                         .collect(Collectors.toList()));
     }
 
@@ -61,7 +61,7 @@ public class GenericServiceImpl implements GenericService {
         return GenericMasterMapper.INSTANCE.genericMasterListToGenericMasterDtoList(
                 fiscalOrganizationTypeRepository.findAll()
                         .stream()
-                        .map(x -> (GenericMasterEntity) x)
+                        .map(GenericMasterEntity.class::cast)
                         .collect(Collectors.toList()));
     }
 
@@ -70,7 +70,7 @@ public class GenericServiceImpl implements GenericService {
         return GenericMasterMapper.INSTANCE.genericMasterListToGenericMasterDtoList(
                 bankRepository.findAll()
                         .stream()
-                        .map(x -> (GenericMasterEntity) x)
+                        .map(GenericMasterEntity.class::cast)
                         .collect(Collectors.toList()));
     }
 
@@ -79,7 +79,7 @@ public class GenericServiceImpl implements GenericService {
         return GenericMasterMapper.INSTANCE.genericMasterListToGenericMasterDtoList(
                 accountTypeRepository.findAll()
                         .stream()
-                        .map(x -> (GenericMasterEntity) x)
+                        .map(GenericMasterEntity.class::cast)
                         .collect(Collectors.toList()));
     }
 
@@ -88,7 +88,7 @@ public class GenericServiceImpl implements GenericService {
         return GenericMasterMapper.INSTANCE.genericMasterListToGenericMasterDtoList(
                 withholdingTaxGroupRepository.findAll()
                         .stream()
-                        .map(x -> (GenericMasterEntity) x)
+                        .map(GenericMasterEntity.class::cast)
                         .collect(Collectors.toList()));
     }
 
@@ -97,16 +97,16 @@ public class GenericServiceImpl implements GenericService {
         return GenericMasterMapper.INSTANCE.genericMasterListToGenericMasterDtoList(
                 fiscalClassificationRepository.findAll()
                         .stream()
-                        .map(x -> (GenericMasterEntity) x)
+                        .map(GenericMasterEntity.class::cast)
                         .collect(Collectors.toList()));
     }
 
     @Override
     public List<GenericMasterDto> findAllFiscalClassificationTypes() {
         return GenericMasterMapper.INSTANCE.genericMasterListToGenericMasterDtoList(
-                fiscalOrganizationTypeRepository.findAll()
+                fiscalClassificationTypeRepository.findAll()
                         .stream()
-                        .map(x -> (GenericMasterEntity) x)
+                        .map(GenericMasterEntity.class::cast)
                         .collect(Collectors.toList()));
     }
 
@@ -115,7 +115,7 @@ public class GenericServiceImpl implements GenericService {
         return GenericMasterMapper.INSTANCE.genericMasterListToGenericMasterDtoList(
                 taxClassificationRepository.findAll()
                         .stream()
-                        .map(x -> (GenericMasterEntity) x)
+                        .map(GenericMasterEntity.class::cast)
                         .collect(Collectors.toList()));
     }
 }

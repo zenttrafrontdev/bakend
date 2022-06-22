@@ -1,7 +1,7 @@
 package com.amarilo.msobligacionesfinancieras.domain.mapper;
 
 import com.amarilo.msobligacionesfinancieras.domain.dto.FinanceThirdDto;
-import com.amarilo.msobligacionesfinancieras.infraestructure.entity.financethird.FinanceThirdEntity;
+import com.amarilo.msobligacionesfinancieras.domain.financethird.FinanceThirdEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;

@@ -27,16 +27,9 @@ public class ErrorHandler {
         return ResponseEntity.ok(new ErrorDto(1, "Acceso Denegado"));
     }
 
-    @ExceptionHandler({IllegalArgumentException.class})
+    @ExceptionHandler({IllegalArgumentException.class, BusinessException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Object> onIlegalArgumentException(Exception ex) {
-        log.error(ex.getMessage(), ex);
-        return ResponseEntity.ok(new ErrorDto(1, ex.getMessage()));
-    }
-
-    @ExceptionHandler({BusinessException.class})
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<Object> onBusinessException(Exception ex) {
         log.error(ex.getMessage(), ex);
         return ResponseEntity.ok(new ErrorDto(1, ex.getMessage()));
     }
