@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/test/v1")
-public class TestController {
+@RequestMapping("api/financial-liabilities/v1/financial-third-party")
+public class FinanceThirdController {
 
     @GetMapping
     public String holaMundo(){
