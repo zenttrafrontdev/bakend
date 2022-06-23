@@ -4,7 +4,6 @@ import com.amarilo.msobligacionesfinancieras.controller.request.FinanceThirdSear
 import com.amarilo.msobligacionesfinancieras.controller.request.PageRequestDto;
 import com.amarilo.msobligacionesfinancieras.controller.response.PageResponseDto;
 import com.amarilo.msobligacionesfinancieras.domain.dto.FinanceThirdDto;
-import com.amarilo.msobligacionesfinancieras.domain.dto.GenericMasterDto;
 import com.amarilo.msobligacionesfinancieras.domain.service.FinanceThirdService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -33,7 +32,7 @@ public class FinanceThirdController {
     @Operation(summary = "Permite obtener el listado de terceros")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Se obtiene el listado de terceros",
-                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = GenericMasterDto.class))}),
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = FinanceThirdDto.class))}),
             @ApiResponse(responseCode = "204", description = "No existen registros",
                     content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
@@ -49,7 +48,7 @@ public class FinanceThirdController {
     @Operation(summary = "Permite obtener el listado de terceros por filtros")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Se obtiene el listado de terceros por filtros",
-                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = GenericMasterDto.class))}),
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PageResponseDto.class))}),
             @ApiResponse(responseCode = "204", description = "No existen registros",
                     content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "401", description = "Usuario no autenticado",

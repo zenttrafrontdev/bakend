@@ -4,11 +4,10 @@ import com.amarilo.msobligacionesfinancieras.controller.request.FinanceThirdSear
 import com.amarilo.msobligacionesfinancieras.controller.request.PageRequestDto;
 import com.amarilo.msobligacionesfinancieras.controller.response.PageResponseDto;
 import com.amarilo.msobligacionesfinancieras.domain.dto.FinanceThirdDto;
-import com.amarilo.msobligacionesfinancieras.infraestructure.entity.FinanceThirdEntity;
 import com.amarilo.msobligacionesfinancieras.domain.mapper.FinanceThirdMapper;
 import com.amarilo.msobligacionesfinancieras.domain.service.FinanceThirdService;
 import com.amarilo.msobligacionesfinancieras.infraestructure.FinanceThirdRepository;
-import com.amarilo.msobligacionesfinancieras.infraestructure.specification.Specificationutils;
+import com.amarilo.msobligacionesfinancieras.infraestructure.entity.FinanceThirdEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,10 +31,11 @@ import static com.amarilo.msobligacionesfinancieras.infraestructure.specificatio
 import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.FinanceThirdSpecification.hasTaxClassificationId;
 import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.FinanceThirdSpecification.hasTaxWithholding;
 import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.FinanceThirdSpecification.hasWithholdingTaxGroupId;
+import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.Specificationutils.buildAndSpecification;
 
 @Slf4j
 @Service
-public class FinanceThirdServiceImpl implements FinanceThirdService, Specificationutils<FinanceThirdEntity> {
+public class FinanceThirdServiceImpl implements FinanceThirdService {
 
     private final FinanceThirdRepository financeThirdRepository;
 
@@ -50,7 +50,6 @@ public class FinanceThirdServiceImpl implements FinanceThirdService, Specificati
 
     @Override
     public PageResponseDto<FinanceThirdDto> findAllFinanceThirdBySearchCriteria(PageRequestDto<FinanceThirdSearchCriteria> pageRequestDto) {
-log.info(pageRequestDto.toString());
         Pageable pageable = PageRequest.of(pageRequestDto.getPage(), pageRequestDto.getSize());
         Page<FinanceThirdEntity> page;
         if (!Optional.ofNullable(pageRequestDto.getQuery()).isPresent()) {

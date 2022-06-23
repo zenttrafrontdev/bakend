@@ -7,7 +7,10 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.nio.file.AccessDeniedException;
+import java.util.Set;
 
 @ControllerAdvice
 @Slf4j
@@ -32,6 +35,18 @@ public class ErrorHandler {
     public ResponseEntity<Object> onIlegalArgumentException(Exception ex) {
         log.error(ex.getMessage(), ex);
         return ResponseEntity.ok(new ErrorDto(1, ex.getMessage()));
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex) {
+        Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
+        StringBuilder builder = new StringBuilder();
+        for (ConstraintViolation<?> violation : violations) {
+            builder.append(violation.getMessage().concat(". "));
+        }
+        log.error(ex.getMessage(), ex);
+        return ResponseEntity.ok(new ErrorDto(1, builder.toString()));
     }
 
 }
