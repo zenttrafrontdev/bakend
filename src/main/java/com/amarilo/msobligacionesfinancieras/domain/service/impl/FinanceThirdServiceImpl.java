@@ -4,11 +4,12 @@ import com.amarilo.msobligacionesfinancieras.controller.request.FinanceThirdSear
 import com.amarilo.msobligacionesfinancieras.controller.request.PageRequestDto;
 import com.amarilo.msobligacionesfinancieras.controller.response.PageResponseDto;
 import com.amarilo.msobligacionesfinancieras.domain.dto.FinanceThirdDto;
-import com.amarilo.msobligacionesfinancieras.domain.financethird.FinanceThirdEntity;
+import com.amarilo.msobligacionesfinancieras.infraestructure.entity.FinanceThirdEntity;
 import com.amarilo.msobligacionesfinancieras.domain.mapper.FinanceThirdMapper;
 import com.amarilo.msobligacionesfinancieras.domain.service.FinanceThirdService;
 import com.amarilo.msobligacionesfinancieras.infraestructure.FinanceThirdRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.specification.Specificationutils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +33,7 @@ import static com.amarilo.msobligacionesfinancieras.infraestructure.specificatio
 import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.FinanceThirdSpecification.hasTaxWithholding;
 import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.FinanceThirdSpecification.hasWithholdingTaxGroupId;
 
+@Slf4j
 @Service
 public class FinanceThirdServiceImpl implements FinanceThirdService, Specificationutils<FinanceThirdEntity> {
 
@@ -48,7 +50,7 @@ public class FinanceThirdServiceImpl implements FinanceThirdService, Specificati
 
     @Override
     public PageResponseDto<FinanceThirdDto> findAllFinanceThirdBySearchCriteria(PageRequestDto<FinanceThirdSearchCriteria> pageRequestDto) {
-
+log.info(pageRequestDto.toString());
         Pageable pageable = PageRequest.of(pageRequestDto.getPage(), pageRequestDto.getSize());
         Page<FinanceThirdEntity> page;
         if (!Optional.ofNullable(pageRequestDto.getQuery()).isPresent()) {
@@ -61,7 +63,7 @@ public class FinanceThirdServiceImpl implements FinanceThirdService, Specificati
         return new PageResponseDto<>(content, pageable.getPageNumber(), pageable.getPageSize(), page.getTotalElements());
     }
 
-    public Specification<FinanceThirdEntity> getSpecificationFromQuery(FinanceThirdSearchCriteria searchCriteria) {
+    private Specification<FinanceThirdEntity> getSpecificationFromQuery(FinanceThirdSearchCriteria searchCriteria) {
         Specification<FinanceThirdEntity> specification = null;
 
         if (Optional.ofNullable(searchCriteria.getName()).isPresent()) {

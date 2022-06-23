@@ -1,4 +1,4 @@
-package com.amarilo.msobligacionesfinancieras.domain.financethird;
+package com.amarilo.msobligacionesfinancieras.infraestructure.entity;
 
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.AccountTypeEntity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.BankEntity;
@@ -8,6 +8,7 @@ import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.Fisc
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.TaxClassificationEntity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.WithholdingTaxGroupEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,6 +25,7 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Builder
 @Entity
 @Table(name = "terceros")
 public class FinanceThirdEntity {

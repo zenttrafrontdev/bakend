@@ -1,7 +1,7 @@
 package com.amarilo.msobligacionesfinancieras.infraestructure.specification;
 
-import com.amarilo.msobligacionesfinancieras.domain.financethird.FinanceThirdEntity;
-import com.amarilo.msobligacionesfinancieras.domain.financethird.FinanceThirdTypeEntity;
+import com.amarilo.msobligacionesfinancieras.infraestructure.entity.FinanceThirdEntity;
+import com.amarilo.msobligacionesfinancieras.infraestructure.entity.FinanceThirdTypeEntity;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Join;

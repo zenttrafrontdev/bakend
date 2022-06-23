@@ -1,0 +1,29 @@
+logging:
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}"
+  level:
+    org:
+      springframework:
+        security: DEBUG
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1
+    username: sa
+    password: sa
+    driver-class-name: org.h2.Driver
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+  security:
+    basic:
+      enabled: false
+
+  cloud:
+    azure:
+      active-directory:
+        enabled: true
+        credential:
+          client-id: b0af945e-16b5-4d2b-9552-0000699bd970
+          app-id-uri: 24ef7252-49ae-4771-b2a2-56f48ace5e3f
