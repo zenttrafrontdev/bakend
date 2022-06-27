@@ -40,9 +40,9 @@ public class GenericController {
         return ResponseEntity.ok(genericService.findAllFinanceThirdTypes());
     }
 
-    @Operation(summary = "Permite obtener el listado de tipos de organizaci髇 fiscal")
+    @Operation(summary = "Permite obtener el listado de tipos de organizaci贸n fiscal")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Se obtiene el listado de tipos de organizaci髇 fiscal",
+            @ApiResponse(responseCode = "200", description = "Se obtiene el listado de tipos de organizaci贸n fiscal",
                     content = {@Content(mediaType = "application/json", schema = @Schema(implementation = GenericMasterDto.class))}),
             @ApiResponse(responseCode = "204", description = "No existen registros",
                     content = {@Content(mediaType = "application/json")}),
@@ -88,9 +88,9 @@ public class GenericController {
         return ResponseEntity.ok(genericService.findAllAccountTypes());
     }
 
-    @Operation(summary = "Permite obtener el listado de grupos de retenci髇 de impuestos")
+    @Operation(summary = "Permite obtener el listado de grupos de retenci贸n de impuestos")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Se obtiene el listado de grupos de retenci髇 de impuestos",
+            @ApiResponse(responseCode = "200", description = "Se obtiene el listado de grupos de retenci贸n de impuestos",
                     content = {@Content(mediaType = "application/json", schema = @Schema(implementation = GenericMasterDto.class))}),
             @ApiResponse(responseCode = "204", description = "No existen registros",
                     content = {@Content(mediaType = "application/json")}),

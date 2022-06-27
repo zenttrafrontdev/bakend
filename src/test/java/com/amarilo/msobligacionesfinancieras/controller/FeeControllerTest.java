@@ -11,9 +11,11 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ActiveProfiles("test")
 class FeeControllerTest {
 
     @LocalServerPort
@@ -48,6 +50,7 @@ class FeeControllerTest {
         HttpEntity<String> request =
                 new HttpEntity<>(body, headers);
         PageResponseDto list = restTemplate.postForObject(baseUrl.concat("/search"), request, PageResponseDto.class);
+        System.out.println(list.getSize());
         Assertions.assertFalse(list.getContent().isEmpty());
     }
 
@@ -68,7 +71,7 @@ class FeeControllerTest {
                 "}";
         HttpEntity<String> request =
                 new HttpEntity<>(body, headers);
-        restTemplate.postForObject(baseUrl.concat("/save-all"), request, PageResponseDto.class);
+        restTemplate.postForObject(baseUrl, request, PageResponseDto.class);
     }
 
     @Test
