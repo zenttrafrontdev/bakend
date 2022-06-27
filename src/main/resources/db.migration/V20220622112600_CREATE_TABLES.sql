@@ -143,7 +143,7 @@ CREATE TABLE IF NOT EXISTS `terceros` (
  CONSTRAINT `FK_terceros_clasificaciones_impuestos` FOREIGN KEY (`clasificacion_impuestos_id`) REFERENCES `clasificaciones_impuestos` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS `periodos` (
+CREATE TABLE IF NOT EXISTS `periodos_tasas` (
  `id` int NOT NULL AUTO_INCREMENT,
  `tasa_id` int unsigned NOT NULL,
  `valor` varchar(50) NOT NULL,
