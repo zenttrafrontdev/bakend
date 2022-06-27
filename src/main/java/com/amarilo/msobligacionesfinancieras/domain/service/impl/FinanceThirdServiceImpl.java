@@ -31,7 +31,7 @@ import static com.amarilo.msobligacionesfinancieras.infraestructure.specificatio
 import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.FinanceThirdSpecification.hasTaxClassificationId;
 import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.FinanceThirdSpecification.hasTaxWithholding;
 import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.FinanceThirdSpecification.hasWithholdingTaxGroupId;
-import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.Specificationutils.buildAndSpecification;
+import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.SpecificationUtils.buildAndSpecification;
 
 @Slf4j
 @Service

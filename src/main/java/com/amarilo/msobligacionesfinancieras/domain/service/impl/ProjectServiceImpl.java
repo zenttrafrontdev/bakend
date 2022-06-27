@@ -28,7 +28,7 @@ import static com.amarilo.msobligacionesfinancieras.infraestructure.specificatio
 import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.ProjectSpecification.hasProjectCode;
 import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.ProjectSpecification.hasProjectName;
 import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.ProjectSpecification.hasStatus;
-import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.Specificationutils.buildAndSpecification;
+import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.SpecificationUtils.buildAndSpecification;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {

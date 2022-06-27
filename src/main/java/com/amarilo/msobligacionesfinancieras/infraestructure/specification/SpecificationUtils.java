@@ -5,7 +5,7 @@ import org.springframework.lang.Nullable;
 
 import java.util.Optional;
 
-public class Specificationutils {
+public class SpecificationUtils {
 
     public static final String LIKE_STRING_QUERY = "%%%s%%";
 

@@ -3,7 +3,7 @@ package com.amarilo.msobligacionesfinancieras.infraestructure.specification;
 import com.amarilo.msobligacionesfinancieras.infraestructure.entity.ProjectEntity;
 import org.springframework.data.jpa.domain.Specification;
 
-import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.Specificationutils.formatLikeUpperString;
+import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.SpecificationUtils.formatLikeUpperString;
 
 public class ProjectSpecification {
 

@@ -78,7 +78,7 @@ public class ProjectController {
                     content = {@Content(mediaType = "application/json")})
     })
     @PostMapping("save-all")
-    public ResponseEntity findAllFinanceThirdBySearchCriteria(@RequestBody List<@Valid ProjectDto> projectList) {
+    public ResponseEntity saveProjects(@RequestBody List<@Valid ProjectDto> projectList) {
         projectService.saveProjects(projectList);
         return ResponseEntity.ok().build();
     }

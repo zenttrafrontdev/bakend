@@ -17,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.amarilo.msobligacionesfinancieras.fixture.FinanceThirdFixture.getFinanceThirdEntity;
+import static com.amarilo.msobligacionesfinancieras.fixture.PageRequestFixture.getPageRequestDto;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -67,26 +68,22 @@ class FinanceThirdServiceImplTest {
     @Test
     void findAllFinanceThirdBySearchCriteria_withNoResults() {
         //given
-        var request = PageRequestDto.<FinanceThirdSearchCriteria>builder()
-                .query(FinanceThirdSearchCriteria.builder()
-                        .name("Jesu")
-                        .identification("1")
-                        .contributorId("1")
-                        .accountNumber("1")
-                        .status("ACTIVO")
-                        .taxWithholding("Y")
-                        .financeThirdTypeId(1)
-                        .fiscalOrganizationTypeId(1)
-                        .bankId(1)
-                        .accountTypeId(1)
-                        .withholdingTaxGroupId(1)
-                        .fiscalClassificationId(1)
-                        .fiscalClassificationTypeId(1)
-                        .taxClassificationId(1)
-                        .build())
-                .page(0)
-                .size(10)
-                .build();
+        PageRequestDto<FinanceThirdSearchCriteria> request = getPageRequestDto(FinanceThirdSearchCriteria.builder()
+                .name("Jesu")
+                .identification("1")
+                .contributorId("1")
+                .accountNumber("1")
+                .status("ACTIVO")
+                .taxWithholding("Y")
+                .financeThirdTypeId(1)
+                .fiscalOrganizationTypeId(1)
+                .bankId(1)
+                .accountTypeId(1)
+                .withholdingTaxGroupId(1)
+                .fiscalClassificationId(1)
+                .fiscalClassificationTypeId(1)
+                .taxClassificationId(1)
+                .build());
         var item = getFinanceThirdEntity();
         var list = List.of(item);
 
