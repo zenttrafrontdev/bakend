@@ -15,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -77,6 +78,24 @@ public class FeeItemController {
     @PostMapping
     public ResponseEntity saveFeeItem(@Valid @RequestBody FeeItemDto feeItemDto) {
         feeItemService.saveFee(feeItemDto);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Permite actualizar un periodo de una tasa")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se ha actualizado el periodo exitosamente",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "204", description = "No existen registros",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "application/json")})
+    })
+    @PutMapping("{id}")
+    public ResponseEntity updateFeeItem(@Valid @RequestBody FeeItemDto feeItemDto, @PathVariable("id") Integer id) {
+        feeItemDto.setId(id);
+        feeItemService.updateFee(feeItemDto);
         return ResponseEntity.ok().build();
     }
 

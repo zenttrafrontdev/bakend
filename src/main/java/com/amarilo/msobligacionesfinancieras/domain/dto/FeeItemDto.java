@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,8 +16,8 @@ public class FeeItemDto {
     private Integer id;
     private String value;
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date startDate;
+    private LocalDate startDate;
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date endDate;
+    private LocalDate endDate;
     private FeeDto fee;
 }

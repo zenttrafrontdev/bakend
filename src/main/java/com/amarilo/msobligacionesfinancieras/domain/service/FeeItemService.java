@@ -12,5 +12,5 @@ public interface FeeItemService {
 
     void saveFee(FeeItemDto feeItemDto);
 
-    void updateFee(Integer id, FeeItemDto feeItemDto);
+    void updateFee(FeeItemDto feeItemDto);
 }

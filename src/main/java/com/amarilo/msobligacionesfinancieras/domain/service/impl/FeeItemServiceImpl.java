@@ -17,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.FeeItemSpecification.hasEndDateLessThan;
@@ -33,6 +35,8 @@ public class FeeItemServiceImpl implements FeeItemService {
     public FeeItemServiceImpl(FeeItemRepository feeItemRepository) {
         this.feeItemRepository = feeItemRepository;
     }
+
+    private static final String FIELD_VALUE = "valor";
 
     @Override
     public FeeItemDto findById(Integer id) {
@@ -58,16 +62,17 @@ public class FeeItemServiceImpl implements FeeItemService {
     @Override
     public void saveFee(FeeItemDto feeItemDto) {
         validateValueType(feeItemDto);
+        validateDates(feeItemDto);
 
         var feeItemEntity = FeeItemMapper.INSTANCE.feeItemDtoToFeeItemEntity(feeItemDto);
         feeItemRepository.save(feeItemEntity);
     }
 
     @Override
-    public void updateFee(Integer id, FeeItemDto feeItemDto) {
+    public void updateFee(FeeItemDto feeItemDto) {
         validateValueType(feeItemDto);
-        feeItemDto.setId(id);
-        feeItemRepository.findById(id)
+        validateDates(feeItemDto);
+        feeItemRepository.findById(feeItemDto.getId())
                 .orElseThrow(() -> new BusinessException("El periodo de la tasa que desea actualizar no existe"));
         var feeItemEntity = FeeItemMapper.INSTANCE.feeItemDtoToFeeItemEntity(feeItemDto);
         feeItemRepository.save(feeItemEntity);
@@ -77,11 +82,37 @@ public class FeeItemServiceImpl implements FeeItemService {
         var valueType = ValueTypeEnum.getById(feeItemDto.getFee().getValueType());
         switch (valueType) {
             case NUMERIC:
+                Utility.validateNumericField(FIELD_VALUE, feeItemDto.getValue());
+                break;
             case PERCENTAGE:
-                Utility.validateNumericField("valor", feeItemDto.getValue());
+                Long longValue = Utility.validateNumericField(FIELD_VALUE, feeItemDto.getValue());
+                Utility.validatePercentageField(FIELD_VALUE, longValue);
                 break;
             default:
                 break;
+        }
+    }
+
+    private void validateDates(FeeItemDto feeItemDto) {
+        if (feeItemDto.getStartDate().isAfter(feeItemDto.getEndDate())) {
+            throw new BusinessException("El periodo de fecha no es válido");
+        }
+
+        if (!feeItemRepository.validateIfDateRangeIsNotOverlapping(feeItemDto.getFee().getId(), feeItemDto.getStartDate(), feeItemDto.getEndDate())) {
+            throw new BusinessException("Ya se tiene una tasa para el periodo seleccionado");
+        }
+
+        if (!feeItemRepository.validateIfPeriodDateIsOk(feeItemDto.getFee().getId(), feeItemDto.getEndDate())) {
+            throw new BusinessException("No se permite guardar registros de fechas pasadas a la ultima vigente.");
+        }
+
+        if (!"UVR".equals(feeItemDto.getFee().getName())
+                && (feeItemDto.getStartDate().isAfter(LocalDate.now())
+                || feeItemDto.getEndDate().isAfter(LocalDate.now())
+        )) {
+            throw new BusinessException("No se debe permitir adicionar tasas de vigencias futuras al dia del ingreso con excepcion de la tasa UVR");
+        } else if (feeItemDto.getEndDate().isAfter(LocalDate.now().plus(14, ChronoUnit.DAYS))) {
+            throw new BusinessException("Solo se permite ingresar un periodo de fecha hasta 15 días futuros");
         }
     }
 
