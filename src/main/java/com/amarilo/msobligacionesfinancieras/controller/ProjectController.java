@@ -37,7 +37,7 @@ public class ProjectController {
     @Operation(summary = "Permite obtener el listado de proyectos por filtros")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Se obtiene el listado de proyectos por filtros",
-                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PageResponseDto.class))}),
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PageResponseProject.class))}),
             @ApiResponse(responseCode = "204", description = "No existen registros",
                     content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
@@ -83,3 +83,5 @@ public class ProjectController {
         return ResponseEntity.ok().build();
     }
 }
+
+class PageResponseProject extends PageResponseDto<ProjectDto> { }

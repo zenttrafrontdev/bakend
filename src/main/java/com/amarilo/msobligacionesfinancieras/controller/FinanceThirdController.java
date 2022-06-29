@@ -48,7 +48,7 @@ public class FinanceThirdController {
     @Operation(summary = "Permite obtener el listado de terceros por filtros")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Se obtiene el listado de terceros por filtros",
-                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PageResponseDto.class))}),
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PageResponseFinanceThird.class))}),
             @ApiResponse(responseCode = "204", description = "No existen registros",
                     content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
@@ -61,3 +61,5 @@ public class FinanceThirdController {
         return ResponseEntity.ok(financeThirdService.findAllFinanceThirdBySearchCriteria(pageRequestDto));
     }
 }
+
+class PageResponseFinanceThird extends PageResponseDto<FinanceThirdDto> { }

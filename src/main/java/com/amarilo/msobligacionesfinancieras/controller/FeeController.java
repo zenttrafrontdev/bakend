@@ -36,7 +36,7 @@ public class FeeController {
     @Operation(summary = "Permite obtener el listado de tasas por filtros")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Se obtiene el listado de tasas por filtros",
-                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PageResponseDto.class))}),
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PageResponseFee.class))}),
             @ApiResponse(responseCode = "204", description = "No existen registros",
                     content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
@@ -99,3 +99,5 @@ public class FeeController {
         return ResponseEntity.ok().build();
     }
 }
+
+class PageResponseFee extends PageResponseDto<FeeDto> { }
