@@ -8,9 +8,9 @@ import com.amarilo.msobligacionesfinancieras.domain.dto.FeeItemDto;
 public interface FeeItemService {
     FeeItemDto findById(Integer id);
 
-    PageResponseDto<FeeItemDto> findAllFeeBySearchCriteria(PageRequestDto<FeeItemSearchCriteria> pageRequestDto);
+    PageResponseDto<FeeItemDto> findAllFeeItemBySearchCriteria(PageRequestDto<FeeItemSearchCriteria> pageRequestDto);
 
-    void saveFee(FeeItemDto feeItemDto);
+    void saveFeeItem(FeeItemDto feeItemDto);
 
-    void updateFee(FeeItemDto feeItemDto);
+    void updateFeeItem(FeeItemDto feeItemDto);
 }

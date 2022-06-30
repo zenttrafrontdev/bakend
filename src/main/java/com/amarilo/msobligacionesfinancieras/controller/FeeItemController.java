@@ -45,7 +45,7 @@ public class FeeItemController {
     })
     @PostMapping("search")
     public ResponseEntity<PageResponseDto<FeeItemDto>> findAllFeesBySearchCriteria(@RequestBody PageRequestDto<FeeItemSearchCriteria> pageRequestDto) {
-        return ResponseEntity.ok(feeItemService.findAllFeeBySearchCriteria(pageRequestDto));
+        return ResponseEntity.ok(feeItemService.findAllFeeItemBySearchCriteria(pageRequestDto));
     }
 
     @Operation(summary = "Permite obtener un periodo de una tasa por id")
@@ -77,7 +77,7 @@ public class FeeItemController {
     })
     @PostMapping
     public ResponseEntity saveFeeItem(@Valid @RequestBody FeeItemDto feeItemDto) {
-        feeItemService.saveFee(feeItemDto);
+        feeItemService.saveFeeItem(feeItemDto);
         return ResponseEntity.ok().build();
     }
 
@@ -95,7 +95,7 @@ public class FeeItemController {
     @PutMapping("{id}")
     public ResponseEntity updateFeeItem(@Valid @RequestBody FeeItemDto feeItemDto, @PathVariable("id") Integer id) {
         feeItemDto.setId(id);
-        feeItemService.updateFee(feeItemDto);
+        feeItemService.updateFeeItem(feeItemDto);
         return ResponseEntity.ok().build();
     }
 

@@ -45,7 +45,7 @@ public class FeeItemServiceImpl implements FeeItemService {
     }
 
     @Override
-    public PageResponseDto<FeeItemDto> findAllFeeBySearchCriteria(PageRequestDto<FeeItemSearchCriteria> pageRequestDto) {
+    public PageResponseDto<FeeItemDto> findAllFeeItemBySearchCriteria(PageRequestDto<FeeItemSearchCriteria> pageRequestDto) {
         Pageable pageable = PageRequest.of(pageRequestDto.getPage(), pageRequestDto.getSize());
         Page<FeeItemEntity> page;
 
@@ -60,7 +60,7 @@ public class FeeItemServiceImpl implements FeeItemService {
     }
 
     @Override
-    public void saveFee(FeeItemDto feeItemDto) {
+    public void saveFeeItem(FeeItemDto feeItemDto) {
         validateValueType(feeItemDto);
         validateDates(feeItemDto);
 
@@ -69,7 +69,7 @@ public class FeeItemServiceImpl implements FeeItemService {
     }
 
     @Override
-    public void updateFee(FeeItemDto feeItemDto) {
+    public void updateFeeItem(FeeItemDto feeItemDto) {
         validateValueType(feeItemDto);
         validateDates(feeItemDto);
         feeItemRepository.findById(feeItemDto.getId())
@@ -102,10 +102,12 @@ public class FeeItemServiceImpl implements FeeItemService {
             throw new BusinessException("Ya se tiene una tasa para el periodo seleccionado");
         }
 
-        if (!feeItemRepository.validateIfPeriodDateIsOk(feeItemDto.getFee().getId(), feeItemDto.getEndDate())) {
+        if (!feeItemRepository.validatePeriodDateCanBeLessThanTheLastPeriodDate(feeItemDto.getFee().getId(), feeItemDto.getEndDate())) {
             throw new BusinessException("No se permite guardar registros de fechas pasadas a la ultima vigente.");
         }
 
+        //TODO verificar con negocio está validación
+        /*
         if (!"UVR".equals(feeItemDto.getFee().getName())
                 && (feeItemDto.getStartDate().isAfter(LocalDate.now())
                 || feeItemDto.getEndDate().isAfter(LocalDate.now())
@@ -114,6 +116,7 @@ public class FeeItemServiceImpl implements FeeItemService {
         } else if (feeItemDto.getEndDate().isAfter(LocalDate.now().plus(14, ChronoUnit.DAYS))) {
             throw new BusinessException("Solo se permite ingresar un periodo de fecha hasta 15 días futuros");
         }
+         */
     }
 
     private Specification<FeeItemEntity> getSpecificationFromQuery(FeeItemSearchCriteria searchCriteria) {

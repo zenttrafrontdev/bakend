@@ -14,6 +14,7 @@ public class FeeFixture {
 
     public static FeeDto getFeeDto(){
         return FeeDto.builder()
+                .id(1)
                 .name("UVR")
                 .periodicity(1)
                 .valueType(1)
@@ -26,6 +27,15 @@ public class FeeFixture {
                 .name("UVR")
                 .periodicity(1)
                 .valueType(1)
+                .build();
+    }
+
+    public static FeeDto getFeeDtoWithValueType(Integer valueType){
+        return FeeDto.builder()
+                .id(1)
+                .name("UVR")
+                .periodicity(1)
+                .valueType(valueType)
                 .build();
     }
 }

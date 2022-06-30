@@ -25,5 +25,5 @@ public interface FeeItemRepository extends JpaRepository<FeeItemEntity, Integer>
             "from periodos_tasas pt \n" +
             "where pt.tasa_id =:feeId\n" +
             "and DATE(:endDate) <= pt.fecha_final", nativeQuery = true)
-    boolean validateIfPeriodDateIsOk(@Param("feeId") Integer feeId, @Param("endDate") LocalDate endDate);
+    boolean validatePeriodDateCanBeLessThanTheLastPeriodDate(@Param("feeId") Integer feeId, @Param("endDate") LocalDate endDate);
 }

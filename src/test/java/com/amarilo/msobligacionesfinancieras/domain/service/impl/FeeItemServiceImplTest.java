@@ -21,9 +21,14 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import static com.amarilo.msobligacionesfinancieras.fixture.FeeFixture.getFeeDtoWithValueType;
+import static com.amarilo.msobligacionesfinancieras.fixture.FeeItemFixture.getFeeItemDto;
+import static com.amarilo.msobligacionesfinancieras.fixture.FeeItemFixture.getFeeItemDto_WithCustomFeeAndCustomValue;
 import static com.amarilo.msobligacionesfinancieras.fixture.FeeItemFixture.getFeeItemEntity;
 import static com.amarilo.msobligacionesfinancieras.fixture.PageRequestFixture.getPageRequestDto;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -68,7 +73,7 @@ class FeeItemServiceImplTest {
 
         //when
         when(feeItemRepository.findAll(any(Pageable.class))).thenReturn(new PageImpl<>(list));
-        var result = feeItemService.findAllFeeBySearchCriteria(request);
+        var result = feeItemService.findAllFeeItemBySearchCriteria(request);
 
         //then
         Assertions.assertFalse(result.getContent().isEmpty());
@@ -86,10 +91,83 @@ class FeeItemServiceImplTest {
 
         //when
         when(feeItemRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(new PageImpl<>(Collections.emptyList()));
-        var result = feeItemService.findAllFeeBySearchCriteria(request);
+        var result = feeItemService.findAllFeeItemBySearchCriteria(request);
 
         //then
         Assertions.assertTrue(result.getContent().isEmpty());
     }
 
+    @Test
+    void saveFeeItem_ValueTypeNumeric_ValueMustBeNumeric() {
+        //given
+        var feeItemDto = getFeeItemDto_WithCustomFeeAndCustomValue(getFeeDtoWithValueType(1), "value");
+
+        //when
+        Exception thrown = Assertions.assertThrows(
+                BusinessException.class,
+                () -> feeItemService.saveFeeItem(feeItemDto));
+
+        //then
+        Assertions.assertEquals("El valor del campo valor debe ser númerico", thrown.getMessage());
+    }
+
+    @Test
+    void saveFeeItem_ValueTypePercentage_ValueMustBeLowOrEqualThan100() {
+        //given
+        var feeItemDto = getFeeItemDto_WithCustomFeeAndCustomValue(getFeeDtoWithValueType(3), "120000000");
+
+        //when
+        Exception thrown = Assertions.assertThrows(
+                BusinessException.class,
+                () -> feeItemService.saveFeeItem(feeItemDto));
+
+        //then
+        Assertions.assertEquals("El valor del campo valor no debe ser mayor a 100", thrown.getMessage());
+    }
+
+    @Test
+    void saveFeeItem_ValidateRangeDate_StartDateCanNotBeGreaterThanEndDate() {
+        //given
+        var feeItemDto = getFeeItemDto();
+        feeItemDto.setStartDate(LocalDate.of(2022, 02, 01));
+
+        //when
+        Exception thrown = Assertions.assertThrows(
+                BusinessException.class,
+                () -> feeItemService.saveFeeItem(feeItemDto));
+
+        //then
+        Assertions.assertEquals("El periodo de fecha no es válido", thrown.getMessage());
+    }
+
+    @Test
+    void saveFeeItem_ValidateRangeDate_ValidateIfDateRangeIsNotOverlapping() {
+        //given
+        var feeItemDto = getFeeItemDto();
+
+        //when
+        when(feeItemRepository.validateIfDateRangeIsNotOverlapping(anyInt(), any(), any())).thenReturn(Boolean.FALSE);
+        Exception thrown = Assertions.assertThrows(
+                BusinessException.class,
+                () -> feeItemService.saveFeeItem(feeItemDto));
+
+        //then
+        Assertions.assertEquals("Ya se tiene una tasa para el periodo seleccionado", thrown.getMessage());
+    }
+
+    @Test
+    void saveFeeItem_ValidateRangeDate_ValidatePeriodDateCanBeLessThanTheLastPeriodDate() {
+        //given
+        var feeItemDto = getFeeItemDto();
+
+        //when
+        when(feeItemRepository.validateIfDateRangeIsNotOverlapping(anyInt(), any(), any())).thenReturn(Boolean.TRUE);
+        when(feeItemRepository.validatePeriodDateCanBeLessThanTheLastPeriodDate(anyInt(), any())).thenReturn(Boolean.FALSE);
+        Exception thrown = Assertions.assertThrows(
+                BusinessException.class,
+                () -> feeItemService.saveFeeItem(feeItemDto));
+
+        //then
+        Assertions.assertEquals("No se permite guardar registros de fechas pasadas a la ultima vigente.", thrown.getMessage());
+    }
 }
