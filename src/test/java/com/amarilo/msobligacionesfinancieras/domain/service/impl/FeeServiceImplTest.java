@@ -50,6 +50,7 @@ class FeeServiceImplTest {
         Assertions.assertEquals(feeEntityOptional.get().getId(), result.getId());
     }
 
+    @Test
     void findById_WithNoResults() {
         //when
         when(feeRepository.findById(any())).thenReturn(Optional.empty());

@@ -19,13 +19,13 @@ INSERT INTO terceros (nombre,identificacion,id_contribuyente,tipo_tercero_id,tip
 	 ('a','b','c',1,1,1,1,1,1,1,1,'111','ACTIVO','1','2022-06-22 14:28:31','2022-06-22 14:28:31');
 
 INSERT INTO proyectos
-(id, estado, codigo_grupo, nombre_grupo, codigo_consolidador, nombre_consolidador, codigo_proyecto, nombre_proyecto, banco_credito_constructor, tipo_financiacion, creado, actualizado)
-VALUES(1, 'ACTIVO', '001', 'GRUPO AMARILO', '001', 'CONSOLIDADOR AMARILO', '001', 'PROYECTO NATURA', 'BBVA', 'CRÉDITO', '2022-06-23 17:09:00', '2022-06-27 10:31:50');
+(estado, codigo_grupo, nombre_grupo, codigo_consolidador, nombre_consolidador, codigo_proyecto, nombre_proyecto, banco_credito_constructor, tipo_financiacion, creado, actualizado)
+VALUES('ACTIVO', '001', 'GRUPO AMARILO', '001', 'CONSOLIDADOR AMARILO', '001', 'PROYECTO NATURA', 'BBVA', 'CRÉDITO', '2022-06-23 17:09:00', '2022-06-27 10:31:50');
 
 INSERT INTO tasas
-(id, nombre, periodicidad, tipo_valor, creado, actualizado)
-VALUES(1, 'UVR', '1', '1', '2022-06-27 12:11:04', '2022-06-27 12:13:10');
+(nombre, periodicidad, tipo_valor, creado, actualizado)
+VALUES('UVR', '1', '1', '2022-06-27 12:11:04', '2022-06-27 12:13:10');
 INSERT INTO tasas
-(id, nombre, periodicidad, tipo_valor, creado, actualizado)
-VALUES(2, 'IPC', '1', '1', '2022-06-27 12:11:04', '2022-06-27 12:13:10');
+(nombre, periodicidad, tipo_valor, creado, actualizado)
+VALUES('IPC', '1', '1', '2022-06-27 12:11:04', '2022-06-27 12:13:10');
 

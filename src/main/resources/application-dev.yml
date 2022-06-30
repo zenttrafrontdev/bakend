@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/obligaciones-financieras
-    username: user
-    password: user
+    url: jdbc:mysql://svrmysqldevqa.mysql.database.azure.com:3306/obligaciones-financieras
+    username: usermysqldevqa@svrmysqldevqa
+    password: n8N5jcnxcMGG
     driver-class-name: com.mysql.cj.jdbc.Driver
   flyway:
     enabled: true
