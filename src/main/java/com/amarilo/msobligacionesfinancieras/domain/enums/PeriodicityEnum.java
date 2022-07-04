@@ -8,8 +8,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum PeriodicityEnum {
     DAILY(1),
-    WEEKLY(2),
-    BIWEEKLY(3);
+    WEEKLY(2);
 
     private final Integer value;
 

@@ -1,5 +1,6 @@
 package com.amarilo.msobligacionesfinancieras.controller;
 
+import com.amarilo.msobligacionesfinancieras.controller.request.FeeItemPeriodRequestDto;
 import com.amarilo.msobligacionesfinancieras.controller.request.FeeItemSearchCriteria;
 import com.amarilo.msobligacionesfinancieras.controller.request.PageRequestDto;
 import com.amarilo.msobligacionesfinancieras.controller.response.PageResponseDto;
@@ -18,9 +19,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @Validated
 @RestController
@@ -93,9 +97,25 @@ public class FeeItemController {
                     content = {@Content(mediaType = "application/json")})
     })
     @PutMapping("{id}")
-    public ResponseEntity updateFeeItem(@Valid @RequestBody FeeItemDto feeItemDto, @PathVariable("id") Integer id) {
-        feeItemDto.setId(id);
-        feeItemService.updateFeeItem(feeItemDto);
+    public ResponseEntity updateFeeItem(@Valid @RequestBody FeeItemPeriodRequestDto feeItemPeriodRequestDto, @PathVariable("id") Integer id) {
+        feeItemService.updateFeeItem(feeItemPeriodRequestDto, id);
+        return ResponseEntity.ok().build();
+    }
+
+    @Operation(summary = "Permite cargar un archivo con periodos de tasas")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se ha cargado el archivo exitosamente",
+                    content = {@Content(mediaType = "multipart/form-data")}),
+            @ApiResponse(responseCode = "204", description = "No existen registros",
+                    content = {@Content(mediaType = "multipart/form-data")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "multipart/form-data")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "multipart/form-data")})
+    })
+    @PostMapping("file")
+    public ResponseEntity processFeeItemCsvFile(@RequestParam(name = "file") MultipartFile file) throws IOException {
+        feeItemService.processFeeItemCsvFile(file);
         return ResponseEntity.ok().build();
     }
 

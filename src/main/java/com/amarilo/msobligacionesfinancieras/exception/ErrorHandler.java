@@ -20,24 +20,24 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<Object> onException(Exception ex) {
         log.error(ex.getMessage(), ex);
-        return ResponseEntity.ok(new ErrorDto(1, "Ha ocurrido un error en el sistema, por favor comunicarse con el administrador"));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDto("Ha ocurrido un error en el sistema, por favor comunicarse con el administrador"));
     }
 
     @ExceptionHandler({AccessDeniedException.class})
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public ResponseEntity<Object> onAccessDeniedException(Exception ex) {
         log.error(ex.getMessage(), ex);
-        return ResponseEntity.ok(new ErrorDto(1, "Acceso Denegado"));
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorDto("Acceso Denegado"));
     }
 
     @ExceptionHandler({IllegalArgumentException.class, BusinessException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Object> onIlegalArgumentException(Exception ex) {
         log.error(ex.getMessage(), ex);
-        return ResponseEntity.ok(new ErrorDto(1, ex.getMessage()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDto(ex.getMessage()));
     }
 
-    @ExceptionHandler
+    @ExceptionHandler(ConstraintViolationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException ex) {
         Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
@@ -46,7 +46,13 @@ public class ErrorHandler {
             builder.append(violation.getMessage().concat(". "));
         }
         log.error(ex.getMessage(), ex);
-        return ResponseEntity.ok(new ErrorDto(1, builder.toString()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDto(builder.toString()));
+    }
+
+    @ExceptionHandler(FileProcessException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Object> handleFileProcessException(FileProcessException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getErrorList());
     }
 
 }
