@@ -11,11 +11,11 @@ import com.amarilo.msobligacionesfinancieras.domain.enums.PeriodicityEnum;
 import com.amarilo.msobligacionesfinancieras.domain.enums.ValueTypeEnum;
 import com.amarilo.msobligacionesfinancieras.domain.mapper.FeeItemMapper;
 import com.amarilo.msobligacionesfinancieras.domain.service.FeeItemService;
+import com.amarilo.msobligacionesfinancieras.domain.service.FeeService;
 import com.amarilo.msobligacionesfinancieras.exception.BusinessException;
 import com.amarilo.msobligacionesfinancieras.exception.FileProcessErrorDto;
 import com.amarilo.msobligacionesfinancieras.exception.FileProcessException;
 import com.amarilo.msobligacionesfinancieras.infraestructure.FeeItemRepository;
-import com.amarilo.msobligacionesfinancieras.infraestructure.FeeRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.entity.FeeItemEntity;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -28,6 +28,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedReader;
@@ -40,7 +41,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.FeeItemSpecification.hasEndDateLessThan;
 import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.FeeItemSpecification.hasFeeId;
@@ -53,12 +53,12 @@ import static com.amarilo.msobligacionesfinancieras.infraestructure.specificatio
 public class FeeItemServiceImpl implements FeeItemService {
 
     private final FeeItemRepository feeItemRepository;
-    private final FeeRepository feeRepository;
+    private final FeeService feeService;
 
     public FeeItemServiceImpl(FeeItemRepository feeItemRepository,
-                              FeeRepository feeRepository) {
+                              FeeService feeService) {
         this.feeItemRepository = feeItemRepository;
-        this.feeRepository = feeRepository;
+        this.feeService = feeService;
     }
 
     private static final String FIELD_VALUE = "valor";
@@ -85,16 +85,18 @@ public class FeeItemServiceImpl implements FeeItemService {
         return new PageResponseDto<>(content, pageable.getPageNumber(), pageable.getPageSize(), page.getTotalElements());
     }
 
+    @Transactional
     @Override
     public void saveFeeItem(FeeItemDto feeItemDto) {
         validateValueType(feeItemDto);
+        validateDates(feeItemDto.getFee().getId(), feeItemDto.getStartDate(), feeItemDto.getEndDate());
         validatePeriodType(feeItemDto);
-        validateDates(feeItemDto.getId(), feeItemDto.getStartDate(), feeItemDto.getEndDate());
 
         var feeItemEntity = FeeItemMapper.INSTANCE.feeItemDtoToFeeItemEntity(feeItemDto);
         feeItemRepository.save(feeItemEntity);
     }
 
+    @Transactional
     @Override
     public void updateFeeItem(FeeItemPeriodRequestDto feeItemPeriodRequestDto, Integer feeItemId) {
         var feeItemEntity = feeItemRepository.findById(feeItemId)
@@ -105,18 +107,32 @@ public class FeeItemServiceImpl implements FeeItemService {
         feeItemRepository.save(feeItemEntity);
     }
 
+    @Transactional
     @Override
     public void processFeeItemCsvFile(MultipartFile file) throws IOException {
         List<FeeItemCsvDto> feeItemCsvDtoList = getFeeItemCsvDtoList(file);
+        List<FileProcessErrorDto> errorList = new ArrayList<>();
+        for (int i = 0; i < feeItemCsvDtoList.size(); i++) {
+            try {
+                var feeItemDto = FeeItemDto.builder()
+                        .startDate(feeItemCsvDtoList.get(i).getStartDate())
+                        .endDate(feeItemCsvDtoList.get(i).getEndDate())
+                        .value(feeItemCsvDtoList.get(i).getValue())
+                        .fee(feeService.findByName(feeItemCsvDtoList.get(i).getFeeName()))
+                        .build();
+                saveFeeItem(feeItemDto);
+            } catch (Exception ex) {
+                log.error(String.format("An error has occurred processing file: Filename: %s, Line Number: %s", file.getName(), i + 1));
+                errorList.add(FileProcessErrorDto.builder()
+                        .lineNumber(i + 1)
+                        .message(ex.getMessage())
+                        .build());
+            }
+        }
+        if (!errorList.isEmpty()) {
+            throw new FileProcessException("Se han generado errores al procesar el archivo", errorList);
+        }
 
-        List<FeeItemEntity> feeItemEntityList = feeItemCsvDtoList.stream().map(feeItemCsvDto -> FeeItemEntity.builder()
-                .startDate(feeItemCsvDto.getStartDate())
-                .endDate(feeItemCsvDto.getEndDate())
-                .value(feeItemCsvDto.getValue())
-                .fee(feeRepository.findByName(feeItemCsvDto.getFeeName())
-                        .orElseThrow(() -> new BusinessException(String.format("La tasa %s no existe!", feeItemCsvDto.getFeeName()))))
-                .build()).collect(Collectors.toList());
-        feeItemRepository.saveAll(feeItemEntityList);
     }
 
     private List<FeeItemCsvDto> getFeeItemCsvDtoList(MultipartFile file) throws IOException {
@@ -215,7 +231,8 @@ public class FeeItemServiceImpl implements FeeItemService {
      * @param periodType
      */
     private void feeItemPeriodicityMustBeWeeklyAndLastPeriodMustEnd(FeeItemDto feeItemDto, PeriodicityEnum periodType) {
-        if (periodType.equals(PeriodicityEnum.WEEKLY)) {
+        if (periodType.equals(PeriodicityEnum.WEEKLY)
+                && !feeItemDto.getFee().getName().equals("UVR")) {
             var daysBetWeenDays = feeItemDto.getStartDate().until(feeItemDto.getEndDate()).getDays();
             if (daysBetWeenDays != 7) {
                 throw new BusinessException("La periodicidad de la tasa debe ser semanal");
@@ -262,16 +279,22 @@ public class FeeItemServiceImpl implements FeeItemService {
      * @param feeItemDto
      */
     private void feeItemDailyUVRFeeTypeCanBeUntil15DaysAfterActualDate(FeeItemDto feeItemDto) {
-        Long daysFromNowUntilEndDate = LocalDate.now().until(feeItemDto.getEndDate(), ChronoUnit.DAYS);
-        Long days = feeItemRepository.getDays(feeItemDto.getFee().getId()) + feeItemDto.getStartDate().until(feeItemDto.getEndDate(), ChronoUnit.DAYS);
-
-        if (feeItemDto.getFee().getName().equals("UVR")) {
-            if (!days.equals(daysFromNowUntilEndDate)) {
-                throw new BusinessException("Existen periodos sin registrar, no se puede realizar la acción");
+        if (feeItemDto.getEndDate().isAfter(LocalDate.now())) {
+            Long daysFromNowUntilEndDate = LocalDate.now().until(feeItemDto.getEndDate(), ChronoUnit.DAYS);
+            Optional<Long> optional = feeItemRepository.getDays(feeItemDto.getFee().getId());
+            if (!optional.isPresent()) {
+                return;
             }
+            Long days = optional.get() + feeItemDto.getStartDate().until(feeItemDto.getEndDate(), ChronoUnit.DAYS);
 
-            if (daysFromNowUntilEndDate > MAX_DAYS_IN_FUTURE_UVR_FEE) {
-                throw new BusinessException("No se pueden registrar más de 15 días a futuro con respecto a la fecha actual");
+            if (feeItemDto.getFee().getName().equals("UVR")) {
+                if (!days.equals(daysFromNowUntilEndDate)) {
+                    throw new BusinessException("Existen periodos sin registrar, no se puede realizar la acción");
+                }
+
+                if (daysFromNowUntilEndDate > MAX_DAYS_IN_FUTURE_UVR_FEE) {
+                    throw new BusinessException("No se pueden registrar más de 15 días a futuro con respecto a la fecha actual");
+                }
             }
         }
     }

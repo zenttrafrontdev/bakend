@@ -40,6 +40,12 @@ public class FeeServiceImpl implements FeeService {
     }
 
     @Override
+    public FeeDto findByName(String name) {
+        return FeeMapper.INSTANCE.feeEntityToFeeDto(feeRepository.findByName(name)
+                .orElseThrow(() -> new BusinessException("La tasa no existe")));
+    }
+
+    @Override
     public PageResponseDto<FeeDto> findAllFeeBySearchCriteria(PageRequestDto<FeeSearchCriteria> pageRequestDto) {
         Pageable pageable = PageRequest.of(pageRequestDto.getPage(), pageRequestDto.getSize());
         Page<FeeEntity> page;

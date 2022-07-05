@@ -8,6 +8,8 @@ import com.amarilo.msobligacionesfinancieras.domain.dto.FeeDto;
 public interface FeeService {
     FeeDto findById(Integer id);
 
+    FeeDto findByName(String name);
+
     PageResponseDto<FeeDto> findAllFeeBySearchCriteria(PageRequestDto<FeeSearchCriteria> pageRequestDto);
 
     void saveFee(FeeDto feeDto);

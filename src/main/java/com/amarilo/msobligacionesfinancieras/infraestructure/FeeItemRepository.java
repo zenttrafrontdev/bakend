@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Repository
 public interface FeeItemRepository extends JpaRepository<FeeItemEntity, Integer>, JpaSpecificationExecutor<FeeItemEntity> {
@@ -36,5 +37,5 @@ public interface FeeItemRepository extends JpaRepository<FeeItemEntity, Integer>
             "from periodos_tasas pt \n" +
             "where pt.tasa_id =:feeId\n" +
             "and fecha_final >= sysdate()", nativeQuery = true)
-    Long getDays(@Param("feeId") Integer feeId);
+    Optional<Long> getDays(@Param("feeId") Integer feeId);
 }
