@@ -47,34 +47,34 @@ public class FinanceThirdEntity {
     private String taxWithholding;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "tipo_tercero_id", nullable = false)
+    @JoinColumn(name = "tipo_tercero_id", nullable = false, updatable = false)
     private FinanceThirdTypeEntity financeThirdType;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "tipo_organicacion_fiscal_id", nullable = false)
+    @JoinColumn(name = "tipo_organicacion_fiscal_id", nullable = false, updatable = false)
     private FiscalOrganizationTypeEntity fiscalOrganizationType;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "banco_id", nullable = false)
+    @JoinColumn(name = "banco_id", nullable = false, updatable = false)
     private BankEntity bank;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "tipo_cuenta_id", nullable = false)
+    @JoinColumn(name = "tipo_cuenta_id", nullable = false, updatable = false)
     private AccountTypeEntity accountType;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "grupo_retencion_impuestos_id", nullable = false)
+    @JoinColumn(name = "grupo_retencion_impuestos_id", nullable = false, updatable = false)
     private WithholdingTaxGroupEntity withholdingTaxGroup;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "clasificacion_fiscal_id", nullable = false)
+    @JoinColumn(name = "clasificacion_fiscal_id", nullable = false, updatable = false)
     private FiscalClassificationEntity fiscalClassification;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "tipo_clasificacion_fiscal_id", nullable = false)
+    @JoinColumn(name = "tipo_clasificacion_fiscal_id", nullable = false, updatable = false)
     private FiscalClassificationTypeEntity fiscalClassificationType;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "clasificacion_impuestos_id", nullable = false)
+    @JoinColumn(name = "clasificacion_impuestos_id", nullable = false, updatable = false)
     private TaxClassificationEntity taxClassification;
 }

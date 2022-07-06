@@ -33,6 +33,6 @@ public class FeeItemEntity {
     @Column(name = "fecha_final")
     private LocalDate endDate;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "tasa_id", nullable = false)
+    @JoinColumn(name = "tasa_id", nullable = false, updatable = false)
     private FeeEntity fee;
 }
