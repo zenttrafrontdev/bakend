@@ -36,6 +36,6 @@ public interface FeeItemRepository extends JpaRepository<FeeItemEntity, Integer>
     @Query(value = "select sum((datediff(fecha_final, case when fecha_inicio < sysdate() then sysdate() else fecha_inicio end) + 1))  \n" +
             "from periodos_tasas pt \n" +
             "where pt.tasa_id =:feeId\n" +
-            "and fecha_final >= sysdate()", nativeQuery = true)
-    Optional<Long> getDays(@Param("feeId") Integer feeId);
+            "and fecha_final >=:date", nativeQuery = true)
+    Optional<Long> getDays(@Param("feeId") Integer feeId, @Param("date") LocalDate date);
 }

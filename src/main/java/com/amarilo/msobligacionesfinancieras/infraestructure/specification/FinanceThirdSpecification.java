@@ -6,6 +6,8 @@ import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Join;
 
+import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.SpecificationUtils.formatLikeUpperString;
+
 public class FinanceThirdSpecification {
 
     private FinanceThirdSpecification() {
@@ -13,18 +15,18 @@ public class FinanceThirdSpecification {
 
     public static Specification<FinanceThirdEntity> hasName(String financeThirdName) {
         return ((root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.and(
-                criteriaBuilder.equal(
-                        root.get("name"),
-                        financeThirdName
+                criteriaBuilder.like(
+                        criteriaBuilder.upper(root.get("name")),
+                        formatLikeUpperString(financeThirdName)
                 )
         ));
     }
 
     public static Specification<FinanceThirdEntity> hasIdentification(String identification) {
         return ((root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.and(
-                criteriaBuilder.equal(
-                        root.get("identification"),
-                        identification
+                criteriaBuilder.like(
+                        criteriaBuilder.upper(root.get("identification")),
+                        formatLikeUpperString(identification)
                 )
         ));
     }
@@ -40,9 +42,9 @@ public class FinanceThirdSpecification {
 
     public static Specification<FinanceThirdEntity> hasAccountNumber(String accountNumber) {
         return ((root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.and(
-                criteriaBuilder.equal(
-                        root.get("accountNumber"),
-                        accountNumber
+                criteriaBuilder.like(
+                        criteriaBuilder.upper(root.get("accountNumber")),
+                        formatLikeUpperString(accountNumber)
                 )
         ));
     }

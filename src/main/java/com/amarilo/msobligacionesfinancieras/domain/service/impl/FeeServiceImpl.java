@@ -89,11 +89,11 @@ public class FeeServiceImpl implements FeeService {
         }
 
         if (Optional.ofNullable(searchCriteria.getPeriodicity()).isPresent()) {
-            specification = buildAndSpecification(null, hasPeriodicity(searchCriteria.getPeriodicity()));
+            specification = buildAndSpecification(specification, hasPeriodicity(searchCriteria.getPeriodicity()));
         }
 
         if (Optional.ofNullable(searchCriteria.getValueType()).isPresent()) {
-            specification = buildAndSpecification(null, hasValueType(searchCriteria.getValueType()));
+            specification = buildAndSpecification(specification, hasValueType(searchCriteria.getValueType()));
         }
 
         return specification;

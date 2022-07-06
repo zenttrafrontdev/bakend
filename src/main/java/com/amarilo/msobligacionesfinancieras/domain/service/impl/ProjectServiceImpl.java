@@ -82,35 +82,35 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         if (Optional.ofNullable(searchCriteria.getProjectName()).isPresent()) {
-            specification = buildAndSpecification(null, hasProjectName(searchCriteria.getProjectName()));
+            specification = buildAndSpecification(specification, hasProjectName(searchCriteria.getProjectName()));
         }
 
         if (Optional.ofNullable(searchCriteria.getGroupCode()).isPresent()) {
-            specification = buildAndSpecification(null, hasGroupCode(searchCriteria.getGroupCode()));
+            specification = buildAndSpecification(specification, hasGroupCode(searchCriteria.getGroupCode()));
         }
 
         if (Optional.ofNullable(searchCriteria.getGroupName()).isPresent()) {
-            specification = buildAndSpecification(null, hasGroupName(searchCriteria.getGroupName()));
+            specification = buildAndSpecification(specification, hasGroupName(searchCriteria.getGroupName()));
         }
 
         if (Optional.ofNullable(searchCriteria.getConsolidatorCode()).isPresent()) {
-            specification = buildAndSpecification(null, hasConsolidatorCode(searchCriteria.getConsolidatorCode()));
+            specification = buildAndSpecification(specification, hasConsolidatorCode(searchCriteria.getConsolidatorCode()));
         }
 
         if (Optional.ofNullable(searchCriteria.getConsolidatorName()).isPresent()) {
-            specification = buildAndSpecification(null, hasConsolidatorName(searchCriteria.getConsolidatorName()));
+            specification = buildAndSpecification(specification, hasConsolidatorName(searchCriteria.getConsolidatorName()));
         }
 
         if (Optional.ofNullable(searchCriteria.getBuildersCreditBank()).isPresent()) {
-            specification = buildAndSpecification(null, hasBuildersCreditBank(searchCriteria.getBuildersCreditBank()));
+            specification = buildAndSpecification(specification, hasBuildersCreditBank(searchCriteria.getBuildersCreditBank()));
         }
 
         if (Optional.ofNullable(searchCriteria.getPaymentType()).isPresent()) {
-            specification = buildAndSpecification(null, hasPaymentType(searchCriteria.getPaymentType()));
+            specification = buildAndSpecification(specification, hasPaymentType(searchCriteria.getPaymentType()));
         }
 
         if (Optional.ofNullable(searchCriteria.getStatus()).isPresent()) {
-            specification = buildAndSpecification(null, hasStatus(searchCriteria.getStatus()));
+            specification = buildAndSpecification(specification, hasStatus(searchCriteria.getStatus()));
         }
 
         return specification;

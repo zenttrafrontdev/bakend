@@ -36,12 +36,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static com.amarilo.msobligacionesfinancieras.commons.Utility.daysNumberBetweenTwoDates;
 import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.FeeItemSpecification.hasEndDateLessThan;
 import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.FeeItemSpecification.hasFeeId;
 import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.FeeItemSpecification.hasStartDateGreaterThan;
@@ -122,7 +122,7 @@ public class FeeItemServiceImpl implements FeeItemService {
                         .build();
                 saveFeeItem(feeItemDto);
             } catch (Exception ex) {
-                log.error(String.format("An error has occurred processing file: Filename: %s, Line Number: %s", file.getName(), i + 1));
+                log.error(String.format("An error has occurred processing file: Filename: %s, Line Number: %s", file.getOriginalFilename(), i + 1), ex);
                 errorList.add(FileProcessErrorDto.builder()
                         .lineNumber(i + 1)
                         .message(ex.getMessage())
@@ -233,12 +233,13 @@ public class FeeItemServiceImpl implements FeeItemService {
     private void feeItemPeriodicityMustBeWeeklyAndLastPeriodMustEnd(FeeItemDto feeItemDto, PeriodicityEnum periodType) {
         if (periodType.equals(PeriodicityEnum.WEEKLY)
                 && !feeItemDto.getFee().getName().equals("UVR")) {
-            var daysBetWeenDays = feeItemDto.getStartDate().until(feeItemDto.getEndDate()).getDays();
+            var daysBetWeenDays = daysNumberBetweenTwoDates(feeItemDto.getStartDate(), feeItemDto.getEndDate());
             if (daysBetWeenDays != 7) {
                 throw new BusinessException("La periodicidad de la tasa debe ser semanal");
             }
 
-            if (!LocalDate.now().isAfter(feeItemRepository.getMaxPeriodDateByFeeId(feeItemDto.getFee().getId()))) {
+            LocalDate maxPeriodDate = feeItemRepository.getMaxPeriodDateByFeeId(feeItemDto.getFee().getId());
+            if (Optional.ofNullable(maxPeriodDate).isPresent() && !LocalDate.now().isAfter(maxPeriodDate)) {
                 throw new BusinessException("Debe terminar el periodo vigente para poder ingresar un nuevo registro");
             }
         }
@@ -280,13 +281,12 @@ public class FeeItemServiceImpl implements FeeItemService {
      */
     private void feeItemDailyUVRFeeTypeCanBeUntil15DaysAfterActualDate(FeeItemDto feeItemDto) {
         if (feeItemDto.getEndDate().isAfter(LocalDate.now())) {
-            Long daysFromNowUntilEndDate = LocalDate.now().until(feeItemDto.getEndDate(), ChronoUnit.DAYS);
-            Optional<Long> optional = feeItemRepository.getDays(feeItemDto.getFee().getId());
+            Long daysFromNowUntilEndDate = daysNumberBetweenTwoDates(LocalDate.now(), feeItemDto.getEndDate());
+            Optional<Long> optional = feeItemRepository.getDays(feeItemDto.getFee().getId(), LocalDate.now());
             if (!optional.isPresent()) {
                 return;
             }
-            Long days = optional.get() + feeItemDto.getStartDate().until(feeItemDto.getEndDate(), ChronoUnit.DAYS);
-
+            Long days = optional.get() + daysNumberBetweenTwoDates(feeItemDto.getStartDate(), feeItemDto.getEndDate());
             if (feeItemDto.getFee().getName().equals("UVR")) {
                 if (!days.equals(daysFromNowUntilEndDate)) {
                     throw new BusinessException("Existen periodos sin registrar, no se puede realizar la acción");

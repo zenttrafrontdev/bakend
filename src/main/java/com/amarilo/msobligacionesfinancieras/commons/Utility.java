@@ -2,6 +2,9 @@ package com.amarilo.msobligacionesfinancieras.commons;
 
 import com.amarilo.msobligacionesfinancieras.exception.BusinessException;
 
+import java.time.LocalDate;
+import java.time.Period;
+
 public class Utility {
 
     private static final Long MAX_PERCENTAGE_VALUE = 100000000L;
@@ -35,5 +38,9 @@ public class Utility {
         sb.append(".");
         sb.append(stringDecimalNumber.substring(stringDecimalNumber.length() - 2, stringDecimalNumber.length()));
         return sb.toString();
+    }
+
+    public static long daysNumberBetweenTwoDates(LocalDate initialDate, LocalDate endDate) {
+        return Period.between(initialDate, endDate).getDays() + 1;
     }
 }
