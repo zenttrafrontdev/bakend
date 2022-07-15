@@ -41,6 +41,6 @@ public class Utility {
     }
 
     public static long daysNumberBetweenTwoDates(LocalDate initialDate, LocalDate endDate) {
-        return Period.between(initialDate, endDate).getDays() + 1;
+        return Period.between(initialDate, endDate).getDays() + 1L;
     }
 }

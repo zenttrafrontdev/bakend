@@ -1,8 +1,6 @@
 package com.amarilo.msobligacionesfinancieras.domain.mapper;
 
-import com.amarilo.msobligacionesfinancieras.domain.dto.FeeDto;
 import com.amarilo.msobligacionesfinancieras.domain.dto.FeeItemDto;
-import com.amarilo.msobligacionesfinancieras.infraestructure.entity.FeeEntity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.entity.FeeItemEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;

@@ -1,5 +1,6 @@
 package com.amarilo.msobligacionesfinancieras.controller;
 
+import com.amarilo.msobligacionesfinancieras.domain.dto.BusinessAreaDto;
 import com.amarilo.msobligacionesfinancieras.domain.dto.GenericMasterDto;
 import com.amarilo.msobligacionesfinancieras.domain.service.GenericService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -150,5 +151,117 @@ public class GenericController {
     @GetMapping("tax-classifications")
     public ResponseEntity<List<GenericMasterDto>> findAllTaxClassification() {
         return ResponseEntity.ok(genericService.findAllTaxClassifications());
+    }
+
+    @Operation(summary = "Permite obtener el listado de unidades de negocio")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se obtiene el listado de unidades de negocio",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = BusinessAreaDto.class))}),
+            @ApiResponse(responseCode = "204", description = "No existen registros",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "application/json")})
+    })
+    @GetMapping("business-areas")
+    public ResponseEntity<List<BusinessAreaDto>> findAllBusinessAreas() {
+        return ResponseEntity.ok(genericService.findAllBusinessAreas());
+    }
+
+    @Operation(summary = "Permite obtener el listado de tipologias de cupos")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se obtiene el listado de tipologias de cupos",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = GenericMasterDto.class))}),
+            @ApiResponse(responseCode = "204", description = "No existen registros",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "application/json")})
+    })
+    @GetMapping("quota-types")
+    public ResponseEntity<List<GenericMasterDto>> findAllQuotaTypes() {
+        return ResponseEntity.ok(genericService.findAllQuotaTypes());
+    }
+
+    @Operation(summary = "Permite obtener el listado de clasificación de cupos")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se obtiene el listado de clasificación de cupos",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = GenericMasterDto.class))}),
+            @ApiResponse(responseCode = "204", description = "No existen registros",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "application/json")})
+    })
+    @GetMapping("quota-classifications")
+    public ResponseEntity<List<GenericMasterDto>> findAllQuotaClassifications() {
+        return ResponseEntity.ok(genericService.findAllQuotaClassifications());
+    }
+
+    @Operation(summary = "Permite obtener el listado de periodicidades de interes")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se obtiene el listado de periodicidades de interes",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = GenericMasterDto.class))}),
+            @ApiResponse(responseCode = "204", description = "No existen registros",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "application/json")})
+    })
+    @GetMapping("periodicity-interests")
+    public ResponseEntity<List<GenericMasterDto>> findAllPeriodicityInterests() {
+        return ResponseEntity.ok(genericService.findAllPeriodicityInterests());
+    }
+
+    @Operation(summary = "Permite obtener el listado de tipos de crédito")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se obtiene el listado de tipos de crédito",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = GenericMasterDto.class))}),
+            @ApiResponse(responseCode = "204", description = "No existen registros",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "application/json")})
+    })
+    @GetMapping("credit-types")
+    public ResponseEntity<List<GenericMasterDto>> findAllCreditTypes() {
+        return ResponseEntity.ok(genericService.findAllCreditTypes());
+    }
+
+    @Operation(summary = "Permite obtener el listado de amortización de capitales")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se obtiene el listado de amortización de capitales",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = GenericMasterDto.class))}),
+            @ApiResponse(responseCode = "204", description = "No existen registros",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "application/json")})
+    })
+    @GetMapping("capital-amortizations")
+    public ResponseEntity<List<GenericMasterDto>> findAllCapitalAmortizations() {
+        return ResponseEntity.ok(genericService.findAllCapitalAmortizations());
+    }
+
+    @Operation(summary = "Permite obtener el listado de tipos de archivo del negocio")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se obtiene el listado de tipos de archivo del negocio",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = GenericMasterDto.class))}),
+            @ApiResponse(responseCode = "204", description = "No existen registros",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "application/json")})
+    })
+    @GetMapping("tipos-archivo-negocio")
+    public ResponseEntity<List<GenericMasterDto>> findAllFileBusinessTypes() {
+        return ResponseEntity.ok(genericService.findAllFileBusinessTypes());
     }
 }

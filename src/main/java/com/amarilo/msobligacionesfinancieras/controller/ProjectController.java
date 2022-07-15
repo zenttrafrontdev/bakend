@@ -3,7 +3,6 @@ package com.amarilo.msobligacionesfinancieras.controller;
 import com.amarilo.msobligacionesfinancieras.controller.request.PageRequestDto;
 import com.amarilo.msobligacionesfinancieras.controller.request.ProjectSearchCriteria;
 import com.amarilo.msobligacionesfinancieras.controller.response.PageResponseDto;
-import com.amarilo.msobligacionesfinancieras.domain.dto.GenericMasterDto;
 import com.amarilo.msobligacionesfinancieras.domain.dto.ProjectDto;
 import com.amarilo.msobligacionesfinancieras.domain.service.ProjectService;
 import io.swagger.v3.oas.annotations.Operation;

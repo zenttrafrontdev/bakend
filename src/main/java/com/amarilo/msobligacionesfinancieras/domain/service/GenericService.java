@@ -1,5 +1,6 @@
 package com.amarilo.msobligacionesfinancieras.domain.service;
 
+import com.amarilo.msobligacionesfinancieras.domain.dto.BusinessAreaDto;
 import com.amarilo.msobligacionesfinancieras.domain.dto.GenericMasterDto;
 
 import java.util.List;
@@ -20,4 +21,18 @@ public interface GenericService {
     List<GenericMasterDto> findAllFiscalClassificationTypes();
 
     List<GenericMasterDto> findAllTaxClassifications();
+
+    List<BusinessAreaDto> findAllBusinessAreas();
+
+    List<GenericMasterDto> findAllQuotaTypes();
+
+    List<GenericMasterDto> findAllQuotaClassifications();
+
+    List<GenericMasterDto> findAllPeriodicityInterests();
+
+    List<GenericMasterDto> findAllCreditTypes();
+
+    List<GenericMasterDto> findAllCapitalAmortizations();
+
+    List<GenericMasterDto> findAllFileBusinessTypes();
 }
