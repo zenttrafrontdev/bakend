@@ -1,5 +1,6 @@
 package com.amarilo.msobligacionesfinancieras.controller;
 
+import com.amarilo.msobligacionesfinancieras.controller.request.BusinessFileRequestDto;
 import com.amarilo.msobligacionesfinancieras.controller.request.PageRequestDto;
 import com.amarilo.msobligacionesfinancieras.controller.request.QuotaSearchCriteria;
 import com.amarilo.msobligacionesfinancieras.controller.response.PageResponseDto;
@@ -30,6 +31,8 @@ import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -88,16 +91,22 @@ public class QuotaController {
                     content = {@Content(mediaType = "multipart/form-data")})
     })
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity saveQuota(@RequestParam("quota") String quota,
-                                    @RequestParam(required = false) List<MultipartFile> files) {
+    public ResponseEntity<QuotaDto> saveQuota(@RequestParam("quota") String quota,
+                                    @RequestParam(value = "business-files", required = false) String businessFileList,
+                                    @RequestParam(required = false) List<MultipartFile> files) throws IOException {
         QuotaDto quotaDto = null;
+        List<BusinessFileRequestDto> businessFileRequestDtos = new ArrayList<>();
         try {
-            quotaDto = new ObjectMapper().findAndRegisterModules().readValue(quota, QuotaDto.class);
+            var objectMapper = new ObjectMapper().findAndRegisterModules();
+            quotaDto = objectMapper.readValue(quota, QuotaDto.class);
+            if (businessFileList != null && !businessFileList.isBlank()) {
+                businessFileRequestDtos = Arrays.asList(objectMapper.readValue(businessFileList, BusinessFileRequestDto[].class));
+            }
         } catch (RuntimeException | IOException ex) {
             throw new IllegalArgumentException(ex.getMessage());
         }
         validateDto(quotaDto);
-        return ResponseEntity.ok(quotaService.saveQuota(quotaDto, files));
+        return ResponseEntity.ok(quotaService.saveQuota(quotaDto, businessFileRequestDtos, files));
     }
 
     @Operation(summary = "Permite actualizar un cupo")
@@ -112,26 +121,34 @@ public class QuotaController {
                     content = {@Content(mediaType = "multipart/form-data")})
     })
     @PutMapping(value = "{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity updateQuota(@PathVariable("id") Integer id,
+    public ResponseEntity<QuotaDto> updateQuota(@PathVariable("id") Integer id,
                                       @RequestParam("quota") String quota,
-                                      @RequestParam(required = false) List<MultipartFile> files) {
+                                      @RequestParam(value = "business-files", required = false) String businessFileList,
+                                      @RequestParam(required = false) List<MultipartFile> files) throws IOException {
         QuotaDto quotaDto = null;
+        List<BusinessFileRequestDto> businessFileRequestDtos = new ArrayList<>();
         try {
-            quotaDto = new ObjectMapper().findAndRegisterModules().readValue(quota, QuotaDto.class);
+            var objectMapper = new ObjectMapper().findAndRegisterModules();
+            quotaDto = objectMapper.readValue(quota, QuotaDto.class);
+            if (businessFileList != null && !businessFileList.isBlank()) {
+                businessFileRequestDtos = Arrays.asList(objectMapper.readValue(businessFileList, BusinessFileRequestDto[].class));
+            }
         } catch (RuntimeException | IOException ex) {
             throw new IllegalArgumentException(ex.getMessage());
         }
         quotaDto.setId(id);
         validateDto(quotaDto);
-        return ResponseEntity.ok(quotaService.saveQuota(quotaDto, files));
+        return ResponseEntity.ok(quotaService.saveQuota(quotaDto, businessFileRequestDtos, files));
     }
 
     private void validateDto(QuotaDto quotaDto) {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
         Set<ConstraintViolation<QuotaDto>> violations = validator.validate(quotaDto);
-        for (ConstraintViolation<QuotaDto> violation : violations) {
-            throw new BusinessException(violation.getMessage());
+        if (!violations.isEmpty()) {
+            violations.stream().findFirst().ifPresent(quotaDtoConstraintViolation -> {
+                throw new BusinessException(quotaDtoConstraintViolation.getMessage());
+            });
         }
     }
 }

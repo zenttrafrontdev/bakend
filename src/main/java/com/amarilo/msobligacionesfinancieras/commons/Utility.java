@@ -4,10 +4,12 @@ import com.amarilo.msobligacionesfinancieras.exception.BusinessException;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Optional;
 
 public class Utility {
 
     private static final Long MAX_PERCENTAGE_VALUE = 100000000L;
+    private static final int SHORT_ID_LENGTH = 16;
 
     private Utility() {
         throw new IllegalStateException("Utility class");
@@ -42,5 +44,11 @@ public class Utility {
 
     public static long daysNumberBetweenTwoDates(LocalDate initialDate, LocalDate endDate) {
         return Period.between(initialDate, endDate).getDays() + 1L;
+    }
+
+    public static Optional<String> getExtensionByStringHandling(String filename) {
+        return Optional.ofNullable(filename)
+                .filter(f -> f.contains("."))
+                .map(f -> f.substring(filename.lastIndexOf(".") + 1));
     }
 }

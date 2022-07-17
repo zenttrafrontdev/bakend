@@ -260,7 +260,7 @@ public class GenericController {
             @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
                     content = {@Content(mediaType = "application/json")})
     })
-    @GetMapping("tipos-archivo-negocio")
+    @GetMapping("file-business-types")
     public ResponseEntity<List<GenericMasterDto>> findAllFileBusinessTypes() {
         return ResponseEntity.ok(genericService.findAllFileBusinessTypes());
     }

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -56,4 +57,5 @@ public class QuotaDto {
     private LocalDate expirationQuotaDate;
     @NotNull(message = "El plazo del cupo no puede ser vacío")
     private Integer deadLine;
+    private List<FileBusinessDto> files;
 }
