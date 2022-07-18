@@ -124,7 +124,7 @@ public class QuotaServiceImpl implements QuotaService {
                         .quota(quotaSaved)
                         .fileBusiness(fileBusinessSaved)
                         .build());
-                Files.copy(files.get(i).getInputStream(), Paths.get("C:\\".concat(fileBusinessEntity.getName())), StandardCopyOption.REPLACE_EXISTING);
+                Files.copy(files.get(i).getInputStream(), Paths.get(fileBusinessEntity.getName()), StandardCopyOption.REPLACE_EXISTING);
             }
         }
 

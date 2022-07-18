@@ -110,7 +110,6 @@ class QuotaServiceImplTest {
 
         //then
         Assertions.assertEquals(quotaEntity.getId(), result.getId());
-        Assertions.assertTrue(result.getFiles().isEmpty());
     }
 
     @Test
