@@ -7,6 +7,7 @@ import com.amarilo.msobligacionesfinancieras.controller.response.PageResponseDto
 import com.amarilo.msobligacionesfinancieras.domain.dto.QuotaDto;
 import com.amarilo.msobligacionesfinancieras.domain.mapper.FileBusinessMapper;
 import com.amarilo.msobligacionesfinancieras.domain.mapper.QuotaMapper;
+import com.amarilo.msobligacionesfinancieras.domain.service.FileService;
 import com.amarilo.msobligacionesfinancieras.domain.service.QuotaService;
 import com.amarilo.msobligacionesfinancieras.exception.BusinessException;
 import com.amarilo.msobligacionesfinancieras.infraestructure.FileBusinessRepository;
@@ -17,6 +18,7 @@ import com.amarilo.msobligacionesfinancieras.infraestructure.entity.QuotaEntity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.entity.QuotaFileBusinessEntity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.FileBusinessTypeRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -52,15 +54,18 @@ public class QuotaServiceImpl implements QuotaService {
     private final QuotaFileBusinessRepository quotaFileBusinessRepository;
     private final FileBusinessRepository fileBusinessRepository;
     private final FileBusinessTypeRepository fileBusinessTypeRepository;
+    private final FileService fileService;
 
     public QuotaServiceImpl(QuotaRepository quotaRepository,
                             QuotaFileBusinessRepository quotaFileBusinessRepository,
                             FileBusinessRepository fileBusinessRepository,
-                            FileBusinessTypeRepository fileBusinessTypeRepository) {
+                            FileBusinessTypeRepository fileBusinessTypeRepository,
+                            FileService fileService) {
         this.quotaRepository = quotaRepository;
         this.quotaFileBusinessRepository = quotaFileBusinessRepository;
         this.fileBusinessRepository = fileBusinessRepository;
         this.fileBusinessTypeRepository = fileBusinessTypeRepository;
+        this.fileService = fileService;
     }
 
     @Override
@@ -130,6 +135,11 @@ public class QuotaServiceImpl implements QuotaService {
 
 
         return QuotaMapper.INSTANCE.quotaEntityToQuotaDto(quotaSaved);
+    }
+
+    @Override
+    public ByteArrayResource downloadFile(Integer fileBusinessId) throws IOException {
+        return fileService.downloadFile(fileBusinessId);
     }
 
     private void validateQuotaDates(QuotaDto quotaDto) {

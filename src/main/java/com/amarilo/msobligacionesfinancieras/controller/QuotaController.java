@@ -13,6 +13,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -30,7 +33,11 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -92,8 +99,8 @@ public class QuotaController {
     })
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<QuotaDto> saveQuota(@RequestParam("quota") String quota,
-                                    @RequestParam(value = "business-files", required = false) String businessFileList,
-                                    @RequestParam(required = false) List<MultipartFile> files) throws IOException {
+                                              @RequestParam(value = "business-files", required = false) String businessFileList,
+                                              @RequestParam(required = false) List<MultipartFile> files) throws IOException {
         QuotaDto quotaDto = null;
         List<BusinessFileRequestDto> businessFileRequestDtos = new ArrayList<>();
         try {
@@ -122,9 +129,9 @@ public class QuotaController {
     })
     @PutMapping(value = "{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<QuotaDto> updateQuota(@PathVariable("id") Integer id,
-                                      @RequestParam("quota") String quota,
-                                      @RequestParam(value = "business-files", required = false) String businessFileList,
-                                      @RequestParam(required = false) List<MultipartFile> files) throws IOException {
+                                                @RequestParam("quota") String quota,
+                                                @RequestParam(value = "business-files", required = false) String businessFileList,
+                                                @RequestParam(required = false) List<MultipartFile> files) throws IOException {
         QuotaDto quotaDto = null;
         List<BusinessFileRequestDto> businessFileRequestDtos = new ArrayList<>();
         try {
@@ -139,6 +146,34 @@ public class QuotaController {
         quotaDto.setId(id);
         validateDto(quotaDto);
         return ResponseEntity.ok(quotaService.saveQuota(quotaDto, businessFileRequestDtos, files));
+    }
+
+    @Operation(summary = "Permite eliminar un archivo de un cupo")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Archivo descargado existosamente",
+                    content = {@Content(mediaType = "application/octet-stream")}),
+            @ApiResponse(responseCode = "400", description = "Argumentos no válidos",
+                    content = {@Content(mediaType = "application/octet-stream")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "application/octet-stream")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "application/octet-stream")})
+    })
+    @GetMapping("/download")
+    public ResponseEntity<Resource> download(@RequestParam("id") Integer fileBusinessId) throws IOException {
+        ByteArrayResource resource = quotaService.downloadFile(fileBusinessId);
+
+        HttpHeaders header = new HttpHeaders();
+        header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + resource.getFilename());
+        header.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        header.add("Pragma", "no-cache");
+        header.add("Expires", "0");
+
+        return ResponseEntity.ok()
+                .headers(header)
+                .contentLength(resource.contentLength())
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(resource);
     }
 
     private void validateDto(QuotaDto quotaDto) {
