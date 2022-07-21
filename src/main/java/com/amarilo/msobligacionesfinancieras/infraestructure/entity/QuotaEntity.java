@@ -11,6 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,8 +20,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.time.LocalDate;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,31 +36,31 @@ public class QuotaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "tipologia_cupo_id", nullable = false, updatable = false)
+    @JoinColumn(name = "tipologia_cupo_id", nullable = false)
     private QuotaTypeEntity quotaType;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "clasificacion_cupo_id", nullable = false, updatable = false)
+    @JoinColumn(name = "clasificacion_cupo_id", nullable = false)
     private QuotaTypeEntity quotaClassification;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "unidad_negocio_id", nullable = false, updatable = false)
+    @JoinColumn(name = "unidad_negocio_id", nullable = false)
     private BusinessAreaEntity businessArea;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "cupo_id", nullable = false)
+    private List<QuotaDetailEntity> quotaDetails;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "proyecto_id", nullable = false, updatable = false)
-    private ProjectEntity project;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "banco_id", nullable = false, updatable = false)
+    @JoinColumn(name = "banco_id", nullable = false)
     private BankEntity bank;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "tipo_credito_id", nullable = false, updatable = false)
+    @JoinColumn(name = "tipo_credito_id", nullable = false)
     private CreditTypeEntity creditType;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "amortizacion_capital_id", nullable = false, updatable = false)
+    @JoinColumn(name = "amortizacion_capital_id", nullable = false)
     private CapitalAmortizationEntity capitalAmortization;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "periodicidad_interes_id", nullable = false, updatable = false)
+    @JoinColumn(name = "periodicidad_interes_id", nullable = false)
     private PeriodicityInterestEntity periodicityInterest;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "fee_id", nullable = false, updatable = false)
+    @JoinColumn(name = "fee_id", nullable = false)
     private FeeEntity fee;
     @Column(name = "cupo_aprobado")
     private String approvedQuota;

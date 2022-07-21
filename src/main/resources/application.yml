@@ -1,6 +1,10 @@
 spring:
   profiles:
-    active: local
+    active: dev
+  servlet:
+    multipart:
+      max-file-size: 100000KB
+      max-request-size: 100000KB
 
 logging:
   pattern:

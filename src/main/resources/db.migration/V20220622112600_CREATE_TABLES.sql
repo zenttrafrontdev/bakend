@@ -1,278 +1,288 @@
-CREATE TABLE IF NOT EXISTS BANCOS (
- ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
- CODIGO VARCHAR(350) NOT NULL,
- NOMBRE VARCHAR(350) NOT NULL,
- CREADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
- ACTUALIZADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
- PRIMARY KEY (ID) USING BTREE
+create table if not exists bancos (
+ id int unsigned not null auto_increment,
+ codigo varchar(350) not null,
+ nombre varchar(350) not null,
+ creado timestamp not null default current_timestamp,
+ actualizado timestamp not null default current_timestamp on update current_timestamp,
+ primary key (id) using btree
 );
 
-CREATE TABLE IF NOT EXISTS CLASIFICACIONES_FISCALES (
- ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
- CODIGO VARCHAR(350) NOT NULL,
- NOMBRE VARCHAR(350) NOT NULL,
- CREADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
- ACTUALIZADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
- PRIMARY KEY (ID) USING BTREE
+create table if not exists clasificaciones_fiscales (
+ id int unsigned not null auto_increment,
+ codigo varchar(350) not null,
+ nombre varchar(350) not null,
+ creado timestamp not null default current_timestamp,
+ actualizado timestamp not null default current_timestamp on update current_timestamp,
+ primary key (id) using btree
 );
 
-CREATE TABLE IF NOT EXISTS CLASIFICACIONES_FISCALES (
- ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
- CODIGO VARCHAR(350) NOT NULL,
- NOMBRE VARCHAR(350) NOT NULL,
- CREADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
- ACTUALIZADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
- PRIMARY KEY (ID) USING BTREE
+create table if not exists clasificaciones_fiscales (
+ id int unsigned not null auto_increment,
+ codigo varchar(350) not null,
+ nombre varchar(350) not null,
+ creado timestamp not null default current_timestamp,
+ actualizado timestamp not null default current_timestamp on update current_timestamp,
+ primary key (id) using btree
 );
 
-CREATE TABLE IF NOT EXISTS CLASIFICACIONES_IMPUESTOS (
- ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
- CODIGO VARCHAR(350) NOT NULL,
- NOMBRE VARCHAR(350) NOT NULL,
- CREADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
- ACTUALIZADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
- PRIMARY KEY (ID) USING BTREE
+create table if not exists clasificaciones_impuestos (
+ id int unsigned not null auto_increment,
+ codigo varchar(350) not null,
+ nombre varchar(350) not null,
+ creado timestamp not null default current_timestamp,
+ actualizado timestamp not null default current_timestamp on update current_timestamp,
+ primary key (id) using btree
 );
 
-CREATE TABLE IF NOT EXISTS GRUPOS_RETENCIONES_IMPUESTOS (
- ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
- CODIGO VARCHAR(350) NOT NULL,
- NOMBRE VARCHAR(350) NOT NULL,
- CREADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
- ACTUALIZADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
- PRIMARY KEY (ID) USING BTREE
+create table if not exists grupos_retenciones_impuestos (
+ id int unsigned not null auto_increment,
+ codigo varchar(350) not null,
+ nombre varchar(350) not null,
+ creado timestamp not null default current_timestamp,
+ actualizado timestamp not null default current_timestamp on update current_timestamp,
+ primary key (id) using btree
 );
 
-CREATE TABLE IF NOT EXISTS PROYECTOS (
- ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
- ESTADO VARCHAR(384) NOT NULL,
- CODIGO_GRUPO VARCHAR(384) NOT NULL,
- NOMBRE_GRUPO VARCHAR(384) NOT NULL,
- CODIGO_CONSOLIDADOR VARCHAR(384) NOT NULL,
- NOMBRE_CONSOLIDADOR VARCHAR(384) NOT NULL,
- CODIGO_PROYECTO VARCHAR(384) NOT NULL,
- NOMBRE_PROYECTO VARCHAR(384) NOT NULL,
- BANCO_CREDITO_CONSTRUCTOR VARCHAR(384) DEFAULT NULL,
- TIPO_FINANCIACION VARCHAR(384) DEFAULT NULL,
- CREADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
- ACTUALIZADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
- PRIMARY KEY (ID),
- UNIQUE KEY CODIGO_PROYECTO (CODIGO_PROYECTO)
+create table if not exists proyectos (
+ id int unsigned not null auto_increment,
+ estado varchar(384) not null,
+ codigo_grupo varchar(384) not null,
+ nombre_grupo varchar(384) not null,
+ codigo_consolidador varchar(384) not null,
+ nombre_consolidador varchar(384) not null,
+ codigo_proyecto varchar(384) not null,
+ nombre_proyecto varchar(384) not null,
+ banco_credito_constructor varchar(384) default null,
+ tipo_financiacion varchar(384) default null,
+ creado timestamp not null default current_timestamp,
+ actualizado timestamp not null default current_timestamp on update current_timestamp,
+ primary key (id),
+ unique key codigo_proyecto (codigo_proyecto)
 );
 
-CREATE TABLE IF NOT EXISTS TASAS (
- ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
- NOMBRE VARCHAR(384) NOT NULL,
- PERIODICIDAD VARCHAR(384) NOT NULL,
- TIPO_VALOR VARCHAR(384) NOT NULL,
- CREADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
- ACTUALIZADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
- PRIMARY KEY (ID)
+create table if not exists tasas (
+ id int unsigned not null auto_increment,
+ nombre varchar(384) not null,
+ periodicidad varchar(384) not null,
+ tipo_valor varchar(384) not null,
+ creado timestamp not null default current_timestamp,
+ actualizado timestamp not null default current_timestamp on update current_timestamp,
+ primary key (id)
 );
 
-CREATE TABLE IF NOT EXISTS TIPOS_CLASIFICACIONES_FISCALES (
- ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
- CODIGO VARCHAR(350) NOT NULL,
- NOMBRE VARCHAR(350) NOT NULL,
- CREADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
- ACTUALIZADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
- PRIMARY KEY (ID) USING BTREE
+create table if not exists tipos_clasificaciones_fiscales (
+ id int unsigned not null auto_increment,
+ codigo varchar(350) not null,
+ nombre varchar(350) not null,
+ creado timestamp not null default current_timestamp,
+ actualizado timestamp not null default current_timestamp on update current_timestamp,
+ primary key (id) using btree
 );
 
-CREATE TABLE IF NOT EXISTS TIPO_CUENTAS (
- ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
- CODIGO VARCHAR(350) NOT NULL,
- NOMBRE VARCHAR(350) NOT NULL,
- CREADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
- ACTUALIZADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
- PRIMARY KEY (ID) USING BTREE
+create table if not exists tipo_cuentas (
+ id int unsigned not null auto_increment,
+ codigo varchar(350) not null,
+ nombre varchar(350) not null,
+ creado timestamp not null default current_timestamp,
+ actualizado timestamp not null default current_timestamp on update current_timestamp,
+ primary key (id) using btree
 );
 
-CREATE TABLE IF NOT EXISTS TIPO_ORGANIZACIONES_FISCALES (
- ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
- CODIGO VARCHAR(350) NOT NULL,
- NOMBRE VARCHAR(350) NOT NULL,
- CREADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
- ACTUALIZADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
- PRIMARY KEY (ID) USING BTREE
+create table if not exists tipo_organizaciones_fiscales (
+ id int unsigned not null auto_increment,
+ codigo varchar(350) not null,
+ nombre varchar(350) not null,
+ creado timestamp not null default current_timestamp,
+ actualizado timestamp not null default current_timestamp on update current_timestamp,
+ primary key (id) using btree
 );
 
-CREATE TABLE IF NOT EXISTS TIPO_TERCEROS (
- ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
- CODIGO VARCHAR(350) NOT NULL,
- NOMBRE VARCHAR(350) NOT NULL,
- CREADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
- ACTUALIZADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
- PRIMARY KEY (ID) USING BTREE
+create table if not exists tipo_terceros (
+ id int unsigned not null auto_increment,
+ codigo varchar(350) not null,
+ nombre varchar(350) not null,
+ creado timestamp not null default current_timestamp,
+ actualizado timestamp not null default current_timestamp on update current_timestamp,
+ primary key (id) using btree
 );
 
-CREATE TABLE IF NOT EXISTS UNIDADES_NEGOCIO (
-  ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  SIGLA VARCHAR(50) DEFAULT NULL,
-  RAZON VARCHAR(50) DEFAULT NULL,
-  NOMBRE VARCHAR(50) DEFAULT NULL,
-  NIT VARCHAR(50) DEFAULT NULL,
-  ESTADO VARCHAR(50) DEFAULT NULL,
-  CREADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  ACTUALIZADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (ID)  USING BTREE
+create table if not exists unidades_negocio (
+  id int unsigned not null auto_increment,
+  sigla varchar(50) default null,
+  razon varchar(50) default null,
+  nombre varchar(50) default null,
+  nit varchar(50) default null,
+  estado varchar(50) default null,
+  creado timestamp not null default current_timestamp,
+  actualizado timestamp not null default current_timestamp on update current_timestamp,
+  primary key (id)  using btree
 );
 
-CREATE TABLE IF NOT EXISTS TIPOLOGIAS_CUPOS (
- ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
- CODIGO VARCHAR(350) NOT NULL,
- NOMBRE VARCHAR(350) NOT NULL,
- CREADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
- ACTUALIZADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
- PRIMARY KEY (ID) USING BTREE
+create table if not exists tipologias_cupos (
+ id int unsigned not null auto_increment,
+ codigo varchar(350) not null,
+ nombre varchar(350) not null,
+ creado timestamp not null default current_timestamp,
+ actualizado timestamp not null default current_timestamp on update current_timestamp,
+ primary key (id) using btree
 );
 
-CREATE TABLE IF NOT EXISTS CLASIFICACIONES_CUPOS (
- ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
- CODIGO VARCHAR(350) NOT NULL,
- NOMBRE VARCHAR(350) NOT NULL,
- CREADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
- ACTUALIZADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
- PRIMARY KEY (ID) USING BTREE
+create table if not exists clasificaciones_cupos (
+ id int unsigned not null auto_increment,
+ codigo varchar(350) not null,
+ nombre varchar(350) not null,
+ creado timestamp not null default current_timestamp,
+ actualizado timestamp not null default current_timestamp on update current_timestamp,
+ primary key (id) using btree
 );
 
-CREATE TABLE IF NOT EXISTS PERIODICIDAD_INTERESES (
- ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
- CODIGO VARCHAR(350) NOT NULL,
- NOMBRE VARCHAR(350) NOT NULL,
- CREADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
- ACTUALIZADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
- PRIMARY KEY (ID) USING BTREE
+create table if not exists periodicidad_intereses (
+ id int unsigned not null auto_increment,
+ codigo varchar(350) not null,
+ nombre varchar(350) not null,
+ creado timestamp not null default current_timestamp,
+ actualizado timestamp not null default current_timestamp on update current_timestamp,
+ primary key (id) using btree
 );
 
-CREATE TABLE IF NOT EXISTS TIPOS_CREDITO (
- ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
- CODIGO VARCHAR(350) NOT NULL,
- NOMBRE VARCHAR(350) NOT NULL,
- CREADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
- ACTUALIZADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
- PRIMARY KEY (ID) USING BTREE
+create table if not exists tipos_credito (
+ id int unsigned not null auto_increment,
+ codigo varchar(350) not null,
+ nombre varchar(350) not null,
+ creado timestamp not null default current_timestamp,
+ actualizado timestamp not null default current_timestamp on update current_timestamp,
+ primary key (id) using btree
 );
 
-CREATE TABLE IF NOT EXISTS AMORTIZACIONES_CAPITAL (
- ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
- CODIGO VARCHAR(350) NOT NULL,
- NOMBRE VARCHAR(350) NOT NULL,
- CREADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
- ACTUALIZADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
- PRIMARY KEY (ID) USING BTREE
+create table if not exists amortizaciones_capital (
+ id int unsigned not null auto_increment,
+ codigo varchar(350) not null,
+ nombre varchar(350) not null,
+ creado timestamp not null default current_timestamp,
+ actualizado timestamp not null default current_timestamp on update current_timestamp,
+ primary key (id) using btree
 );
 
-CREATE TABLE IF NOT EXISTS TIPOS_ARCHIVOS_NEGOCIO (
- ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
- CODIGO VARCHAR(350) NOT NULL,
- NOMBRE VARCHAR(350) NOT NULL,
- CREADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
- ACTUALIZADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
- PRIMARY KEY (ID) USING BTREE
+create table if not exists tipos_archivos_negocio (
+ id int unsigned not null auto_increment,
+ codigo varchar(350) not null,
+ nombre varchar(350) not null,
+ creado timestamp not null default current_timestamp,
+ actualizado timestamp not null default current_timestamp on update current_timestamp,
+ primary key (id) using btree
 );
 
-CREATE TABLE IF NOT EXISTS TERCEROS (
- ID INT NOT NULL AUTO_INCREMENT,
- NOMBRE VARCHAR(500) NOT NULL,
- IDENTIFICACION VARCHAR(50) NOT NULL,
- ID_CONTRIBUYENTE VARCHAR(50) NOT NULL,
- TIPO_TERCERO_ID INT UNSIGNED NOT NULL,
- TIPO_ORGANICACION_FISCAL_ID INT UNSIGNED NOT NULL,
- BANCO_ID INT UNSIGNED NOT NULL,
- TIPO_CUENTA_ID INT UNSIGNED NOT NULL,
- GRUPO_RETENCION_IMPUESTOS_ID INT UNSIGNED NOT NULL,
- CLASIFICACION_FISCAL_ID INT UNSIGNED NOT NULL,
- TIPO_CLASIFICACION_FISCAL_ID INT UNSIGNED NOT NULL,
- CLASIFICACION_IMPUESTOS_ID INT UNSIGNED NOT NULL,
- NUMERO_CUENTA VARCHAR(50) DEFAULT NULL,
- ESTADO VARCHAR(50) DEFAULT NULL,
- RETENCION_IMPUESTOS VARCHAR(1) DEFAULT NULL,
- CREADO TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
- ACTUALIZADO TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
- PRIMARY KEY (ID),
- KEY FK__TIPO_TERCERO (TIPO_TERCERO_ID),
- KEY FK__TIPO_ORGANIZACION_FISCAL (TIPO_ORGANICACION_FISCAL_ID),
- KEY FK__BANCOS (BANCO_ID),
- KEY FK__TIPO_CUENTAS (TIPO_CUENTA_ID),
- KEY FK__GRUPOS_RETENCIONES_IMPUESTOS (GRUPO_RETENCION_IMPUESTOS_ID),
- KEY FK__CLASIFICACIONES_FISCALES (CLASIFICACION_FISCAL_ID),
- KEY FK__TIPOS_CLASIFICACIONES_FISCALES (TIPO_CLASIFICACION_FISCAL_ID),
- KEY FK_TERCEROS_CODIGO_CLASIFICACIONES_IMPUESTOS (CLASIFICACION_IMPUESTOS_ID),
- CONSTRAINT FK__BANCOS FOREIGN KEY (BANCO_ID) REFERENCES BANCOS (ID) ON DELETE RESTRICT ON UPDATE CASCADE,
- CONSTRAINT FK__CLASIFICACIONES_FISCALES FOREIGN KEY (CLASIFICACION_FISCAL_ID) REFERENCES CLASIFICACIONES_FISCALES (ID) ON DELETE RESTRICT ON UPDATE CASCADE,
- CONSTRAINT FK__GRUPOS_RETENCIONES_IMPUESTOS FOREIGN KEY (GRUPO_RETENCION_IMPUESTOS_ID) REFERENCES GRUPOS_RETENCIONES_IMPUESTOS (ID) ON DELETE RESTRICT ON UPDATE CASCADE,
- CONSTRAINT FK__TIPO_CUENTAS FOREIGN KEY (TIPO_CUENTA_ID) REFERENCES TIPO_CUENTAS (ID) ON DELETE RESTRICT ON UPDATE CASCADE,
- CONSTRAINT FK__TIPO_ORGANIZACION_FISCAL FOREIGN KEY (TIPO_ORGANICACION_FISCAL_ID) REFERENCES TIPO_ORGANIZACIONES_FISCALES (ID) ON DELETE RESTRICT ON UPDATE CASCADE,
- CONSTRAINT FK__TIPO_TERCERO FOREIGN KEY (TIPO_TERCERO_ID) REFERENCES TIPO_TERCEROS (ID) ON DELETE RESTRICT ON UPDATE CASCADE,
- CONSTRAINT FK__TIPOS_CLASIFICACIONES_FISCALES FOREIGN KEY (TIPO_CLASIFICACION_FISCAL_ID) REFERENCES TIPOS_CLASIFICACIONES_FISCALES (ID) ON DELETE RESTRICT ON UPDATE CASCADE,
- CONSTRAINT FK_TERCEROS_CLASIFICACIONES_IMPUESTOS FOREIGN KEY (CLASIFICACION_IMPUESTOS_ID) REFERENCES CLASIFICACIONES_IMPUESTOS (ID) ON DELETE RESTRICT ON UPDATE CASCADE
+create table if not exists terceros (
+ id int not null auto_increment,
+ nombre varchar(500) not null,
+ identificacion varchar(50) not null,
+ id_contribuyente varchar(50) not null,
+ tipo_tercero_id int unsigned not null,
+ tipo_organicacion_fiscal_id int unsigned not null,
+ banco_id int unsigned not null,
+ tipo_cuenta_id int unsigned not null,
+ grupo_retencion_impuestos_id int unsigned not null,
+ clasificacion_fiscal_id int unsigned not null,
+ tipo_clasificacion_fiscal_id int unsigned not null,
+ clasificacion_impuestos_id int unsigned not null,
+ numero_cuenta varchar(50) default null,
+ estado varchar(50) default null,
+ retencion_impuestos varchar(1) default null,
+ creado timestamp null default current_timestamp,
+ actualizado timestamp null default current_timestamp on update current_timestamp,
+ primary key (id),
+ key fk__tipo_tercero (tipo_tercero_id),
+ key fk__tipo_organizacion_fiscal (tipo_organicacion_fiscal_id),
+ key fk__bancos (banco_id),
+ key fk__tipo_cuentas (tipo_cuenta_id),
+ key fk__grupos_retenciones_impuestos (grupo_retencion_impuestos_id),
+ key fk__clasificaciones_fiscales (clasificacion_fiscal_id),
+ key fk__tipos_clasificaciones_fiscales (tipo_clasificacion_fiscal_id),
+ key fk_terceros_codigo_clasificaciones_impuestos (clasificacion_impuestos_id),
+ constraint fk__bancos foreign key (banco_id) references bancos (id) on delete restrict on update cascade,
+ constraint fk__clasificaciones_fiscales foreign key (clasificacion_fiscal_id) references clasificaciones_fiscales (id) on delete restrict on update cascade,
+ constraint fk__grupos_retenciones_impuestos foreign key (grupo_retencion_impuestos_id) references grupos_retenciones_impuestos (id) on delete restrict on update cascade,
+ constraint fk__tipo_cuentas foreign key (tipo_cuenta_id) references tipo_cuentas (id) on delete restrict on update cascade,
+ constraint fk__tipo_organizacion_fiscal foreign key (tipo_organicacion_fiscal_id) references tipo_organizaciones_fiscales (id) on delete restrict on update cascade,
+ constraint fk__tipo_tercero foreign key (tipo_tercero_id) references tipo_terceros (id) on delete restrict on update cascade,
+ constraint fk__tipos_clasificaciones_fiscales foreign key (tipo_clasificacion_fiscal_id) references tipos_clasificaciones_fiscales (id) on delete restrict on update cascade,
+ constraint fk_terceros_clasificaciones_impuestos foreign key (clasificacion_impuestos_id) references clasificaciones_impuestos (id) on delete restrict on update cascade
 );
 
-CREATE TABLE IF NOT EXISTS PERIODOS_TASAS (
- ID INT NOT NULL AUTO_INCREMENT,
- TASA_ID INT UNSIGNED NOT NULL,
- VALOR VARCHAR(50) NOT NULL,
- FECHA_INICIO DATE NOT NULL,
- FECHA_FINAL DATE NOT NULL,
- CREADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
- ACTUALIZADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
- PRIMARY KEY (ID),
- KEY FK__TASAS (TASA_ID),
- CONSTRAINT FK__TASAS FOREIGN KEY (TASA_ID) REFERENCES TASAS (ID) ON DELETE RESTRICT ON UPDATE CASCADE
+create table if not exists periodos_tasas (
+ id int not null auto_increment,
+ tasa_id int unsigned not null,
+ valor varchar(50) not null,
+ fecha_inicio date not null,
+ fecha_final date not null,
+ creado timestamp not null default current_timestamp,
+ actualizado timestamp not null default current_timestamp on update current_timestamp,
+ primary key (id),
+ key fk__tasas (tasa_id),
+ constraint fk__tasas foreign key (tasa_id) references tasas (id) on delete restrict on update cascade
 );
 
-CREATE TABLE IF NOT EXISTS CUPOS (
- ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
- TIPOLOGIA_CUPO_ID INT UNSIGNED NOT NULL,
- CLASIFICACION_CUPO_ID INT UNSIGNED NOT NULL,
- UNIDAD_NEGOCIO_ID INT UNSIGNED NOT NULL,
- PROYECTO_ID INT UNSIGNED NOT NULL,
- BANCO_ID INT UNSIGNED NOT NULL,
- TIPO_CREDITO_ID INT UNSIGNED NOT NULL,
- AMORTIZACION_CAPITAL_ID INT UNSIGNED NOT NULL,
- PERIODICIDAD_INTERES_ID INT UNSIGNED NOT NULL,
- FEE_ID INT UNSIGNED NOT NULL,
- CUPO_APROBADO VARCHAR(350) NOT NULL,
- CUPO_DISPONIBLE VARCHAR(350) NOT NULL,
- CUPO_UTILIZADO VARCHAR(350) NOT NULL,
- CUPO_DISPONIBLE_CONSTRUCTOR VARCHAR(350) NOT NULL,
- FECHA_APROBACION_CUPO DATE NOT NULL,
- FECHA_VENCIMIENTO_CUPO DATE NOT NULL,
- PLAZO INT NOT NULL,
- CREADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
- ACTUALIZADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
- PRIMARY KEY (ID) USING BTREE,
- CONSTRAINT FK_TIPOLOGIA_CUPO_ID FOREIGN KEY (TIPOLOGIA_CUPO_ID) REFERENCES TIPOLOGIAS_CUPOS (ID) ON DELETE RESTRICT ON UPDATE CASCADE,
- CONSTRAINT FK_CLASIFICACION_CUPO_ID FOREIGN KEY (CLASIFICACION_CUPO_ID) REFERENCES CLASIFICACIONES_CUPOS (ID) ON DELETE RESTRICT ON UPDATE CASCADE,
- CONSTRAINT FK_UNIDAD_NEGOCIO_ID FOREIGN KEY (UNIDAD_NEGOCIO_ID) REFERENCES UNIDADES_NEGOCIO (ID) ON DELETE RESTRICT ON UPDATE CASCADE,
- CONSTRAINT FK_PROYECTO_ID FOREIGN KEY (PROYECTO_ID) REFERENCES PROYECTOS (ID) ON DELETE RESTRICT ON UPDATE CASCADE,
- CONSTRAINT FK_BANCO_ID FOREIGN KEY (BANCO_ID) REFERENCES BANCOS (ID) ON DELETE RESTRICT ON UPDATE CASCADE,
- CONSTRAINT FK_TIPO_CREDITO_ID FOREIGN KEY (TIPO_CREDITO_ID) REFERENCES TIPOS_CREDITO (ID) ON DELETE RESTRICT ON UPDATE CASCADE,
- CONSTRAINT FK_AMORTIZACION_CAPITAL_ID FOREIGN KEY (AMORTIZACION_CAPITAL_ID) REFERENCES AMORTIZACIONES_CAPITAL (ID) ON DELETE RESTRICT ON UPDATE CASCADE,
- CONSTRAINT FK_PERIODICIDAD_INTERES_ID FOREIGN KEY (PERIODICIDAD_INTERES_ID) REFERENCES PERIODICIDAD_INTERESES (ID) ON DELETE RESTRICT ON UPDATE CASCADE,
- CONSTRAINT FK_FEE_ID FOREIGN KEY (FEE_ID) REFERENCES TASAS (ID) ON DELETE RESTRICT ON UPDATE CASCADE
+create table if not exists cupos (
+ id int unsigned not null auto_increment,
+ tipologia_cupo_id int unsigned not null,
+ clasificacion_cupo_id int unsigned not null,
+ unidad_negocio_id int unsigned not null,
+ banco_id int unsigned not null,
+ tipo_credito_id int unsigned not null,
+ amortizacion_capital_id int unsigned not null,
+ periodicidad_interes_id int unsigned not null,
+ fee_id int unsigned not null,
+ cupo_aprobado varchar(350) not null,
+ cupo_disponible varchar(350) not null,
+ cupo_utilizado varchar(350) not null,
+ cupo_disponible_constructor varchar(350) not null,
+ fecha_aprobacion_cupo date not null,
+ fecha_vencimiento_cupo date not null,
+ plazo int not null,
+ creado timestamp not null default current_timestamp,
+ actualizado timestamp not null default current_timestamp on update current_timestamp,
+ primary key (id) using btree,
+ constraint fk_tipologia_cupo_id foreign key (tipologia_cupo_id) references tipologias_cupos (id) on delete restrict on update cascade,
+ constraint fk_clasificacion_cupo_id foreign key (clasificacion_cupo_id) references clasificaciones_cupos (id) on delete restrict on update cascade,
+ constraint fk_unidad_negocio_id foreign key (unidad_negocio_id) references unidades_negocio (id) on delete restrict on update cascade,
+ constraint fk_banco_id foreign key (banco_id) references bancos (id) on delete restrict on update cascade,
+ constraint fk_tipo_credito_id foreign key (tipo_credito_id) references tipos_credito (id) on delete restrict on update cascade,
+ constraint fk_amortizacion_capital_id foreign key (amortizacion_capital_id) references amortizaciones_capital (id) on delete restrict on update cascade,
+ constraint fk_periodicidad_interes_id foreign key (periodicidad_interes_id) references periodicidad_intereses (id) on delete restrict on update cascade,
+ constraint fk_fee_id foreign key (fee_id) references tasas (id) on delete restrict on update cascade
 );
 
-CREATE TABLE IF NOT EXISTS ARCHIVOS_NEGOCIO (
- ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
- TIPO_ARCHIVO_ID INT UNSIGNED NOT NULL,
- NOMBRE VARCHAR(500) NOT NULL,
- DESCRIPCION VARCHAR(500) NOT NULL,
- TIPO_CONTENIDO VARCHAR(500) NOT NULL,
- TAMANO INT NOT NULL,
- URL VARCHAR(1000) NOT NULL,
- CREADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
- ACTUALIZADO TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
- PRIMARY KEY (ID) USING BTREE,
- CONSTRAINT FK_TIPO_ARCHIVO_ID FOREIGN KEY (TIPO_ARCHIVO_ID) REFERENCES TIPOS_ARCHIVOS_NEGOCIO (ID) ON DELETE RESTRICT ON UPDATE CASCADE
+create table if not exists archivos_negocio (
+ id int unsigned not null auto_increment,
+ tipo_archivo_id int unsigned not null,
+ nombre varchar(500) not null,
+ descripcion varchar(500) not null,
+ extension varchar(50) not null,
+ tipo_contenido varchar(500) not null,
+ tamano int not null,
+ url varchar(1000) not null,
+ creado timestamp not null default current_timestamp,
+ actualizado timestamp not null default current_timestamp on update current_timestamp,
+ primary key (id) using btree,
+ constraint fk_tipo_archivo_id foreign key (tipo_archivo_id) references tipos_archivos_negocio (id) on delete restrict on update cascade
 );
 
-CREATE TABLE ARCHIVOS_NEGOCIO_CUOTAS (
-	ID INT UNSIGNED AUTO_INCREMENT NOT NULL,
-	CUPO_ID INT UNSIGNED NOT NULL,
-	ARCHIVO_NEGOCIO_ID INT UNSIGNED NOT NULL,
-	CONSTRAINT ARCHIVOS_NEGOCIO_CUOTAS_PK PRIMARY KEY (ID),
-	CONSTRAINT FK_ARCHIVO_NEGOCIO FOREIGN KEY (ARCHIVO_NEGOCIO_ID) REFERENCES ARCHIVOS_NEGOCIO(ID),
-	CONSTRAINT FK_CUPO FOREIGN KEY (CUPO_ID) REFERENCES CUPOS(ID)
-)
+create table archivos_negocio_cuotas (
+	id int unsigned auto_increment not null,
+	cupo_id int unsigned not null,
+	archivo_negocio_id int unsigned not null,
+	constraint archivos_negocio_cuotas_pk primary key (id),
+	constraint fk_archivo_negocio foreign key (archivo_negocio_id) references archivos_negocio(id),
+	constraint fk_cupo foreign key (cupo_id) references cupos(id)
+);
+
+CREATE TABLE detalle_cupos (
+	id INT auto_increment NOT NULL,
+	cupo_id INT unsigned NOT NULL,
+	proyecto_id INT unsigned NOT NULL,
+	 creado timestamp not null default current_timestamp,
+     actualizado timestamp not null default current_timestamp on update current_timestamp,
+	CONSTRAINT detalle_cupos_pk PRIMARY KEY (id),
+	CONSTRAINT detalle_cupos_cupos_id_FK FOREIGN KEY (cupo_id) REFERENCES cupos(ID),
+	CONSTRAINT detalle_cupos_proyecto_id_FK FOREIGN KEY (proyecto_id) REFERENCES proyectos(id)
+);

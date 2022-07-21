@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
@@ -25,8 +26,9 @@ public class QuotaDto {
     private GenericMasterDto quotaClassification;
     @NotNull(message = "La unidad de negocio no puede ser vacío")
     private BusinessAreaDto businessArea;
-    @NotNull(message = "El proyecto no puede ser vacío")
-    private ProjectDto project;
+    @NotNull(message = "El cupo debe ser asignado por lo menos a una etapa")
+    @NotEmpty(message = "El cupo debe ser asignado por lo menos a una etapa")
+    private List<QuotaDetailDto> quotaDetails;
     @NotNull(message = "El banco no puede ser vacío")
     private GenericMasterDto bank;
     @NotNull(message = "El tipo de crédito no puede ser vacío")

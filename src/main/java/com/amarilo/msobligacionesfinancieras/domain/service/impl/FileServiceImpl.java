@@ -5,6 +5,7 @@ import com.amarilo.msobligacionesfinancieras.exception.BusinessException;
 import com.amarilo.msobligacionesfinancieras.infraestructure.FileBusinessRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -29,15 +30,22 @@ public class FileServiceImpl implements FileService {
     public ByteArrayResource downloadFile(Integer fileBusinessId) throws IOException {
         var fileBusinessEntity = fileBusinessRepository.findById(fileBusinessId)
                 .orElseThrow(() -> new BusinessException("El archivo que desea descargar no existe"));
+        File file;
         Path path;
         try {
-            File file = new File(fileBusinessEntity.getName());
+            file = new File(fileBusinessEntity.getName());
             path = Paths.get(file.getAbsolutePath());
         } catch (InvalidPathException ex) {
             log.error(ex.getMessage());
             throw new BusinessException("No se pudo descargar el archivo seleccionado");
         }
 
-        return new ByteArrayResource(Files.readAllBytes(path));
+        return new ByteArrayResource(Files.readAllBytes(path)){
+            @Override
+            @Nullable
+            public String getFilename() {
+                return file.getName();
+            }
+        };
     }
 }
