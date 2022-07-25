@@ -29,17 +29,10 @@ public class Utility {
         }
     }
 
-    public static Integer convertStringDecimalNumberToInteger(String decimalNumber) {
-        return Integer.valueOf(decimalNumber.replace(".", ""));
-    }
-
-    public static String convertIntegerToStringDecimalNumber(Integer decimalNumber) {
-        var stringDecimalNumber = String.valueOf(decimalNumber);
-        StringBuilder sb = new StringBuilder();
-        sb.append(stringDecimalNumber.substring(0, stringDecimalNumber.length() - 2));
-        sb.append(".");
-        sb.append(stringDecimalNumber.substring(stringDecimalNumber.length() - 2, stringDecimalNumber.length()));
-        return sb.toString();
+    public static void validateDecimalField(String fieldName, String value) {
+        if(value.length() < 6){
+            throw new BusinessException(String.format("El valor del campo %s debe ser décimal", fieldName));
+        }
     }
 
     public static long daysNumberBetweenTwoDates(LocalDate initialDate, LocalDate endDate) {

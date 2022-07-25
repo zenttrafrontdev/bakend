@@ -112,7 +112,7 @@ class FeeItemServiceImplTest {
                 () -> feeItemService.saveFeeItem(feeItemDto));
 
         //then
-        Assertions.assertEquals("El valor del campo valor debe ser númerico", thrown.getMessage());
+        Assertions.assertEquals("El valor del campo valor debe ser décimal", thrown.getMessage());
     }
 
     @Test

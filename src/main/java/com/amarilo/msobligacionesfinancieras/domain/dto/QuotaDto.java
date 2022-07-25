@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -41,15 +42,19 @@ public class QuotaDto {
     private FeeDto fee;
     @NotNull(message = "El cupo aprobado no puede ser vacío")
     @NotBlank(message = "El cupo aprobado no puede ser vacío")
+    @Size(min = 6, message = "Se requiere un número mínimo seis decímales")
     private String approvedQuota;
     @NotNull(message = "El cupo disponible no puede ser vacío")
     @NotBlank(message = "El cupo disponible no puede ser vacío")
+    @Size(min = 6, message = "Se requiere un número mínimo seis decímales")
     private String availableQuota;
     @NotNull(message = "El cupo usado no puede ser vacío")
     @NotBlank(message = "El cupo usado no puede ser vacío")
+    @Size(min = 6, message = "Se requiere un número mínimo seis decímales")
     private String quotaUsed;
     @NotNull(message = "El cupo disponible del constructor no puede ser vacío")
     @NotBlank(message = "El cupo disponible del constructor no puede ser vacío")
+    @Size(min = 6, message = "Se requiere un número mínimo seis decímales")
     private String builderAvailableQuota;
     @NotNull(message = "La fecha aprobada del cupo no puede ser vacío")
     @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)

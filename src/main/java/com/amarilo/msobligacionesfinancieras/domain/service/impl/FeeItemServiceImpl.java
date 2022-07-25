@@ -199,7 +199,7 @@ public class FeeItemServiceImpl implements FeeItemService {
         var valueType = ValueTypeEnum.getById(feeItemDto.getFee().getValueType());
         switch (valueType) {
             case NUMERIC:
-                Utility.validateNumericField(FIELD_VALUE, feeItemDto.getValue());
+                Utility.validateDecimalField(FIELD_VALUE, feeItemDto.getValue());
                 break;
             case PERCENTAGE:
                 Long longValue = Utility.validateNumericField(FIELD_VALUE, feeItemDto.getValue());
