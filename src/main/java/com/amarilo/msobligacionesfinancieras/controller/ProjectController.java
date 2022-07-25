@@ -2,6 +2,7 @@ package com.amarilo.msobligacionesfinancieras.controller;
 
 import com.amarilo.msobligacionesfinancieras.controller.request.PageRequestDto;
 import com.amarilo.msobligacionesfinancieras.controller.request.ProjectSearchCriteria;
+import com.amarilo.msobligacionesfinancieras.controller.response.IProjectConsolidator;
 import com.amarilo.msobligacionesfinancieras.controller.response.PageResponseDto;
 import com.amarilo.msobligacionesfinancieras.domain.dto.ProjectDto;
 import com.amarilo.msobligacionesfinancieras.domain.service.ProjectService;
@@ -81,6 +82,39 @@ public class ProjectController {
         projectService.saveProjects(projectList);
         return ResponseEntity.ok().build();
     }
+
+    @Operation(summary = "Permite obtener el listado de consolidadores de proyectos")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se obtiene el listado de consolidadores de proyectos",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = IProjectConsolidator.class))}),
+            @ApiResponse(responseCode = "204", description = "No existen registros",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "application/json")})
+    })
+    @GetMapping("find-consolidators")
+    public ResponseEntity<List<IProjectConsolidator>> findAllDistinctByConsolidatorName() {
+        return ResponseEntity.ok(projectService.findAllDistinctByConsolidatorName());
+    }
+
+    @Operation(summary = "Permite obtener el listado de etapas de un proyecto por el código del consolidador")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se obtiene listado de etapas de un proyecto por el código del consolidador",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ProjectDto.class))}),
+            @ApiResponse(responseCode = "204", description = "No existen registros",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "application/json")})
+    })
+    @GetMapping("consolidator/{consolidatorName}")
+    public ResponseEntity<List<ProjectDto>> findAllByConsolidatorCode(@PathVariable("consolidatorName") String consolidatorName) {
+        return ResponseEntity.ok(projectService.findAllByConsolidatorCode(consolidatorName));
+    }
 }
 
-class PageResponseProject extends PageResponseDto<ProjectDto> { }
+class PageResponseProject extends PageResponseDto<ProjectDto> {
+}

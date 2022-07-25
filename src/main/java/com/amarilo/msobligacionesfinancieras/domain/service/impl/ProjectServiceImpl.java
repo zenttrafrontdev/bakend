@@ -2,6 +2,7 @@ package com.amarilo.msobligacionesfinancieras.domain.service.impl;
 
 import com.amarilo.msobligacionesfinancieras.controller.request.PageRequestDto;
 import com.amarilo.msobligacionesfinancieras.controller.request.ProjectSearchCriteria;
+import com.amarilo.msobligacionesfinancieras.controller.response.IProjectConsolidator;
 import com.amarilo.msobligacionesfinancieras.controller.response.PageResponseDto;
 import com.amarilo.msobligacionesfinancieras.domain.dto.ProjectDto;
 import com.amarilo.msobligacionesfinancieras.domain.mapper.ProjectMapper;
@@ -72,6 +73,16 @@ public class ProjectServiceImpl implements ProjectService {
                 projectRepository.save(projectEntity);
             }
         }
+    }
+
+    @Override
+    public List<IProjectConsolidator> findAllDistinctByConsolidatorName() {
+        return projectRepository.findAllDistinctConsolidatorName();
+    }
+
+    @Override
+    public List<ProjectDto> findAllByConsolidatorCode(String consolidatorName) {
+        return ProjectMapper.INSTANCE.projectListToProjectDtoList(projectRepository.findAllByConsolidatorCode(consolidatorName));
     }
 
     private Specification<ProjectEntity> getSpecificationFromQuery(ProjectSearchCriteria searchCriteria) {
