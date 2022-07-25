@@ -173,7 +173,7 @@ create table if not exists tipos_archivos_negocio (
 );
 
 create table if not exists terceros (
- id int not null auto_increment,
+ id int unsigned not null auto_increment,
  nombre varchar(500) not null,
  identificacion varchar(50) not null,
  id_contribuyente varchar(50) not null,
@@ -210,7 +210,7 @@ create table if not exists terceros (
 );
 
 create table if not exists periodos_tasas (
- id int not null auto_increment,
+ id int unsigned not null auto_increment,
  tasa_id int unsigned not null,
  valor varchar(50) not null,
  fecha_inicio date not null,
@@ -267,7 +267,7 @@ create table if not exists archivos_negocio (
  constraint fk_tipo_archivo_id foreign key (tipo_archivo_id) references tipos_archivos_negocio (id) on delete restrict on update cascade
 );
 
-create table archivos_negocio_cuotas (
+create table if not exists archivos_negocio_cuotas (
 	id int unsigned auto_increment not null,
 	cupo_id int unsigned not null,
 	archivo_negocio_id int unsigned not null,
@@ -276,8 +276,8 @@ create table archivos_negocio_cuotas (
 	constraint fk_cupo foreign key (cupo_id) references cupos(id)
 );
 
-CREATE TABLE detalle_cupos (
-	id INT auto_increment NOT NULL,
+CREATE TABLE if not exists detalle_cupos (
+	id INT unsigned auto_increment NOT NULL,
 	cupo_id INT unsigned NOT NULL,
 	proyecto_id INT unsigned NOT NULL,
 	 creado timestamp not null default current_timestamp,
@@ -285,4 +285,64 @@ CREATE TABLE detalle_cupos (
 	CONSTRAINT detalle_cupos_pk PRIMARY KEY (id),
 	CONSTRAINT detalle_cupos_cupos_id_FK FOREIGN KEY (cupo_id) REFERENCES cupos(ID),
 	CONSTRAINT detalle_cupos_proyecto_id_FK FOREIGN KEY (proyecto_id) REFERENCES proyectos(id)
+);
+
+CREATE TABLE if not exists tipo_operaciones_desembolsos (
+  id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  codigo varchar(350) NOT NULL,
+  nombre varchar(350) NOT NULL,
+  creado timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  actualizado timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE if not exists tipo_deudas (
+  id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  codigo varchar(350) NOT NULL,
+  nombre varchar(350) NOT NULL,
+  creado timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  actualizado timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE if not exists desembolsos (
+	id INT UNSIGNED auto_increment NOT NULL,
+	consecutivo INT NOT NULL,
+	fecha DATE NOT NULL,
+	tipo_operacion_id INT UNSIGNED NOT NULL,
+	proyecto_id INT UNSIGNED NOT NULL,
+	tipo_credito_id INT UNSIGNED NOT NULL,
+	tipo_deuda_id INT UNSIGNED NOT NULL,
+	valor varchar(100) NOT NULL,
+	tercero_id INT UNSIGNED NOT NULL,
+	proveedor_id INT UNSIGNED NOT NULL,
+	concepto_amarilo varchar(500) NULL,
+	concepto_fiducia varchar(500) NULL,
+	proveedor_pago_id INT UNSIGNED NOT NULL,
+	cuenta_destino varchar(100) NOT NULL,
+	tipo_cuenta_id INT UNSIGNED NOT NULL,
+	banco_destino_id INT UNSIGNED NOT NULL,
+	numero_factura_desembolso varchar(250) NOT NULL,
+	egreso_desembolso varchar(100) NULL,
+	banco_origen_id INT UNSIGNED NOT NULL,
+	valor_gmf varchar(100) NOT NULL,
+	fiduciaria varchar(100) NULL,
+	representante_legal_id INT UNSIGNED NOT NULL,
+	titular_id INT UNSIGNED NOT NULL,
+	preoperativo varchar(100) NULL,
+	creado timestamp not null default current_timestamp,
+	actualizado timestamp not null default current_timestamp on update current_timestamp,
+	CONSTRAINT desembolsos_pk PRIMARY KEY (id),
+	CONSTRAINT desembolsos_tipo_operacion_FK FOREIGN KEY (tipo_operacion_id) REFERENCES tipo_operaciones_desembolsos(id),
+	CONSTRAINT desembolsos_proyecto_FK FOREIGN KEY (proyecto_id) REFERENCES proyectos(id),
+	CONSTRAINT desembolsos_tipo_credito_FK FOREIGN KEY (tipo_credito_id) REFERENCES tipos_credito(ID),
+	CONSTRAINT desembolsos_tipo_deuda_FK FOREIGN KEY (tipo_deuda_id) REFERENCES tipo_deudas(id),
+	CONSTRAINT desembolsos_tercero_FK FOREIGN KEY (tercero_id) REFERENCES terceros(id),
+	CONSTRAINT desembolsos_proveedor_FK FOREIGN KEY (proveedor_id) REFERENCES terceros(id),
+	CONSTRAINT desembolsos_proveedor_pago_FK FOREIGN KEY (proveedor_pago_id) REFERENCES terceros(id),
+	CONSTRAINT desembolsos_tipo_cuenta_FK FOREIGN KEY (tipo_cuenta_id) REFERENCES tipo_cuentas(id),
+	CONSTRAINT desembolsos_banco_destino_FK FOREIGN KEY (banco_destino_id) REFERENCES bancos(id),
+	CONSTRAINT desembolsos_banco_origen_FK FOREIGN KEY (banco_origen_id) REFERENCES bancos(id),
+	CONSTRAINT desembolsos_representante_legal_FK FOREIGN KEY (representante_legal_id) REFERENCES terceros(id),
+	CONSTRAINT desembolsos_titular_FK FOREIGN KEY (titular_id) REFERENCES terceros(id)
 );
