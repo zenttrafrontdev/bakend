@@ -17,6 +17,4 @@ public interface ProjectService {
     void saveProjects(List<ProjectDto> projectList);
 
     List<IProjectConsolidator> findAllDistinctByConsolidatorName();
-
-    List<ProjectDto> findAllByConsolidatorCode(String consolidatorName);
 }

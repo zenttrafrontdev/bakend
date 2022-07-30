@@ -17,11 +17,13 @@ public class DisbursementDto {
     private LocalDate date;
     private GenericMasterDto disbursementOperationType;
     private ProjectDto project;
+    private QuotaDto quota;
     private GenericMasterDto creditType;
     private GenericMasterDto debtType;
     private String value;
     private FinanceThirdDto financeThird;
-    private FinanceThirdDto supplier;
+    private ProjectDto projectFinanceThird;
+    private FinanceThirdDto provider;
     private String amariloConcept;
     private String fiduciaryConcept;
     private FinanceThirdDto paymentProvider;
@@ -32,7 +34,7 @@ public class DisbursementDto {
     private String outlayDisbursement;
     private GenericMasterDto sourceBank;
     private String gmfValue;
-    private String fiduciary;
+    private FiduciaryDto fiduciary;
     private FinanceThirdDto legalRepresentative;
     private FinanceThirdDto owner;
     private String preoperative;

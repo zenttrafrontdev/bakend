@@ -142,6 +142,11 @@ public class QuotaServiceImpl implements QuotaService {
         return fileService.downloadFile(fileBusinessId);
     }
 
+    @Override
+    public List<QuotaDto> findAllWithQuotaAvailableAndConsolidatorCode(String consolidatorCode) {
+        return QuotaMapper.INSTANCE.quotaEntityListToQuotaDtoList(quotaRepository.findAllByQuotaDetailsProjectConsolidatorCodeAndAvailableQuotaGreaterThanZero(consolidatorCode));
+    }
+
     private void validateQuotaDates(QuotaDto quotaDto) {
         if (quotaDto.getApprovedQuotaDate().isAfter(quotaDto.getExpirationQuotaDate())) {
             throw new BusinessException("La fecha de aprobación del cupo no puede ser mayor a la de vencimiento");

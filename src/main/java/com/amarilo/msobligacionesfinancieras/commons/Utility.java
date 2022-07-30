@@ -9,7 +9,6 @@ import java.util.Optional;
 public class Utility {
 
     private static final Long MAX_PERCENTAGE_VALUE = 100000000L;
-    private static final int SHORT_ID_LENGTH = 16;
 
     private Utility() {
         throw new IllegalStateException("Utility class");
@@ -43,5 +42,13 @@ public class Utility {
         return Optional.ofNullable(filename)
                 .filter(f -> f.contains("."))
                 .map(f -> f.substring(filename.lastIndexOf(".") + 1));
+    }
+
+    public static boolean validateNotNullNotEmptyString(String value){
+        return Optional.ofNullable(value).isPresent() && !value.isBlank();
+    }
+
+    public static boolean validateNotNullGreaterThanZeroInteger(Integer value){
+        return Optional.ofNullable(value).isPresent() && value > 0;
     }
 }

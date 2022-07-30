@@ -305,17 +305,42 @@ CREATE TABLE if not exists tipo_deudas (
   PRIMARY KEY (id)
 );
 
+CREATE TABLE if not exists fiduciarias (
+  id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  nit varchar(350) NOT NULL,
+  nombre varchar(350) NOT NULL,
+  creado timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  actualizado timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
+);
+
+create table if not exists proyectos_fiduciarias (
+	id int unsigned auto_increment not null,
+	proyecto_id int unsigned not null,
+	fiduciaria_id int unsigned not null,
+	numero_obligacion varchar(350) NULL,
+	anexo_titular varchar(350) NULL,
+    creado timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    actualizado timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	constraint proyectos_fiduciarias_pk primary key (id),
+	constraint proyectos_fiduciarias_proyecto_fk foreign key (proyecto_id) references proyectos(id),
+	constraint proyectos_fiduciarias_fiduciaria_fk foreign key (fiduciaria_id) references fiduciarias(id)
+);
+
 CREATE TABLE if not exists desembolsos (
 	id INT UNSIGNED auto_increment NOT NULL,
 	consecutivo INT NOT NULL,
 	fecha DATE NOT NULL,
 	tipo_operacion_id INT UNSIGNED NOT NULL,
 	proyecto_id INT UNSIGNED NOT NULL,
+	cupo_id INT UNSIGNED NOT NULL,
 	tipo_credito_id INT UNSIGNED NOT NULL,
 	tipo_deuda_id INT UNSIGNED NOT NULL,
 	valor varchar(100) NOT NULL,
-	tercero_id INT UNSIGNED NOT NULL,
+	tercero_id INT UNSIGNED NULL,
+	proyecto_tercero_id INT UNSIGNED NULL,
 	proveedor_id INT UNSIGNED NOT NULL,
+	fiduciaria_id INT UNSIGNED NULL,
 	concepto_amarilo varchar(500) NULL,
 	concepto_fiducia varchar(500) NULL,
 	proveedor_pago_id INT UNSIGNED NOT NULL,
@@ -326,7 +351,6 @@ CREATE TABLE if not exists desembolsos (
 	egreso_desembolso varchar(100) NULL,
 	banco_origen_id INT UNSIGNED NOT NULL,
 	valor_gmf varchar(100) NOT NULL,
-	fiduciaria varchar(100) NULL,
 	representante_legal_id INT UNSIGNED NOT NULL,
 	titular_id INT UNSIGNED NOT NULL,
 	preoperativo varchar(100) NULL,
@@ -335,10 +359,13 @@ CREATE TABLE if not exists desembolsos (
 	CONSTRAINT desembolsos_pk PRIMARY KEY (id),
 	CONSTRAINT desembolsos_tipo_operacion_FK FOREIGN KEY (tipo_operacion_id) REFERENCES tipo_operaciones_desembolsos(id),
 	CONSTRAINT desembolsos_proyecto_FK FOREIGN KEY (proyecto_id) REFERENCES proyectos(id),
+	CONSTRAINT desembolsos_cupo_FK FOREIGN KEY (cupo_id) REFERENCES cupos(id),
 	CONSTRAINT desembolsos_tipo_credito_FK FOREIGN KEY (tipo_credito_id) REFERENCES tipos_credito(ID),
 	CONSTRAINT desembolsos_tipo_deuda_FK FOREIGN KEY (tipo_deuda_id) REFERENCES tipo_deudas(id),
 	CONSTRAINT desembolsos_tercero_FK FOREIGN KEY (tercero_id) REFERENCES terceros(id),
+	CONSTRAINT desembolsos_proyecto_tercero_FK FOREIGN KEY (proyecto_tercero_id) REFERENCES proyectos(id),
 	CONSTRAINT desembolsos_proveedor_FK FOREIGN KEY (proveedor_id) REFERENCES terceros(id),
+	CONSTRAINT desembolsos_fiduciaria_FK FOREIGN KEY (fiduciaria_id) REFERENCES fiduciarias(id),
 	CONSTRAINT desembolsos_proveedor_pago_FK FOREIGN KEY (proveedor_pago_id) REFERENCES terceros(id),
 	CONSTRAINT desembolsos_tipo_cuenta_FK FOREIGN KEY (tipo_cuenta_id) REFERENCES tipo_cuentas(id),
 	CONSTRAINT desembolsos_banco_destino_FK FOREIGN KEY (banco_destino_id) REFERENCES bancos(id),

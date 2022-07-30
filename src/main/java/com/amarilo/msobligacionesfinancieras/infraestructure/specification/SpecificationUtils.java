@@ -7,6 +7,10 @@ import java.util.Optional;
 
 public class SpecificationUtils {
 
+    private SpecificationUtils() {
+        throw new IllegalStateException("Utility class");
+    }
+
     public static final String LIKE_STRING_QUERY = "%%%s%%";
 
     public static <T> Specification<T> buildAndSpecification(@Nullable Specification<T> specification, Specification<T> addSpecification) {

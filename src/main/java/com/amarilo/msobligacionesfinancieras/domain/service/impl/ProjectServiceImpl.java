@@ -80,11 +80,6 @@ public class ProjectServiceImpl implements ProjectService {
         return projectRepository.findAllDistinctConsolidatorName();
     }
 
-    @Override
-    public List<ProjectDto> findAllByConsolidatorCode(String consolidatorName) {
-        return ProjectMapper.INSTANCE.projectListToProjectDtoList(projectRepository.findAllByConsolidatorCode(consolidatorName));
-    }
-
     private Specification<ProjectEntity> getSpecificationFromQuery(ProjectSearchCriteria searchCriteria) {
         Specification<ProjectEntity> specification = null;
 

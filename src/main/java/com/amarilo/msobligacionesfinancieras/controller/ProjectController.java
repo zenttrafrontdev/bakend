@@ -98,22 +98,6 @@ public class ProjectController {
     public ResponseEntity<List<IProjectConsolidator>> findAllDistinctByConsolidatorName() {
         return ResponseEntity.ok(projectService.findAllDistinctByConsolidatorName());
     }
-
-    @Operation(summary = "Permite obtener el listado de etapas de un proyecto por el código del consolidador")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Se obtiene listado de etapas de un proyecto por el código del consolidador",
-                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ProjectDto.class))}),
-            @ApiResponse(responseCode = "204", description = "No existen registros",
-                    content = {@Content(mediaType = "application/json")}),
-            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
-                    content = {@Content(mediaType = "application/json")}),
-            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
-                    content = {@Content(mediaType = "application/json")})
-    })
-    @GetMapping("consolidator/{consolidatorName}")
-    public ResponseEntity<List<ProjectDto>> findAllByConsolidatorCode(@PathVariable("consolidatorName") String consolidatorName) {
-        return ResponseEntity.ok(projectService.findAllByConsolidatorCode(consolidatorName));
-    }
 }
 
 class PageResponseProject extends PageResponseDto<ProjectDto> {

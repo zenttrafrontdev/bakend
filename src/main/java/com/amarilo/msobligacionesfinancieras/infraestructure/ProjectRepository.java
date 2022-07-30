@@ -15,6 +15,8 @@ public interface ProjectRepository extends JpaRepository<ProjectEntity, Integer>
 
     Optional<ProjectEntity> findByProjectCode(String projectCode);
 
+    Optional<ProjectEntity> findByProjectName(String projectName);
+
     @Query(value = "select distinct \n" +
             "codigo_consolidador as consolidatorCode,\n" +
             "nombre_consolidador as consolidatorName\n" +
@@ -24,5 +26,4 @@ public interface ProjectRepository extends JpaRepository<ProjectEntity, Integer>
             nativeQuery = true)
     List<IProjectConsolidator> findAllDistinctConsolidatorName();
 
-    List<ProjectEntity> findAllByConsolidatorCode(String consolidatorName);
 }

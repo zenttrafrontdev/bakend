@@ -33,11 +33,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -148,7 +144,7 @@ public class QuotaController {
         return ResponseEntity.ok(quotaService.saveQuota(quotaDto, businessFileRequestDtos, files));
     }
 
-    @Operation(summary = "Permite eliminar un archivo de un cupo")
+    @Operation(summary = "Permite descargar un archivo de un cupo")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Archivo descargado existosamente",
                     content = {@Content(mediaType = "application/octet-stream")}),
@@ -174,6 +170,22 @@ public class QuotaController {
                 .contentLength(resource.contentLength())
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .body(resource);
+    }
+
+    @Operation(summary = "Permite obtener el listado de cupos disponibles buscando por el código del consolidador")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se obtiene listado de cupos disponibles",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = QuotaDto.class))}),
+            @ApiResponse(responseCode = "204", description = "No existen registros",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "application/json")})
+    })
+    @GetMapping("consolidator/{consolidatorName}")
+    public ResponseEntity<List<QuotaDto>> findAllWithQuotaAvailableAndConsolidatorCode(@PathVariable("consolidatorName") String consolidatorName) {
+        return ResponseEntity.ok(quotaService.findAllWithQuotaAvailableAndConsolidatorCode(consolidatorName));
     }
 
     private void validateDto(QuotaDto quotaDto) {

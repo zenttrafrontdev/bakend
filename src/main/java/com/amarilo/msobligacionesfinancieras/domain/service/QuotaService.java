@@ -20,4 +20,6 @@ public interface QuotaService {
     QuotaDto saveQuota(QuotaDto quotaDto, List<BusinessFileRequestDto> businessFileRequestDtoList, List<MultipartFile> files) throws IOException;
 
     ByteArrayResource downloadFile(Integer fileBusinessId) throws IOException;
+
+    List<QuotaDto> findAllWithQuotaAvailableAndConsolidatorCode(String consolidatorCode);
 }

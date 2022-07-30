@@ -4,6 +4,10 @@ import com.amarilo.msobligacionesfinancieras.controller.request.DisbursementSear
 import com.amarilo.msobligacionesfinancieras.controller.request.PageRequestDto;
 import com.amarilo.msobligacionesfinancieras.controller.response.PageResponseDto;
 import com.amarilo.msobligacionesfinancieras.domain.dto.DisbursementDto;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.List;
 
 public interface DisbursementService {
 
@@ -12,4 +16,6 @@ public interface DisbursementService {
     DisbursementDto findById(Integer id);
 
     DisbursementDto saveDisbursement(DisbursementDto disbursementDto);
+
+    List<DisbursementDto> processDisbursementFile(MultipartFile file) throws IOException;
 }

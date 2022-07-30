@@ -42,6 +42,9 @@ public class DisbursementEntity{
     @JoinColumn(name = "proyecto_id", nullable = false)
     private ProjectEntity project;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "cupo_id", nullable = false)
+    private QuotaEntity quota;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "tipo_credito_id", nullable = false)
     private CreditTypeEntity creditType;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -49,12 +52,15 @@ public class DisbursementEntity{
     private DebtTypeEntity debtType;
     @Column(name = "valor")
     private String value;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "tercero_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "tercero_id", nullable = true)
     private FinanceThirdEntity financeThird;
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "proyecto_tercero_id", nullable = true)
+    private ProjectEntity projectFinanceThird;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "proveedor_id", nullable = false)
-    private FinanceThirdEntity supplier;
+    private FinanceThirdEntity provider;
     @Column(name = "concepto_amarilo")
     private String amariloConcept;
     @Column(name = "concepto_fiducia")
@@ -79,8 +85,9 @@ public class DisbursementEntity{
     private BankEntity sourceBank;
     @Column(name = "valor_gmf")
     private String gmfValue;
-    @Column(name = "fiduciaria")
-    private String fiduciary;
+    @ManyToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "fiduciaria_id", nullable = true)
+    private FiduciaryEntity fiduciary;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "representante_legal_id", nullable = false)
     private FinanceThirdEntity legalRepresentative;

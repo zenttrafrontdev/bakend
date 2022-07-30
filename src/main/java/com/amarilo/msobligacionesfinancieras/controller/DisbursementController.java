@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,9 +18,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.util.List;
 
 @Validated
 @RestController
@@ -78,6 +83,22 @@ public class DisbursementController {
     @PostMapping
     public ResponseEntity saveDisbursement(@RequestBody @Valid DisbursementDto disbursementDto) {
         return ResponseEntity.ok(disbursementService.saveDisbursement(disbursementDto));
+    }
+
+    @Operation(summary = "Permite generar unos desembolsos a partir de un archivo")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Desembolsos guardado existosamente",
+                    content = {@Content(mediaType = "multipart/form-data", schema = @Schema(implementation = DisbursementDto.class))}),
+            @ApiResponse(responseCode = "400", description = "Argumentos no válidos",
+                    content = {@Content(mediaType = "multipart/form-data")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "multipart/form-data")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "multipart/form-data")})
+    })
+    @PostMapping(value = "process-file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<List<DisbursementDto>> processDisbursementFile(@RequestParam("file") MultipartFile file) throws IOException {
+        return ResponseEntity.ok(disbursementService.processDisbursementFile(file));
     }
 }
 
