@@ -264,4 +264,36 @@ public class GenericController {
     public ResponseEntity<List<GenericMasterDto>> findAllFileBusinessTypes() {
         return ResponseEntity.ok(genericService.findAllFileBusinessTypes());
     }
+
+    @Operation(summary = "Permite obtener el listado de conceptos de Amarilo")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se obtiene el listado de conceptos de Amarilo",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = GenericMasterDto.class))}),
+            @ApiResponse(responseCode = "204", description = "No existen registros",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "application/json")})
+    })
+    @GetMapping("amarilo-concepts")
+    public ResponseEntity<List<GenericMasterDto>> findAllAmariloConcepts() {
+        return ResponseEntity.ok(genericService.findAllAmariloConcepts());
+    }
+
+    @Operation(summary = "Permite obtener el listado de conceptos de Fiducia")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se obtiene el listado de conceptos de fiducia",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = GenericMasterDto.class))}),
+            @ApiResponse(responseCode = "204", description = "No existen registros",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "application/json")})
+    })
+    @GetMapping("fiduciary-concepts")
+    public ResponseEntity<List<GenericMasterDto>> findAllFiduciaryConcepts() {
+        return ResponseEntity.ok(genericService.findAllFiduciaryConcepts());
+    }
 }

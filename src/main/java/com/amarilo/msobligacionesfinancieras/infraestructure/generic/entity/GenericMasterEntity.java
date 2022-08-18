@@ -1,8 +1,9 @@
 package com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -12,7 +13,8 @@ import javax.persistence.MappedSuperclass;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @MappedSuperclass
 public class GenericMasterEntity {
     @Id

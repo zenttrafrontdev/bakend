@@ -16,8 +16,11 @@ import com.amarilo.msobligacionesfinancieras.infraestructure.QuotaRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.entity.DisbursementEntity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.entity.FinanceThirdEntity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.entity.QuotaEntity;
+import com.amarilo.msobligacionesfinancieras.infraestructure.generic.AmariloConceptRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.DisbursementOperationRepository;
+import com.amarilo.msobligacionesfinancieras.infraestructure.generic.FiduciaryConceptRepository;
 import com.opencsv.bean.CsvToBeanBuilder;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -49,6 +52,7 @@ import static com.amarilo.msobligacionesfinancieras.infraestructure.specificatio
 import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.SpecificationUtils.buildAndSpecification;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class DisbursementServiceImpl implements DisbursementService {
 
@@ -58,20 +62,8 @@ public class DisbursementServiceImpl implements DisbursementService {
     private final DisbursementOperationRepository disbursementOperationRepository;
     private final QuotaRepository quotaRepository;
     private final ProjectFiduciaryRepository projectFiduciaryRepository;
-
-    public DisbursementServiceImpl(DisbursementRepository disbursementRepository,
-                                   FinanceThirdRepository financeThirdRepository,
-                                   ProjectRepository projectRepository,
-                                   DisbursementOperationRepository disbursementOperationRepository,
-                                   QuotaRepository quotaRepository,
-                                   ProjectFiduciaryRepository projectFiduciaryRepository) {
-        this.disbursementRepository = disbursementRepository;
-        this.financeThirdRepository = financeThirdRepository;
-        this.projectRepository = projectRepository;
-        this.disbursementOperationRepository = disbursementOperationRepository;
-        this.quotaRepository = quotaRepository;
-        this.projectFiduciaryRepository = projectFiduciaryRepository;
-    }
+    private final AmariloConceptRepository amariloConceptRepository;
+    private final FiduciaryConceptRepository fiduciaryConceptRepository;
 
     @Override
     public PageResponseDto<DisbursementDto> findAllDisbursementsBySearchCriteria(PageRequestDto<DisbursementSearchCriteria> pageRequestDto) {
@@ -140,8 +132,10 @@ public class DisbursementServiceImpl implements DisbursementService {
                             .value(disbursementCsvDto.getDisbursementValue().trim().replace(".", ""))
                             .provider(financeThirdRepository.findByName(disbursementCsvDto.getProviderName())
                                     .orElseThrow(() -> new BusinessException(String.format("El proveedor con nombre %s no existe!", disbursementCsvDto.getProviderName()))))
-                            .amariloConcept(disbursementCsvDto.getAmariloConcept())
-                            .fiduciaryConcept(disbursementCsvDto.getFiduciaryConcept())
+                            .amariloConcept(amariloConceptRepository.findByName(disbursementCsvDto.getAmariloConcept())
+                                    .orElseThrow(() -> new BusinessException(String.format("El concepto de amarilo %s no existe!", disbursementCsvDto.getAmariloConcept()))))
+                            .fiduciaryConcept(fiduciaryConceptRepository.findByName(disbursementCsvDto.getFiduciaryConcept())
+                                    .orElseThrow(() -> new BusinessException(String.format("El concepto de fiduciaria %s no existe!", disbursementCsvDto.getFiduciaryConcept()))))
                             .paymentProvider(financeThirdRepository.findByName(disbursementCsvDto.getPaymentProviderName())
                                     .orElseThrow(() -> new BusinessException(String.format("El proveedor de pago con nombre %s no existe!", disbursementCsvDto.getPaymentProviderName()))))
                             .targetAccount(disbursementCsvDto.getTargetAccount())

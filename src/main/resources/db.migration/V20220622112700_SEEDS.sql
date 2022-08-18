@@ -47,3 +47,29 @@ INSERT INTO tipo_operaciones_desembolsos (codigo, nombre) VALUES('ANTICIPO_OBRA'
 INSERT INTO tipo_deudas (codigo, nombre) VALUES('CORPORATIVA', 'CORPORATIVA', '2022-07-25 21:37:55', '2022-07-25 21:37:55');
 INSERT INTO tipo_deudas (codigo, nombre) VALUES('PROYECTOS', 'PROYECTOS');
 
+INSERT INTO conceptos_amarilo (codigo, nombre) VALUES('001', 'CAPITAL_PA');
+INSERT INTO conceptos_amarilo (codigo, nombre) VALUES('002', 'CAPITAL_PRORRATA_PA');
+INSERT INTO conceptos_amarilo (codigo, nombre) VALUES('003', 'PAGO LOTE COMPRAVENTA PA');
+INSERT INTO conceptos_amarilo (codigo, nombre) VALUES('004', 'PRESTAMOS');
+INSERT INTO conceptos_amarilo (codigo, nombre) VALUES('005', 'ANTICIPO OBRA SOCIOS PA');
+INSERT INTO conceptos_amarilo (codigo, nombre) VALUES('006', 'APORTE EN DINERO CON ABONO AL PROYECTO');
+INSERT INTO conceptos_amarilo (codigo, nombre) VALUES('007', 'DEVOLUCION APORTES LOTE AMARILO');
+INSERT INTO conceptos_amarilo (codigo, nombre) VALUES('008', 'DEVOLUCION APORTES LOTE INVERSIONISTAS PA');
+INSERT INTO conceptos_amarilo (codigo, nombre) VALUES('009', 'DEVOLUCION APORTES LOTE SOCIOS PA');
+INSERT INTO conceptos_amarilo (codigo, nombre) VALUES('010', 'DEVOLUCION APORTES AMARILO');
+INSERT INTO conceptos_amarilo (codigo, nombre) VALUES('011', 'DEVOLUCION DE PRESTAMOS');
+INSERT INTO conceptos_amarilo (codigo, nombre) VALUES('012', 'ANTICIPO BENEFICIOS AMARILO');
+INSERT INTO conceptos_amarilo (codigo, nombre) VALUES('013', 'ANTICIPO UTILIDADES AMARILO');
+INSERT INTO conceptos_amarilo (codigo, nombre) VALUES('014', 'ANTICIPO UTILIDADES SOCIOS PA');
+INSERT INTO conceptos_amarilo (codigo, nombre) VALUES('015', 'ANTICIPO UTILIDADES LOTE INVERSIONISTAS PA');
+INSERT INTO conceptos_amarilo (codigo, nombre) VALUES('016', 'ANTICIPO OBRA AMARILO');
+
+INSERT INTO conceptos_fiduciaria (codigo, nombre) VALUES('001', 'PAGO OBLIGACIÓN');
+INSERT INTO conceptos_fiduciaria (codigo, nombre) VALUES('002', 'PAGO PRORRATAS');
+INSERT INTO conceptos_fiduciaria (codigo, nombre) VALUES('003', 'PAGO LOTE');
+INSERT INTO conceptos_fiduciaria (codigo, nombre) VALUES('004', 'ANTICIPO DE OBRA');
+INSERT INTO conceptos_fiduciaria (codigo, nombre) VALUES('005', 'NA');
+INSERT INTO conceptos_fiduciaria (codigo, nombre) VALUES('006', 'RESTITUCIÓN APORTES LOTE');
+INSERT INTO conceptos_fiduciaria (codigo, nombre) VALUES('007', 'RESTITUCIÓN APORTES');
+INSERT INTO conceptos_fiduciaria (codigo, nombre) VALUES('008', 'ANTICIPO BENEFICIOS');
+INSERT INTO conceptos_fiduciaria (codigo, nombre) VALUES('009', 'ANTICIPO UTILIDADES');

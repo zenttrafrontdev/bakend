@@ -8,8 +8,9 @@ import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.Peri
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.QuotaTypeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,7 +28,8 @@ import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Builder
 @Entity
 @Table(name = "cupos")

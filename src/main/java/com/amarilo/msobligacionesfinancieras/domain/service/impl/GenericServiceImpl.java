@@ -7,10 +7,12 @@ import com.amarilo.msobligacionesfinancieras.domain.mapper.GenericMasterMapper;
 import com.amarilo.msobligacionesfinancieras.domain.service.GenericService;
 import com.amarilo.msobligacionesfinancieras.infraestructure.FinanceThirdTypeRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.AccountTypeRepository;
+import com.amarilo.msobligacionesfinancieras.infraestructure.generic.AmariloConceptRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.BankRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.BusinessAreaRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.CapitalAmortizationRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.CreditTypeRepository;
+import com.amarilo.msobligacionesfinancieras.infraestructure.generic.FiduciaryConceptRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.FileBusinessTypeRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.FiscalClassificationRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.FiscalClassificationTypeRepository;
@@ -21,11 +23,13 @@ import com.amarilo.msobligacionesfinancieras.infraestructure.generic.QuotaTypeRe
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.TaxClassificationRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.WithholdingTaxGroupRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.GenericMasterEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 public class GenericServiceImpl implements GenericService {
 
@@ -45,38 +49,8 @@ public class GenericServiceImpl implements GenericService {
     private final CapitalAmortizationRepository capitalAmortizationRepository;
     private final BusinessAreaRepository businessAreaRepository;
     private final FileBusinessTypeRepository fileBusinessTypeRepository;
-
-    public GenericServiceImpl(FinanceThirdTypeRepository financeThirdTypeRepository,
-                              FiscalOrganizationTypeRepository fiscalOrganizationTypeRepository,
-                              BankRepository bankRepository,
-                              AccountTypeRepository accountTypeRepository,
-                              WithholdingTaxGroupRepository withholdingTaxGroupRepository,
-                              FiscalClassificationRepository fiscalClassificationRepository,
-                              FiscalClassificationTypeRepository fiscalClassificationTypeRepository,
-                              TaxClassificationRepository taxClassificationRepository,
-                              QuotaTypeRepository quotaTypeRepository,
-                              QuotaClassificationRepository quotaClassificationRepository,
-                              PeriodicityInterestRepository periodicityInterestRepository,
-                              CreditTypeRepository creditTypeRepository,
-                              CapitalAmortizationRepository capitalAmortizationRepository,
-                              BusinessAreaRepository businessAreaRepository,
-                              FileBusinessTypeRepository fileBusinessTypeRepository) {
-        this.financeThirdTypeRepository = financeThirdTypeRepository;
-        this.fiscalOrganizationTypeRepository = fiscalOrganizationTypeRepository;
-        this.bankRepository = bankRepository;
-        this.accountTypeRepository = accountTypeRepository;
-        this.withholdingTaxGroupRepository = withholdingTaxGroupRepository;
-        this.fiscalClassificationRepository = fiscalClassificationRepository;
-        this.fiscalClassificationTypeRepository = fiscalClassificationTypeRepository;
-        this.taxClassificationRepository = taxClassificationRepository;
-        this.quotaTypeRepository = quotaTypeRepository;
-        this.quotaClassificationRepository = quotaClassificationRepository;
-        this.periodicityInterestRepository = periodicityInterestRepository;
-        this.creditTypeRepository = creditTypeRepository;
-        this.capitalAmortizationRepository = capitalAmortizationRepository;
-        this.businessAreaRepository = businessAreaRepository;
-        this.fileBusinessTypeRepository = fileBusinessTypeRepository;
-    }
+    private final AmariloConceptRepository amariloConceptRepository;
+    private final FiduciaryConceptRepository fiduciaryConceptRepository;
 
     @Override
     public List<GenericMasterDto> findAllFinanceThirdTypes() {
@@ -204,6 +178,24 @@ public class GenericServiceImpl implements GenericService {
     public List<GenericMasterDto> findAllFileBusinessTypes() {
         return GenericMasterMapper.INSTANCE.genericMasterListToGenericMasterDtoList(
                 fileBusinessTypeRepository.findAll()
+                        .stream()
+                        .map(GenericMasterEntity.class::cast)
+                        .collect(Collectors.toList()));
+    }
+
+    @Override
+    public List<GenericMasterDto> findAllAmariloConcepts() {
+        return GenericMasterMapper.INSTANCE.genericMasterListToGenericMasterDtoList(
+                amariloConceptRepository.findAll()
+                        .stream()
+                        .map(GenericMasterEntity.class::cast)
+                        .collect(Collectors.toList()));
+    }
+
+    @Override
+    public List<GenericMasterDto> findAllFiduciaryConcepts() {
+        return GenericMasterMapper.INSTANCE.genericMasterListToGenericMasterDtoList(
+                fiduciaryConceptRepository.findAll()
                         .stream()
                         .map(GenericMasterEntity.class::cast)
                         .collect(Collectors.toList()));

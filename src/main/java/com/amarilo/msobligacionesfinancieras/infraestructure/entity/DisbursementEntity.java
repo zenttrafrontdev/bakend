@@ -1,14 +1,17 @@
 package com.amarilo.msobligacionesfinancieras.infraestructure.entity;
 
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.AccountTypeEntity;
+import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.AmariloConceptEntity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.BankEntity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.CreditTypeEntity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.DebtTypeEntity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.DisbursementOperationTypeEntity;
+import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.FiduciaryConceptEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,7 +26,8 @@ import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Builder
 @Entity
 @Table(name = "desembolsos")
@@ -61,10 +65,12 @@ public class DisbursementEntity{
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "proveedor_id", nullable = false)
     private FinanceThirdEntity provider;
-    @Column(name = "concepto_amarilo")
-    private String amariloConcept;
-    @Column(name = "concepto_fiducia")
-    private String fiduciaryConcept;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "concepto_amarilo_id", nullable = false)
+    private AmariloConceptEntity amariloConcept;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "concepto_fiducia_id", nullable = false)
+    private FiduciaryConceptEntity fiduciaryConcept;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "proveedor_pago_id", nullable = false)
     private FinanceThirdEntity paymentProvider;

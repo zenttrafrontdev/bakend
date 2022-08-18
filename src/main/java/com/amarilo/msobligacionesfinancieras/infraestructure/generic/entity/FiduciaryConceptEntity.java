@@ -11,6 +11,6 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Entity
-@Table(name = "clasificaciones_impuestos")
-public class TaxClassificationEntity extends GenericMasterEntity {
+@Table(name = "conceptos_fiduciaria")
+public class FiduciaryConceptEntity extends GenericMasterEntity {
 }

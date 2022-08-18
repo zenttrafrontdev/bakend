@@ -327,6 +327,24 @@ create table if not exists proyectos_fiduciarias (
 	constraint proyectos_fiduciarias_fiduciaria_fk foreign key (fiduciaria_id) references fiduciarias(id)
 );
 
+CREATE TABLE if not exists conceptos_fiduciaria (
+  id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  codigo varchar(350) NOT NULL,
+  nombre varchar(350) NOT NULL,
+  creado timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  actualizado timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE if not exists conceptos_amarilo (
+  id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  codigo varchar(350) NOT NULL,
+  nombre varchar(350) NOT NULL,
+  creado timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  actualizado timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id)
+);
+
 CREATE TABLE if not exists desembolsos (
 	id INT UNSIGNED auto_increment NOT NULL,
 	consecutivo INT NOT NULL,
@@ -341,8 +359,8 @@ CREATE TABLE if not exists desembolsos (
 	proyecto_tercero_id INT UNSIGNED NULL,
 	proveedor_id INT UNSIGNED NOT NULL,
 	fiduciaria_id INT UNSIGNED NULL,
-	concepto_amarilo varchar(500) NULL,
-	concepto_fiducia varchar(500) NULL,
+	concepto_amarilo_id INT UNSIGNED NOT NULL,
+	concepto_fiducia_id INT UNSIGNED NOT NULL,
 	proveedor_pago_id INT UNSIGNED NOT NULL,
 	cuenta_destino varchar(100) NOT NULL,
 	tipo_cuenta_id INT UNSIGNED NOT NULL,
@@ -371,5 +389,7 @@ CREATE TABLE if not exists desembolsos (
 	CONSTRAINT desembolsos_banco_destino_FK FOREIGN KEY (banco_destino_id) REFERENCES bancos(id),
 	CONSTRAINT desembolsos_banco_origen_FK FOREIGN KEY (banco_origen_id) REFERENCES bancos(id),
 	CONSTRAINT desembolsos_representante_legal_FK FOREIGN KEY (representante_legal_id) REFERENCES terceros(id),
-	CONSTRAINT desembolsos_titular_FK FOREIGN KEY (titular_id) REFERENCES terceros(id)
+	CONSTRAINT desembolsos_titular_FK FOREIGN KEY (titular_id) REFERENCES terceros(id),
+	CONSTRAINT desembolsos_conceptos_fiducia_FK FOREIGN KEY (concepto_fiducia_id) REFERENCES conceptos_fiduciaria(id),
+	CONSTRAINT desembolsos_conceptos_amarilo_FK FOREIGN KEY (concepto_amarilo_id) REFERENCES conceptos_amarilo(id)
 );

@@ -24,8 +24,8 @@ public class DisbursementDto {
     private FinanceThirdDto financeThird;
     private ProjectDto projectFinanceThird;
     private FinanceThirdDto provider;
-    private String amariloConcept;
-    private String fiduciaryConcept;
+    private GenericMasterDto amariloConcept;
+    private GenericMasterDto fiduciaryConcept;
     private FinanceThirdDto paymentProvider;
     private String targetAccount;
     private GenericMasterDto accountType;

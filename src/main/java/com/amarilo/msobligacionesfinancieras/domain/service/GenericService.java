@@ -35,4 +35,8 @@ public interface GenericService {
     List<GenericMasterDto> findAllCapitalAmortizations();
 
     List<GenericMasterDto> findAllFileBusinessTypes();
+
+    List<GenericMasterDto> findAllAmariloConcepts();
+
+    List<GenericMasterDto> findAllFiduciaryConcepts();
 }
