@@ -3,8 +3,9 @@ package com.amarilo.msobligacionesfinancieras.infraestructure.entity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.FileBusinessTypeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -18,7 +19,8 @@ import javax.persistence.Table;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Builder
 @Entity
 @Table(name = "archivos_negocio")

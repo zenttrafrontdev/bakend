@@ -26,7 +26,7 @@ public class ReportController {
     @GetMapping("disbursement-bank-letter")
     public ResponseEntity<Resource> generateDisbursementBankLetter(
             @RequestParam("disbursementIds") List<Integer> disbursementIds
-    ) throws IOException {
+    ) {
         ByteArrayResource resource = reportService.generateDisbursementBankLetter(disbursementIds);
 
         HttpHeaders header = new HttpHeaders();

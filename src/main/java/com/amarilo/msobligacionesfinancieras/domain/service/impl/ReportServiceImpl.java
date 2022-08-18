@@ -49,7 +49,7 @@ public class ReportServiceImpl implements ReportService {
 
         try {
             List<DisbursementDto> disbursementDtoList = disbursementIds.stream()
-                    .map(id -> disbursementService.findById(id))
+                    .map(disbursementService::findById)
                     .collect(Collectors.toList());
 
             switch (disbursementDtoList.get(0).getSourceBank().getCode()) {

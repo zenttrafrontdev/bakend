@@ -2,7 +2,6 @@ package com.amarilo.msobligacionesfinancieras.infraestructure.entity;
 
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.GenericMasterEntity;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

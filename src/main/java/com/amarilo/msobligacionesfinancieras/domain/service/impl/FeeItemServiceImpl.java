@@ -124,7 +124,7 @@ public class FeeItemServiceImpl implements FeeItemService {
             } catch (Exception ex) {
                 log.error(String.format("An error has occurred processing file: Filename: %s, Line Number: %s", file.getOriginalFilename(), i + 1), ex);
                 errorList.add(FileProcessErrorDto.builder()
-                        .lineNumber(i + 1)
+                        .lineNumber((long)i + 1)
                         .message(ex.getMessage())
                         .build());
             }

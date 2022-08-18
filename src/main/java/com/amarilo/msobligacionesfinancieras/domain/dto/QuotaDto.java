@@ -4,8 +4,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -16,7 +17,8 @@ import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class QuotaDto {
@@ -27,7 +29,6 @@ public class QuotaDto {
     private GenericMasterDto quotaClassification;
     @NotNull(message = "La unidad de negocio no puede ser vacío")
     private BusinessAreaDto businessArea;
-    @NotNull(message = "El cupo debe ser asignado por lo menos a una etapa")
     @NotEmpty(message = "El cupo debe ser asignado por lo menos a una etapa")
     private List<QuotaDetailDto> quotaDetails;
     @NotNull(message = "El banco no puede ser vacío")

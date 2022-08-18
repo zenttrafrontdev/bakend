@@ -6,5 +6,5 @@ public class Constants {
         throw new IllegalStateException("Utility class");
     }
 
-    public final static String BANCOLOMBIA_BANK_CODE = "07";
+    public static final String BANCOLOMBIA_BANK_CODE = "07";
 }
