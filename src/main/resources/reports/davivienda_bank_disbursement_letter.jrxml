@@ -27,7 +27,7 @@
 p.nombre_proyecto as nombreProyecto,
 valor,
 t.nombre,
-t.identificacion,
+t.id_contribuyente as identificacion,
 (select cast(cast(sum(valor) as UNSIGNED) as CHAR) from desembolsos d where $P!{where}) as valorTotal,
 (select cast(cast(sum(valor_gmf) as UNSIGNED) as CHAR) from desembolsos d where $P!{where}) as valorGmf
 from 

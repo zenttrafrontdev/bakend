@@ -102,7 +102,7 @@ public class ReportServiceImpl implements ReportService {
                 .map(integer -> String.valueOf(integer))
                 .collect(Collectors.toList());
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("ROOT_DIR", "./reports");
+        parameters.put("ROOT_DIR", "reports");
         parameters.put("where", String.format("des.id in (%s)", String.join(",", idList)));
         generateReportAndZipIt(fileName, reportFileName, parameters, zipOutputStream);
     }

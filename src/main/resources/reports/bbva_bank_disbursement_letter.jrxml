@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_Letter" pageWidth="612" pageHeight="792" columnWidth="547" leftMargin="34" rightMargin="31" topMargin="53" bottomMargin="53" uuid="59127215-933e-46b3-95cb-3482626bbe0a">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.jrdax"/>
+	<property name="com.jaspersoft.studio.unit." value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<style name="Style1" isBlankWhenNull="false" fontName="SansSerif" fontSize="9">
+		<paragraph lineSpacing="1_1_2"/>
+	</style>
+	<subDataset name="dataset1" uuid="e4cab52a-6aaf-4c8a-9dcc-ba41f8d45cfe">
+		<field name="value" class="java.lang.String">
+			<fieldDescription><![CDATA[_THIS]]></fieldDescription>
+		</field>
+	</subDataset>
+	<parameter name="ROOT_DIR" class="java.lang.String"/>
+	<parameter name="where" class="java.lang.String"/>
+	<queryString language="plsql">
+		<![CDATA[select 
+p.nombre_proyecto as nombreProyecto,
+valor,
+t.nombre,
+t.id_contribuyente as identificacion,
+cuenta_destino as cuentaDestino,
+(select cast(cast(sum(valor) as UNSIGNED) as CHAR) from desembolsos d where $P!{where}) as valorTotal,
+(select cast(cast(sum(valor_gmf) as UNSIGNED) as CHAR) from desembolsos d where $P!{where}) as valorGmf
+from 
+desembolsos des
+inner join proyectos p on p.id = des.proyecto_id
+inner join terceros t on t.id = des.tercero_id 
+inner join cupos c on c.id = des.cupo_id 
+where $P!{where}]]>
+	</queryString>
+	<field name="nombreProyecto" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre_proyecto"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombreProyecto"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proyectos"/>
+	</field>
+	<field name="valor" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="valor"/>
+		<property name="com.jaspersoft.studio.field.label" value="valor"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="desembolsos"/>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="terceros"/>
+	</field>
+	<field name="identificacion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="id_contribuyente"/>
+		<property name="com.jaspersoft.studio.field.label" value="identificacion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="terceros"/>
+	</field>
+	<field name="cuentaDestino" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cuenta_destino"/>
+		<property name="com.jaspersoft.studio.field.label" value="cuentaDestino"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="desembolsos"/>
+	</field>
+	<field name="valorTotal" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="valorTotal"/>
+		<property name="com.jaspersoft.studio.field.label" value="valorTotal"/>
+	</field>
+	<field name="valorGmf" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="valorGmf"/>
+		<property name="com.jaspersoft.studio.field.label" value="valorGmf"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="219" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="0" y="55" width="100" height="30" uuid="5285113d-0c49-4e3a-a05f-7e5cc2b8dccb"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[Bogotá, D.C,]]></text>
+			</staticText>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="100" y="53" width="300" height="30" uuid="3f30d3e3-9c64-48e8-b2e9-e1b7665f5176"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[CONCATENATE(new SimpleDateFormat("EEEE").format(new Date()),",",new SimpleDateFormat("dd").format(new Date())," de ",new SimpleDateFormat("MMMM").format(new Date())," de ", new SimpleDateFormat("YYYY").format(new Date()))]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="95" width="100" height="20" uuid="433e9703-b899-444b-99de-98675998f1bc"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[Señores]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="118" width="100" height="20" uuid="143d3a32-365b-42fe-bf62-759eb25061fe"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[Ciudad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="368" y="193" width="146" height="20" uuid="1ae64764-dcab-42bb-9345-ada94face77a"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="false"/>
+				</textElement>
+				<text><![CDATA[de la siguiente manera:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="150" width="547" height="40" uuid="23a42c1d-c20a-4349-a055-1d98fc1a1c39"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[De acuerdo con la reglamentación prevista en el artículo 10 del Decreto 449 del 27 de febrero de 2003, yo Jose Hernan Arias Arango,  identificado con cédula de ciudadanía No. 19.254.913, actuando en nombre y representación de la sociedad AMARILO SAS con el  NIT 800,185,295-1, la cual fue beneficiaria del crédito No. ______________]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="100" y="107" width="437" height="20" uuid="0091f113-cccd-490e-b4b7-62390ca16967"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreProyecto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="259" y="194" width="192" height="20" uuid="3389ad67-36bb-4af3-b8b3-9aef3b04b1af"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["$ " + String.format(Locale.getDefault(), "%,d", new BigInteger($F{valorTotal}.substring(0, $F{valorTotal}.length() - 6)))]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="193" width="260" height="20" uuid="ac79485e-bff9-41ba-8d8a-e1fbf3655f8d"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[Los autorizo expresamente para efectuar desembolso por]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="33" width="150" height="20" uuid="a9fb6c25-b6ad-463f-a273-95390003b547"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true" isUnderline="true"/>
+				</textElement>
+				<text><![CDATA[PERSONA JURIDICA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="107" width="90" height="20" uuid="b0629ba4-c375-4da5-af32-b4fd13d1d0fd"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[BANCO BBVA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="64" y="0" width="400" height="30" uuid="ee96f8b9-8c4e-49ac-9d90-cf069a4ea2ec"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[AUTORIZACION PARA DESEMBOLSO DE CREDITO AL PRIMER BENEFICIARIO O AL COMERCIALIZADOR DE DE LOS BIENES Y SERVICIOS]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="108" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="72" width="470" height="20" uuid="1c470e7e-6d01-4a5f-867d-5e6a8f4fde53"/>
+				<textElement markup="styled">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["4. Beneficiario o Comercializador	" + "<style isBold='true'>"  + $F{nombre}  + "</style>"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="87" width="470" height="20" uuid="99e1b0b0-3cc7-46f1-8ed8-62890e1180ae"/>
+				<textElement markup="styled">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["5. Número Identificación titular	" + "<style isBold='true'>" + $F{identificacion}  + "</style>"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="25" width="50" height="15" uuid="d03bfc6c-097a-45f5-83ed-f131de7ab5eb"/>
+				<text><![CDATA[1. Valor	]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="49" y="25" width="497" height="15" uuid="b9e9bb4c-bba4-4f83-9f0d-6a3b8b43ba97"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[String.format(Locale.getDefault(), "%,d", new BigInteger($F{valor}.substring(0, $F{valor}.length() - 6)))]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="39" y="26" width="30" height="15" uuid="6eadfdfe-3825-407e-8d38-4f05f4b163e5"/>
+				<textElement markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[$]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="56" width="50" height="20" uuid="31ec280f-f805-41e3-a05c-b9f879d7ef7f"/>
+				<textElement markup="styled">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["3. Total	" ]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="5" width="100" height="20" uuid="5a1e02a2-ca39-44b1-8e7e-8c4d5909a76f"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[GIRO DE CHEQUE]]></text>
+			</staticText>
+			<image>
+				<reportElement x="91" y="3" width="20" height="23" uuid="4d61f101-2f80-4c1c-a3aa-7b6fc4c9aa31"/>
+				<imageExpression><![CDATA[$F{cuentaDestino}.equals("CHEQUE") ? $P{ROOT_DIR} + "/checked.jpg" :  $P{ROOT_DIR} + "/unchecked.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="39" y="41" width="30" height="15" uuid="2b27fe37-6216-4bdd-b091-329eb8393456"/>
+				<textElement markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[$]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="40" width="50" height="15" uuid="b3b1efc9-d055-4425-b6cc-faeadfdada15"/>
+				<text><![CDATA[2. GMF]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="40" width="496" height="30" uuid="473b02d0-1fc0-4703-93ae-ca899e517d6e"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valorGmf}.length() >Integer.parseInt("6") ? String.format(Locale.getDefault(), "%,d", new BigInteger($F{valorGmf}.substring(0, $F{valorGmf}.length() - 6))) : "0"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="56" width="496" height="30" uuid="68313a9f-ea04-4267-a813-58147b0f7166"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[ String.format(Locale.getDefault(), "%,d", $F{valor}.length() >Integer.parseInt("6") ? new BigInteger($F{valor}.substring(0, $F{valor}.length() - 6))  : 0 +
+$F{valorGmf}.length() >Integer.parseInt("6") ?  new BigInteger($F{valorGmf}.substring(0, $F{valorGmf}.length() - 6)) : 0 )]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="39" y="56" width="30" height="15" uuid="f32d4c0f-ddb2-46b6-a81d-4eb8a8c52a2a"/>
+				<textElement markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[$]]></text>
+			</staticText>
+		</band>
+	</detail>
+	<summary>
+		<band height="158" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<staticText>
+				<reportElement x="-1" y="114" width="547" height="20" uuid="1fdfc4af-d3fd-4928-9939-5b6cad69a8fa"/>
+				<textElement>
+					<font fontName="SansSerif" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Representante Legal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="124" width="547" height="20" uuid="8f850b1d-35a2-4e99-ab2f-d50e8c8e42bb"/>
+				<textElement>
+					<font fontName="SansSerif" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[AMARILO SAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="134" width="547" height="20" uuid="40428b1a-f029-47c0-bd4c-11f25103d45d"/>
+				<textElement>
+					<font fontName="SansSerif" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NIT. 800.185.295-1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="4" width="547" height="39" uuid="693963b4-ec37-468a-b866-1d1f211bee89"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<text><![CDATA[Si el desembolso se efectúa por medio de cheque autorizo al Banco a colocar en este, el cruce “Para abono en cuenta del primer beneficiario”. Por último autorizo al BANCO BBVA para reportar a las autoridades de control y vigilancia cualquier información relacionada con el desembolso de este crédito.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="45" width="547" height="20" uuid="b15e44e5-687a-4af0-873b-3386f6cd6790"/>
+				<textElement textAlignment="Justified">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<text><![CDATA[Cordialmente,]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

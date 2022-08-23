@@ -12,10 +12,9 @@ import net.sf.jasperreports.engine.JasperReport;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ResourceUtils;
 
 import javax.sql.DataSource;
-import java.io.File;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.util.Map;
 
@@ -32,11 +31,9 @@ public class JasperReportServiceIml implements JasperReportService {
         try {
             log.info("Generating report -> {}", report);
             Connection con = DataSourceUtils.getConnection((DataSource) applicationContext.getBean("dataSource"));
-            File file = ResourceUtils.getFile("classpath:reports/".concat(report));
-            JasperReport jasperReport = null;
-            JasperPrint jasperPrint;
-            jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
-            jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, con);
+            InputStream is = this.getClass().getClassLoader().getResourceAsStream("reports/".concat(report));
+            JasperReport jasperReport = JasperCompileManager.compileReport(is);
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, con);
             log.info("Report {} successfully filled", report);
             return JasperExportManager.exportReportToPdf(jasperPrint);
         } catch (Exception ex) {

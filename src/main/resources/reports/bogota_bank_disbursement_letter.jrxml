@@ -27,7 +27,7 @@
 p.nombre_proyecto as nombreProyecto,
 valor,
 t.nombre,
-t.identificacion,
+t.id_contribuyente as identificacion,
 cuenta_destino as cuentaDestino,
 c.plazo,
 t2.nombre as tasa,
