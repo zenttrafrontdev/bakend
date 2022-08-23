@@ -34,6 +34,7 @@ dependencies {
 	implementation 'com.lowagie:itext:2.1.7'
 	implementation 'net.sf.jasperreports:jasperreports:6.20.0'
 	implementation 'net.sf.jasperreports:jasperreports-functions:6.20.0'
+	implementation 'net.sf.jasperreports:jasperreports-fonts:6.20.0'
 
 	compileOnly "org.flywaydb:flyway-mysql"
 	compileOnly 'org.projectlombok:lombok'
