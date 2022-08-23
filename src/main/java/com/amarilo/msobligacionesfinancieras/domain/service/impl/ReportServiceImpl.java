@@ -83,7 +83,7 @@ public class ReportServiceImpl implements ReportService {
             @Override
             @Nullable
             public String getFilename() {
-                return "cartas-desembolsos.pdf";
+                return "cartas-desembolsos.zip";
             }
         };
     }
