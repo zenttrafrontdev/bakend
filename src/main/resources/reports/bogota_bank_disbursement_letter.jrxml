@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.19.1.final using JasperReports Library version 6.19.1-867c00bf88cd4d784d404379d6c05e1b419e8a4c  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Blank_Letter" pageWidth="612" pageHeight="792" columnWidth="547" leftMargin="34" rightMargin="31" topMargin="53" bottomMargin="53" uuid="59127215-933e-46b3-95cb-3482626bbe0a">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.jrdax"/>
+	<property name="com.jaspersoft.studio.unit." value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="cm"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="cm"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<style name="Style1" isBlankWhenNull="false" fontName="SansSerif" fontSize="9">
+		<paragraph lineSpacing="1_1_2"/>
+	</style>
+	<subDataset name="dataset1" uuid="e4cab52a-6aaf-4c8a-9dcc-ba41f8d45cfe">
+		<field name="value" class="java.lang.String">
+			<fieldDescription><![CDATA[_THIS]]></fieldDescription>
+		</field>
+	</subDataset>
+	<parameter name="ROOT_DIR" class="java.lang.String"/>
+	<parameter name="where" class="java.lang.String"/>
+	<queryString language="plsql">
+		<![CDATA[select 
+p.nombre_proyecto as nombreProyecto,
+valor,
+t.nombre,
+t.identificacion,
+cuenta_destino as cuentaDestino,
+c.plazo,
+t2.nombre as tasa,
+ac.NOMBRE as capital,
+pi2.nombre as intereses,
+(select cast(cast(sum(valor) as UNSIGNED) as CHAR) from desembolsos d where $P!{where}) as valorTotal,
+(select cast(cast(sum(valor_gmf) as UNSIGNED) as CHAR) from desembolsos d where $P!{where}) as valorGmf
+from 
+desembolsos des
+inner join proyectos p on p.id = des.proyecto_id
+inner join terceros t on t.id = des.tercero_id 
+inner join cupos c on c.id = des.cupo_id 
+inner join tasas t2 on t2.id = c.fee_id 
+inner join amortizaciones_capital ac on ac.ID = c.amortizacion_capital_id 
+inner join periodicidad_intereses pi2 on pi2.id = c.periodicidad_interes_id 
+where $P!{where}]]>
+	</queryString>
+	<field name="nombreProyecto" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre_proyecto"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombreProyecto"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="proyectos"/>
+	</field>
+	<field name="valor" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="valor"/>
+		<property name="com.jaspersoft.studio.field.label" value="valor"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="desembolsos"/>
+	</field>
+	<field name="nombre" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="terceros"/>
+	</field>
+	<field name="identificacion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="identificacion"/>
+		<property name="com.jaspersoft.studio.field.label" value="identificacion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="terceros"/>
+	</field>
+	<field name="cuentaDestino" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="cuenta_destino"/>
+		<property name="com.jaspersoft.studio.field.label" value="cuentaDestino"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="desembolsos"/>
+	</field>
+	<field name="plazo" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.name" value="plazo"/>
+		<property name="com.jaspersoft.studio.field.label" value="plazo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="cupos"/>
+	</field>
+	<field name="tasa" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="tasa"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tasas"/>
+	</field>
+	<field name="capital" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="NOMBRE"/>
+		<property name="com.jaspersoft.studio.field.label" value="capital"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="amortizaciones_capital"/>
+	</field>
+	<field name="intereses" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="intereses"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="periodicidad_intereses"/>
+	</field>
+	<field name="valorTotal" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="valorTotal"/>
+		<property name="com.jaspersoft.studio.field.label" value="valorTotal"/>
+	</field>
+	<field name="valorGmf" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="valorGmf"/>
+		<property name="com.jaspersoft.studio.field.label" value="valorGmf"/>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="309" splitType="Stretch">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<staticText>
+				<reportElement x="0" y="1" width="100" height="30" uuid="5285113d-0c49-4e3a-a05f-7e5cc2b8dccb"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[Bogotá, D.C,]]></text>
+			</staticText>
+			<image isLazy="true">
+				<reportElement x="400" y="-40" width="120" height="110" uuid="78f201f2-38df-4815-849a-f162aec01a04">
+					<property name="com.jaspersoft.layout.grid.weight.fixed" value="true"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{ROOT_DIR} + "/logo_amarilo.png"]]></imageExpression>
+			</image>
+			<textField pattern="MMMMM dd, yyyy">
+				<reportElement x="100" y="0" width="300" height="30" uuid="3f30d3e3-9c64-48e8-b2e9-e1b7665f5176"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[CONCATENATE(new SimpleDateFormat("EEEE").format(new Date()),",",new SimpleDateFormat("dd").format(new Date())," de ",new SimpleDateFormat("MMMM").format(new Date())," de ", new SimpleDateFormat("YYYY").format(new Date()))]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="41" width="100" height="20" uuid="433e9703-b899-444b-99de-98675998f1bc"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[Señores]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="83" width="280" height="20" uuid="0716cccf-af4f-42f9-b3a9-35775e2d7f87"/>
+				<textElement verticalAlignment="Top">
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gerente Ejecutivo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="97" width="100" height="20" uuid="143d3a32-365b-42fe-bf62-759eb25061fe"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[Ciudad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="286" width="547" height="20" uuid="91d161f2-8cbf-488c-afbe-219914930059"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[Solicitamos efectuar el desembolso así:   ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="210" width="60" height="20" uuid="1ae64764-dcab-42bb-9345-ada94face77a"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Monto: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="176" width="547" height="20" uuid="23a42c1d-c20a-4349-a055-1d98fc1a1c39"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[Por medio de la presente solicitamos a ustedes un desembolso de Crédito ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="90" y="126" width="452" height="20" uuid="0091f113-cccd-490e-b4b7-62390ca16967"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreProyecto}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="39" y="210" width="252" height="20" uuid="3389ad67-36bb-4af3-b8b3-9aef3b04b1af"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["$ " + String.format(Locale.getDefault(), "%,d", new BigInteger($F{valorTotal}.substring(0, $F{valorTotal}.length() - 6)))]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="190" width="547" height="20" uuid="ac79485e-bff9-41ba-8d8a-e1fbf3655f8d"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[de Tesorería bajo las siguientes condiciones:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="152" width="547" height="20" uuid="a9fb6c25-b6ad-463f-a273-95390003b547"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[Estimado Luis Hernando,]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="126" width="89" height="20" uuid="66aaf1c6-0159-4027-91b3-7fd70b69ab06"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Asunto: Crédito]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="67" width="356" height="30" uuid="fb099ed5-5a61-4f1a-8174-df2b050abb26"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Atn. Sr. Luis Hernando Montañez]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="53" width="356" height="30" uuid="b0629ba4-c375-4da5-af32-b4fd13d1d0fd"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[BANCO DE BOGOTA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="226" width="60" height="20" uuid="8bd264fc-0ad4-41ee-b348-64f794ff8140"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Plazo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="239" width="60" height="20" uuid="65803a4b-e098-4662-b232-5038505a4abc"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tasa:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="251" width="60" height="20" uuid="e41c7e22-a9a7-478b-be7a-3b7e6f986dc7"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Capital:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="266" width="60" height="20" uuid="f7b75ec8-df12-424d-a6fd-3dd8b932259f"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Intereses:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="39" y="226" width="111" height="14" uuid="707a4ead-6a9c-411e-b612-835cd37ce026"/>
+				<textFieldExpression><![CDATA[$F{plazo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="39" y="239" width="111" height="14" uuid="bb2bed72-c14d-45d1-91e7-b39a7d759618"/>
+				<textFieldExpression><![CDATA[$F{tasa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="252" width="111" height="14" uuid="35cb7658-1e3e-40b8-80bd-1fd413ad5a07"/>
+				<textFieldExpression><![CDATA[$F{capital}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="267" width="111" height="14" uuid="ea6f9085-854c-4c88-94ec-fa49cc10d8e1"/>
+				<textFieldExpression><![CDATA[$F{intereses}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="107" splitType="Stretch">
+			<textField>
+				<reportElement x="1" y="45" width="470" height="20" uuid="1c470e7e-6d01-4a5f-867d-5e6a8f4fde53"/>
+				<textElement markup="styled">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["2. Beneficiario o Comercializador	" + "<style isBold='true'>"  + $F{nombre}  + "</style>"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="65" width="470" height="20" uuid="99e1b0b0-3cc7-46f1-8ed8-62890e1180ae"/>
+				<textElement markup="styled">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["3. Número Identificación titular	" + "<style isBold='true'>" + $F{identificacion}  + "</style>"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="25" width="50" height="30" uuid="d03bfc6c-097a-45f5-83ed-f131de7ab5eb"/>
+				<text><![CDATA[1. Valor	]]></text>
+			</staticText>
+			<textField isBlankWhenNull="true">
+				<reportElement x="49" y="25" width="431" height="30" uuid="b9e9bb4c-bba4-4f83-9f0d-6a3b8b43ba97"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[String.format(Locale.getDefault(), "%,d", new BigInteger($F{valor}.substring(0, $F{valor}.length() - 6)))]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="39" y="26" width="30" height="30" uuid="6eadfdfe-3825-407e-8d38-4f05f4b163e5"/>
+				<textElement markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[$]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="1" y="85" width="470" height="20" uuid="31ec280f-f805-41e3-a05c-b9f879d7ef7f"/>
+				<textElement markup="styled">
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["4. Banco de Bogotá Cta. corriente	" + "<style isBold='true'>" + $F{cuentaDestino}  + "</style>"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="3" width="100" height="20" uuid="b68edc53-841d-46f0-96c2-202a567fa0ea"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Transferencias]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="200" y="5" width="100" height="20" uuid="5a1e02a2-ca39-44b1-8e7e-8c4d5909a76f"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cheque]]></text>
+			</staticText>
+			<image>
+				<reportElement x="110" y="3" width="20" height="23" uuid="4eba0310-1d5f-4696-b476-722dd60bcb50"/>
+				<imageExpression><![CDATA[!$F{cuentaDestino}.equals("CHEQUE") ? $P{ROOT_DIR} + "/checked.jpg" :  $P{ROOT_DIR} + "/unchecked.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="270" y="2" width="20" height="23" uuid="4d61f101-2f80-4c1c-a3aa-7b6fc4c9aa31"/>
+				<imageExpression><![CDATA[$F{cuentaDestino}.equals("CHEQUE") ? $P{ROOT_DIR} + "/checked.jpg" :  $P{ROOT_DIR} + "/unchecked.jpg"]]></imageExpression>
+			</image>
+		</band>
+	</detail>
+	<summary>
+		<band height="158" splitType="Stretch">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<staticText>
+				<reportElement x="-1" y="75" width="547" height="20" uuid="1fdfc4af-d3fd-4928-9939-5b6cad69a8fa"/>
+				<textElement>
+					<font fontName="SansSerif" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Representante Legal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="85" width="547" height="20" uuid="8f850b1d-35a2-4e99-ab2f-d50e8c8e42bb"/>
+				<textElement>
+					<font fontName="SansSerif" size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[AMARILO SAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="115" width="547" height="20" uuid="eaf26d42-374f-4014-a46b-af0686c4787a"/>
+				<textElement>
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<text><![CDATA[Email: amarilo@amarilo.com.co]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="125" width="547" height="20" uuid="f249227c-bc62-48dd-a19c-7688f752bb36"/>
+				<textElement>
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<text><![CDATA[www.amarilo.com.co	]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="135" width="547" height="20" uuid="40428b1a-f029-47c0-bd4c-11f25103d45d"/>
+				<textElement>
+					<font fontName="SansSerif" size="9"/>
+				</textElement>
+				<text><![CDATA[Bogotá, D.C. Colombia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="2" width="49" height="30" uuid="8a313893-c88c-4580-93fd-d07ee4fa2018"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[GMF]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="21" width="547" height="20" uuid="693963b4-ec37-468a-b866-1d1f211bee89"/>
+				<textElement textAlignment="Justified">
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<text><![CDATA[Todos los cheques que se generen serán recogidos en la oficina 234 del edificio de Amarilo.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="40" y="2" width="250" height="30" uuid="473b02d0-1fc0-4703-93ae-ca899e517d6e"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valorGmf}.length() >Integer.parseInt("6") ? String.format(Locale.getDefault(), "%,d", new BigInteger($F{valorGmf}.substring(0, $F{valorGmf}.length() - 6))) : "0"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="93" width="546" height="30" uuid="71cb5d6d-b021-400e-8d88-0efbf668740c"/>
+				<text><![CDATA[Calle 90 No. 11A-27]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-1" y="103" width="542" height="20" uuid="1e8d7f50-8916-42f8-97c6-384dc22ee8c5"/>
+				<text><![CDATA[Tel. 6 34 0000 - Fax: 618 4456]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="2" width="30" height="30" uuid="fd8ddb20-cd6a-40b1-94e5-1fcfd206f637"/>
+				<textElement markup="none">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[$]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

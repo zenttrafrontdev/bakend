@@ -39,10 +39,10 @@ public class ReportServiceImpl implements ReportService {
     private final JasperReportService jasperReportService;
     private final DisbursementService disbursementService;
 
-    private static final String BANCOLOMBIA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos davivienda.pdf";
-    private static final String BOGOTA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos davivienda.pdf";
-    private static final String BBVA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos davivienda.pdf";
-    private static final String DAVIVIENDA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos davivienda.pdf";
+    private static final String BANCOLOMBIA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos Banco Bancolombia.pdf";
+    private static final String BOGOTA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos Banco Bogota.pdf";
+    private static final String BBVA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos Banco BBVA.pdf";
+    private static final String DAVIVIENDA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos Banco Davivienda.pdf";
 
     @Override
     public ByteArrayResource generateDisbursementBankLetter(List<Integer> disbursementIds) {
@@ -56,7 +56,7 @@ public class ReportServiceImpl implements ReportService {
             List<DisbursementDto> disbursementDtoList = disbursementIds.stream()
                     .map(disbursementService::findById)
                     .collect(Collectors.toList());
-
+            log.info("Generating disbursement letter for ids -> {}", disbursementIds);
             switch (disbursementDtoList.get(0).getSourceBank().getCode()) {
                 case BANCOLOMBIA_BANK_CODE:
                     for (DisbursementDto disbursementDto : disbursementDtoList) {
