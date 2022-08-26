@@ -2,9 +2,8 @@ package com.amarilo.msobligacionesfinancieras.infraestructure.entity;
 
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.BankEntity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.BusinessAreaEntity;
-import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.CapitalAmortizationEntity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.CreditTypeEntity;
-import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.PeriodicityInterestEntity;
+import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.QuotaClassificationEntity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.QuotaTypeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -42,7 +41,7 @@ public class QuotaEntity {
     private QuotaTypeEntity quotaType;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "clasificacion_cupo_id", nullable = false)
-    private QuotaTypeEntity quotaClassification;
+    private QuotaClassificationEntity quotaClassification;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "unidad_negocio_id", nullable = false)
     private BusinessAreaEntity businessArea;
@@ -56,14 +55,11 @@ public class QuotaEntity {
     @JoinColumn(name = "tipo_credito_id", nullable = false)
     private CreditTypeEntity creditType;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "amortizacion_capital_id", nullable = false)
-    private CapitalAmortizationEntity capitalAmortization;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "periodicidad_interes_id", nullable = false)
-    private PeriodicityInterestEntity periodicityInterest;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "fee_id", nullable = false)
+    @JoinColumn(name = "tasa_id", nullable = false)
     private FeeEntity fee;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "fiduciaria_id", nullable = false)
+    private FiduciaryEntity fiduciary;
     @Column(name = "cupo_aprobado")
     private String approvedQuota;
     @Column(name = "cupo_disponible")

@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -15,8 +13,6 @@ import java.time.LocalDate;
 @Builder
 public class DisbursementDto {
     private Integer id;
-    private Integer consecutive;
-    private LocalDate date;
     private GenericMasterDto disbursementOperationType;
     private ProjectDto project;
     private QuotaDto quota;
@@ -36,8 +32,7 @@ public class DisbursementDto {
     private String outlayDisbursement;
     private GenericMasterDto sourceBank;
     private String gmfValue;
-    private FiduciaryDto fiduciary;
     private FinanceThirdDto legalRepresentative;
     private FinanceThirdDto owner;
-    private String preoperative;
+    private boolean preoperative;
 }

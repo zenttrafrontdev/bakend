@@ -1,11 +1,14 @@
 package com.amarilo.msobligacionesfinancieras.controller.request;
 
 import com.opencsv.bean.CsvBindByPosition;
+import com.opencsv.bean.CsvNumber;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.math.BigDecimal;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,8 +20,9 @@ public class DisbursementCsvDto {
     private String operationType;
     @CsvBindByPosition(position = 1)
     private String projectCode;
-    @CsvBindByPosition(position = 4)
-    private String disbursementValue;
+    @CsvBindByPosition(position = 4, locale = "es-CO")
+    @CsvNumber("#.##")
+    private BigDecimal disbursementValue;
     @CsvBindByPosition(position = 6)
     private String financeThirdName;
     @CsvBindByPosition(position = 7)

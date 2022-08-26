@@ -13,14 +13,10 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @Builder
-public class DisbursementSearchCriteria {
+public class DisbursementGroupSearchCriteria {
     private Integer consecutive;
     private LocalDate date;
-    private Integer operationTypeId;
-    private Integer projectSourceId;
-    private Integer financeThirdId;
-    private Integer providerId;
-    private Integer paymentProviderId;
-    private String disbursementInvoiceNumber;
-
+    private Integer projectId;
+    private String obligationNumber;
+    private String oracleId;
 }

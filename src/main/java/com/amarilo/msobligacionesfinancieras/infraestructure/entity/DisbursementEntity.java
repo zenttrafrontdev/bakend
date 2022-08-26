@@ -22,7 +22,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,10 +34,6 @@ public class DisbursementEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "consecutivo")
-    private Integer consecutive;
-    @Column(name = "fecha")
-    private LocalDate date;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "tipo_operacion_id", nullable = false)
     private DisbursementOperationTypeEntity disbursementOperationType;
@@ -91,9 +86,6 @@ public class DisbursementEntity{
     private BankEntity sourceBank;
     @Column(name = "valor_gmf")
     private String gmfValue;
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumn(name = "fiduciaria_id", nullable = true)
-    private FiduciaryEntity fiduciary;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "representante_legal_id", nullable = false)
     private FinanceThirdEntity legalRepresentative;
@@ -101,5 +93,5 @@ public class DisbursementEntity{
     @JoinColumn(name = "titular_id", nullable = false)
     private FinanceThirdEntity owner;
     @Column(name = "preoperativo")
-    private String preoperative;
+    private boolean preoperative;
 }

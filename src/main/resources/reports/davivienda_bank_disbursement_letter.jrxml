@@ -23,17 +23,17 @@
 	<parameter name="ROOT_DIR" class="java.lang.String"/>
 	<parameter name="where" class="java.lang.String"/>
 	<queryString language="plsql">
-		<![CDATA[select 
+		<![CDATA[select
 p.nombre_proyecto as nombreProyecto,
-valor,
+d.valor,
 t.nombre,
 t.id_contribuyente as identificacion,
 (select cast(cast(sum(valor) as UNSIGNED) as CHAR) from desembolsos d where $P!{where}) as valorTotal,
 (select cast(cast(sum(valor_gmf) as UNSIGNED) as CHAR) from desembolsos d where $P!{where}) as valorGmf
-from 
-desembolsos des
-inner join proyectos p on p.id = des.proyecto_id
-inner join terceros t on t.id = des.tercero_id 
+from grupos_desembolso gd 
+inner join desembolsos d on d.grupo_desembolso_id = gd.id
+inner join proyectos p on p.id = gd.proyecto_id
+inner join terceros t on t.id = d.tercero_id
 where $P!{where}]]>
 	</queryString>
 	<field name="nombreProyecto" class="java.lang.String">
@@ -52,17 +52,19 @@ where $P!{where}]]>
 		<property name="com.jaspersoft.studio.field.tree.path" value="terceros"/>
 	</field>
 	<field name="identificacion" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="identificacion"/>
+		<property name="com.jaspersoft.studio.field.name" value="id_contribuyente"/>
 		<property name="com.jaspersoft.studio.field.label" value="identificacion"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="terceros"/>
 	</field>
 	<field name="valorTotal" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="valorTotal"/>
+		<property name="com.jaspersoft.studio.field.name" value="total_desembolso"/>
 		<property name="com.jaspersoft.studio.field.label" value="valorTotal"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="grupos_desembolso"/>
 	</field>
 	<field name="valorGmf" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="valorGmf"/>
+		<property name="com.jaspersoft.studio.field.name" value="total_gmf"/>
 		<property name="com.jaspersoft.studio.field.label" value="valorGmf"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="grupos_desembolso"/>
 	</field>
 	<background>
 		<band splitType="Stretch"/>

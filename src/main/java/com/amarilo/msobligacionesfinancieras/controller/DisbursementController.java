@@ -1,9 +1,10 @@
 package com.amarilo.msobligacionesfinancieras.controller;
 
-import com.amarilo.msobligacionesfinancieras.controller.request.DisbursementSearchCriteria;
+import com.amarilo.msobligacionesfinancieras.controller.request.DisbursementGroupSearchCriteria;
 import com.amarilo.msobligacionesfinancieras.controller.request.PageRequestDto;
 import com.amarilo.msobligacionesfinancieras.controller.response.PageResponseDto;
 import com.amarilo.msobligacionesfinancieras.domain.dto.DisbursementDto;
+import com.amarilo.msobligacionesfinancieras.domain.dto.DisbursementGroupDto;
 import com.amarilo.msobligacionesfinancieras.domain.service.DisbursementService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -49,8 +50,8 @@ public class DisbursementController {
                     content = {@Content(mediaType = "application/json")})
     })
     @PostMapping("search")
-    public ResponseEntity<PageResponseDto<DisbursementDto>> findAllDisbursementsBySearchCriteria(@RequestBody PageRequestDto<DisbursementSearchCriteria> pageRequestDto) {
-        return ResponseEntity.ok(disbursementService.findAllDisbursementsBySearchCriteria(pageRequestDto));
+    public ResponseEntity<PageResponseDto<DisbursementGroupDto>> findAllDisbursementsBySearchCriteria(@RequestBody PageRequestDto<DisbursementGroupSearchCriteria> pageRequestDto) {
+        return ResponseEntity.ok(disbursementService.findAllDisbursementsGroupBySearchCriteria(pageRequestDto));
     }
 
     @Operation(summary = "Permite obtener un desembolso por id")
@@ -65,14 +66,14 @@ public class DisbursementController {
                     content = {@Content(mediaType = "application/json")})
     })
     @GetMapping("{id}")
-    public ResponseEntity<DisbursementDto> findById(@PathVariable Integer id) {
+    public ResponseEntity<DisbursementGroupDto> findById(@PathVariable Integer id) {
         return ResponseEntity.ok(disbursementService.findById(id));
     }
 
     @Operation(summary = "Permite guardar un desembolso")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Se ha guardado el desembolso exitosamente",
-                    content = {@Content(mediaType = "application/json")}),
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = DisbursementGroupDto.class))}),
             @ApiResponse(responseCode = "204", description = "No existen registros",
                     content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
@@ -81,14 +82,14 @@ public class DisbursementController {
                     content = {@Content(mediaType = "application/json")})
     })
     @PostMapping
-    public ResponseEntity<DisbursementDto> saveDisbursement(@RequestBody @Valid DisbursementDto disbursementDto) {
-        return ResponseEntity.ok(disbursementService.saveDisbursement(disbursementDto));
+    public ResponseEntity<DisbursementGroupDto> saveDisbursement(@RequestBody @Valid DisbursementGroupDto disbursementGroupDto) {
+        return ResponseEntity.ok(disbursementService.saveDisbursementGroup(disbursementGroupDto));
     }
 
     @Operation(summary = "Permite generar unos desembolsos a partir de un archivo")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Desembolsos guardado existosamente",
-                    content = {@Content(mediaType = "multipart/form-data", schema = @Schema(implementation = DisbursementDto.class))}),
+                    content = {@Content(mediaType = "multipart/form-data", schema = @Schema(implementation = DisbursementGroupDto.class))}),
             @ApiResponse(responseCode = "400", description = "Argumentos no válidos",
                     content = {@Content(mediaType = "multipart/form-data")}),
             @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
@@ -97,10 +98,10 @@ public class DisbursementController {
                     content = {@Content(mediaType = "multipart/form-data")})
     })
     @PostMapping(value = "process-file", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<List<DisbursementDto>> processDisbursementFile(@RequestParam("file") MultipartFile file) throws IOException {
+    public ResponseEntity<List<DisbursementGroupDto>> processDisbursementFile(@RequestParam("file") MultipartFile file) throws IOException {
         return ResponseEntity.ok(disbursementService.processDisbursementFile(file));
     }
 }
 
-class PageResponseDisbursement extends PageResponseDto<DisbursementDto> {
+class PageResponseDisbursement extends PageResponseDto<DisbursementGroupDto> {
 }

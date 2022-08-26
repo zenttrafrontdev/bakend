@@ -33,8 +33,8 @@ c.plazo,
 tas.nombre as tasa,
 ac.NOMBRE as capital,
 pi2.nombre as intereses,
-gd.total_desembolso as valorTotal,
-gd.total_gmf as valorGmf
+(select cast(cast(sum(valor) as UNSIGNED) as CHAR) from desembolsos d where $P!{where}) as valorTotal,
+(select cast(cast(sum(valor_gmf) as UNSIGNED) as CHAR) from desembolsos d where $P!{where}) as valorGmf
 from grupos_desembolso gd 
 inner join desembolsos d on d.grupo_desembolso_id = gd.id
 inner join proyectos p on p.id = gd.proyecto_id

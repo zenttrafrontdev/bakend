@@ -229,9 +229,8 @@ create table if not exists cupos (
  unidad_negocio_id int unsigned not null,
  banco_id int unsigned not null,
  tipo_credito_id int unsigned not null,
- amortizacion_capital_id int unsigned not null,
- periodicidad_interes_id int unsigned not null,
- fee_id int unsigned not null,
+ tasa_id int unsigned not null,
+ fiduciaria_id int unsigned not null,
  cupo_aprobado varchar(350) not null,
  cupo_disponible varchar(350) not null,
  cupo_utilizado varchar(350) not null,
@@ -247,9 +246,8 @@ create table if not exists cupos (
  constraint fk_unidad_negocio_id foreign key (unidad_negocio_id) references unidades_negocio (id) on delete restrict on update cascade,
  constraint fk_banco_id foreign key (banco_id) references bancos (id) on delete restrict on update cascade,
  constraint fk_tipo_credito_id foreign key (tipo_credito_id) references tipos_credito (id) on delete restrict on update cascade,
- constraint fk_amortizacion_capital_id foreign key (amortizacion_capital_id) references amortizaciones_capital (id) on delete restrict on update cascade,
- constraint fk_periodicidad_interes_id foreign key (periodicidad_interes_id) references periodicidad_intereses (id) on delete restrict on update cascade,
- constraint fk_fee_id foreign key (fee_id) references tasas (id) on delete restrict on update cascade
+ constraint fk_tasa_id foreign key (tasa) references tasas (id) on delete restrict on update cascade,
+ constraint fk_fiduciaria_id foreign key (tasa) references tasas (id) on delete restrict on update cascade
 );
 
 create table if not exists archivos_negocio (
@@ -345,11 +343,32 @@ CREATE TABLE if not exists conceptos_amarilo (
   PRIMARY KEY (id)
 );
 
+CREATE TABLE grupos_desembolso (
+	id int auto_increment NOT NULL,
+	consecutivo varchar(100) NULL,
+	fecha DATE NOT NULL,
+	proyecto_id int(10) unsigned NOT NULL,
+	total_desembolso varchar(300) NOT NULL,
+	total_gmf varchar(300) NOT NULL,
+	otros varchar(300) NOT NULL,
+	spread int NULL,
+	vencimiento DATE NULL,
+	numero_obligacion varchar(100) NULL,
+	id_oracle varchar(100) NULL,
+	periodicidad_interes_id int(10) unsigned NOT NULL,
+	amortizacion_capital_id int(10) unsigned NOT NULL,
+	carta_desembolso_impresa BIT DEFAULT 0 NOT NULL,
+	creado timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	actualizado timestamp DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL,
+	CONSTRAINT grupos_desembolso_pk PRIMARY KEY (id),
+	CONSTRAINT grupos_desembolso_proyecto_FK FOREIGN KEY (proyecto_id) REFERENCES `obligaciones-financieras`.proyectos(id)
+);
+
+
 CREATE TABLE if not exists desembolsos (
 	id INT UNSIGNED auto_increment NOT NULL,
-	consecutivo INT NOT NULL,
-	fecha DATE NOT NULL,
 	tipo_operacion_id INT UNSIGNED NOT NULL,
+	grupo_desembolso_id INT UNSIGNED NOT NULL,
 	proyecto_id INT UNSIGNED NOT NULL,
 	cupo_id INT UNSIGNED NOT NULL,
 	tipo_credito_id INT UNSIGNED NOT NULL,
@@ -358,7 +377,6 @@ CREATE TABLE if not exists desembolsos (
 	tercero_id INT UNSIGNED NULL,
 	proyecto_tercero_id INT UNSIGNED NULL,
 	proveedor_id INT UNSIGNED NOT NULL,
-	fiduciaria_id INT UNSIGNED NULL,
 	concepto_amarilo_id INT UNSIGNED NOT NULL,
 	concepto_fiducia_id INT UNSIGNED NOT NULL,
 	proveedor_pago_id INT UNSIGNED NOT NULL,
@@ -371,7 +389,7 @@ CREATE TABLE if not exists desembolsos (
 	valor_gmf varchar(100) NOT NULL,
 	representante_legal_id INT UNSIGNED NOT NULL,
 	titular_id INT UNSIGNED NOT NULL,
-	preoperativo varchar(100) NULL,
+	preoperativo BIT DEFAULT 0 NOT NULL,
 	creado timestamp not null default current_timestamp,
 	actualizado timestamp not null default current_timestamp on update current_timestamp,
 	CONSTRAINT desembolsos_pk PRIMARY KEY (id),
@@ -383,7 +401,6 @@ CREATE TABLE if not exists desembolsos (
 	CONSTRAINT desembolsos_tercero_FK FOREIGN KEY (tercero_id) REFERENCES terceros(id),
 	CONSTRAINT desembolsos_proyecto_tercero_FK FOREIGN KEY (proyecto_tercero_id) REFERENCES proyectos(id),
 	CONSTRAINT desembolsos_proveedor_FK FOREIGN KEY (proveedor_id) REFERENCES terceros(id),
-	CONSTRAINT desembolsos_fiduciaria_FK FOREIGN KEY (fiduciaria_id) REFERENCES fiduciarias(id),
 	CONSTRAINT desembolsos_proveedor_pago_FK FOREIGN KEY (proveedor_pago_id) REFERENCES terceros(id),
 	CONSTRAINT desembolsos_tipo_cuenta_FK FOREIGN KEY (tipo_cuenta_id) REFERENCES tipo_cuentas(id),
 	CONSTRAINT desembolsos_banco_destino_FK FOREIGN KEY (banco_destino_id) REFERENCES bancos(id),
@@ -391,5 +408,6 @@ CREATE TABLE if not exists desembolsos (
 	CONSTRAINT desembolsos_representante_legal_FK FOREIGN KEY (representante_legal_id) REFERENCES terceros(id),
 	CONSTRAINT desembolsos_titular_FK FOREIGN KEY (titular_id) REFERENCES terceros(id),
 	CONSTRAINT desembolsos_conceptos_fiducia_FK FOREIGN KEY (concepto_fiducia_id) REFERENCES conceptos_fiduciaria(id),
-	CONSTRAINT desembolsos_conceptos_amarilo_FK FOREIGN KEY (concepto_amarilo_id) REFERENCES conceptos_amarilo(id)
+	CONSTRAINT desembolsos_conceptos_amarilo_FK FOREIGN KEY (concepto_amarilo_id) REFERENCES conceptos_amarilo(id),
+	CONSTRAINT desembolsos_grupos_desembolso_FK FOREIGN KEY (grupo_desembolso_id) REFERENCES grupos_desembolso(id)
 );

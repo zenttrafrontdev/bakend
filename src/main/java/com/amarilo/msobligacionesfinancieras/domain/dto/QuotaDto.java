@@ -35,12 +35,10 @@ public class QuotaDto {
     private GenericMasterDto bank;
     @NotNull(message = "El tipo de crédito no puede ser vacío")
     private GenericMasterDto creditType;
-    @NotNull(message = "La amortización del capital no puede ser vacío")
-    private GenericMasterDto capitalAmortization;
-    @NotNull(message = "La periodicidad del interes no puede ser vacío")
-    private GenericMasterDto periodicityInterest;
     @NotNull(message = "La tasa no puede ser vacío")
     private FeeDto fee;
+    @NotNull(message = "La fiduciaria no puede ser vacío")
+    private FiduciaryDto fiduciary;
     @NotNull(message = "El cupo aprobado no puede ser vacío")
     @NotBlank(message = "El cupo aprobado no puede ser vacío")
     @Size(min = 6, message = "Se requiere un número mínimo seis decímales")
