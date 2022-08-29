@@ -17,5 +17,7 @@ public interface DisbursementService {
 
     DisbursementGroupDto saveDisbursementGroup(DisbursementGroupDto disbursementGroupDto);
 
+    DisbursementGroupDto updateDisbursementGroup(DisbursementGroupDto disbursementGroupDto);
+
     List<DisbursementGroupDto> processDisbursementFile(MultipartFile file) throws IOException;
 }

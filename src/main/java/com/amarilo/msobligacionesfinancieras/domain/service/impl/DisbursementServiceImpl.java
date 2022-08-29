@@ -89,27 +89,33 @@ public class DisbursementServiceImpl implements DisbursementService {
     @Override
     public DisbursementGroupDto saveDisbursementGroup(DisbursementGroupDto disbursementDto) {
         DisbursementGroupEntity disbursementGroupEntity = DisbursementGroupMapper.INSTANCE.disbursementGroupDtoToDisbursementGroupEntity(disbursementDto);
-        //subtractQuotaAvailableAmount(disbursementGroupEntity);
+        subtractQuotaAvailableAmount(disbursementGroupEntity);
         return DisbursementGroupMapper.INSTANCE.disbursementGroupEntityToDisbursementGroupDto(disbursementGroupRepository.save(disbursementGroupEntity));
     }
 
-    /*
-    private void subtractQuotaAvailableAmount(DisbursementGroupEntity disbursementGroupEntity) {
-        var quotaEntityOptional = quotaRepository.findById(disbursementEntity.getQuota().getId());
-        if (quotaEntityOptional.isPresent()) {
-            var quotaEntity = quotaEntityOptional.get();
-            var availableQuota = new BigInteger(quotaEntity.getAvailableQuota());
-            var disbursementAmount = new BigInteger(disbursementEntity.getValue());
-            if (disbursementAmount.compareTo(availableQuota) > 0) {
-                throw new BusinessException("El valor del desembolso supera el valor del cupo");
-            }
-            var newAvailableQuota = availableQuota.subtract(disbursementAmount);
-            quotaEntity.setAvailableQuota(newAvailableQuota.toString());
-            disbursementEntity.setQuota(quotaEntity);
-        }
+    @Override
+    public DisbursementGroupDto updateDisbursementGroup(DisbursementGroupDto disbursementDto) {
+        DisbursementGroupEntity disbursementGroupEntity = DisbursementGroupMapper.INSTANCE.disbursementGroupDtoToDisbursementGroupEntity(disbursementDto);
+        return DisbursementGroupMapper.INSTANCE.disbursementGroupEntityToDisbursementGroupDto(disbursementGroupRepository.save(disbursementGroupEntity));
     }
 
-     */
+
+    private void subtractQuotaAvailableAmount(DisbursementGroupEntity disbursementGroupEntity) {
+        disbursementGroupEntity.getDisbursementList().forEach(disbursementEntity -> {
+            var quotaEntityOptional = quotaRepository.findById(disbursementEntity.getQuota().getId());
+            if (quotaEntityOptional.isPresent()) {
+                var quotaEntity = quotaEntityOptional.get();
+                var availableQuota = new BigInteger(quotaEntity.getAvailableQuota());
+                var disbursementAmount = new BigInteger(disbursementEntity.getValue());
+                if (disbursementAmount.compareTo(availableQuota) > 0) {
+                    throw new BusinessException("El valor del desembolso supera el valor del cupo");
+                }
+                var newAvailableQuota = availableQuota.subtract(disbursementAmount);
+                quotaEntity.setAvailableQuota(newAvailableQuota.toString());
+                disbursementEntity.setQuota(quotaEntity);
+            }
+        });
+    }
 
     @Override
     public List<DisbursementGroupDto> processDisbursementFile(MultipartFile file) throws IOException {

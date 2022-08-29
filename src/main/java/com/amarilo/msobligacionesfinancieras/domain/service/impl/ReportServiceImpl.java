@@ -49,58 +49,60 @@ public class ReportServiceImpl implements ReportService {
     private static final String DAVIVIENDA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos Banco Davivienda.pdf";
 
     @Override
-    public ByteArrayResource generateDisbursementBankLetter(Integer disbursementId) {
+    public ByteArrayResource generateDisbursementBankLetter(List<Integer> disbursementIds) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         ZipOutputStream zipOutputStream = new ZipOutputStream(stream);
 
-        var disbursementGroupDto = disbursementService.findById(disbursementId);
-        try {
-            log.info("Generating disbursement letter for ids -> {}", disbursementId);
-            var map = disbursementGroupDto.getDisbursementList().stream()
-                    .collect(Collectors.groupingBy(DisbursementDto::getQuota));
-            for (var entry : map.entrySet()) {
-                var disbursementListByQuota = entry.getValue();
-                switch (disbursementListByQuota.get(0).getSourceBank().getCode()) {
-                    case BANCOLOMBIA_BANK_CODE:
-                        for (DisbursementDto disbursementDto : disbursementListByQuota) {
-                            buildLetterWithOneDisbursement(BANCOLOMBIA_BANK_DISBURSEMENT_LETTER_FILENAME,
-                                    BANCOLOMBIA_DISBURSEMENT_JASPER_LETTER,
-                                    disbursementDto.getId(), zipOutputStream);
-                        }
-                        break;
-                    case BBVA_BANK_CODE:
-                        buildLetterWithMultipleDisbursements(BBVA_BANK_DISBURSEMENT_LETTER_FILENAME,
-                                BBVA_DISBURSEMENT_JASPER_LETTER,
-                                disbursementListByQuota, zipOutputStream);
-                        break;
-                    case BOGOTA_BANK_CODE:
-                        var groupByPreoperative = disbursementListByQuota.stream()
-                                .collect(Collectors.groupingBy(DisbursementDto::isPreoperative));
-                        for (var preoperative : groupByPreoperative.entrySet()) {
-                            if (preoperative.getKey()) {
-                                buildLetterWithMultipleDisbursements(BOGOTA_BANK_DISBURSEMENT_LETTER_FILENAME,
-                                        BOGOTA_DISBURSEMENT_PREOPERATIVE_JASPER_LETTER,
-                                        preoperative.getValue(), zipOutputStream);
-                            } else {
-                                buildLetterWithMultipleDisbursements(BOGOTA_BANK_DISBURSEMENT_LETTER_FILENAME,
-                                        BOGOTA_DISBURSEMENT_JASPER_LETTER,
-                                        preoperative.getValue(), zipOutputStream);
+        disbursementIds.forEach(disbursementId -> {
+            var disbursementGroupDto = disbursementService.findById(disbursementId);
+            try {
+                log.info("Generating disbursement letter for ids -> {}", disbursementId);
+                var map = disbursementGroupDto.getDisbursementList().stream()
+                        .collect(Collectors.groupingBy(DisbursementDto::getQuota));
+                for (var entry : map.entrySet()) {
+                    var disbursementListByQuota = entry.getValue();
+                    switch (disbursementListByQuota.get(0).getSourceBank().getCode()) {
+                        case BANCOLOMBIA_BANK_CODE:
+                            for (DisbursementDto disbursementDto : disbursementListByQuota) {
+                                buildLetterWithOneDisbursement(BANCOLOMBIA_BANK_DISBURSEMENT_LETTER_FILENAME,
+                                        BANCOLOMBIA_DISBURSEMENT_JASPER_LETTER,
+                                        disbursementDto.getId(), zipOutputStream);
                             }
-                        }
-                        break;
-                    case DAVIVIENDA_BANK_CODE:
-                        buildLetterWithMultipleDisbursements(DAVIVIENDA_BANK_DISBURSEMENT_LETTER_FILENAME,
-                                DAVIVIENDA_DISBURSEMENT_JASPER_LETTER,
-                                disbursementListByQuota, zipOutputStream);
-                        break;
-                    default:
-                        throw new BusinessException("No existe una carta de desembolso disponible");
+                            break;
+                        case BBVA_BANK_CODE:
+                            buildLetterWithMultipleDisbursements(BBVA_BANK_DISBURSEMENT_LETTER_FILENAME,
+                                    BBVA_DISBURSEMENT_JASPER_LETTER,
+                                    disbursementListByQuota, zipOutputStream);
+                            break;
+                        case BOGOTA_BANK_CODE:
+                            var groupByPreoperative = disbursementListByQuota.stream()
+                                    .collect(Collectors.groupingBy(DisbursementDto::isPreoperative));
+                            for (var preoperative : groupByPreoperative.entrySet()) {
+                                if (Boolean.TRUE.equals(preoperative.getKey())) {
+                                    buildLetterWithMultipleDisbursements(BOGOTA_BANK_DISBURSEMENT_LETTER_FILENAME,
+                                            BOGOTA_DISBURSEMENT_PREOPERATIVE_JASPER_LETTER,
+                                            preoperative.getValue(), zipOutputStream);
+                                } else {
+                                    buildLetterWithMultipleDisbursements(BOGOTA_BANK_DISBURSEMENT_LETTER_FILENAME,
+                                            BOGOTA_DISBURSEMENT_JASPER_LETTER,
+                                            preoperative.getValue(), zipOutputStream);
+                                }
+                            }
+                            break;
+                        case DAVIVIENDA_BANK_CODE:
+                            buildLetterWithMultipleDisbursements(DAVIVIENDA_BANK_DISBURSEMENT_LETTER_FILENAME,
+                                    DAVIVIENDA_DISBURSEMENT_JASPER_LETTER,
+                                    disbursementListByQuota, zipOutputStream);
+                            break;
+                        default:
+                            throw new BusinessException("No existe una carta de desembolso disponible");
+                    }
                 }
+                zipOutputStream.close();
+            } catch (Exception ex) {
+                log.info("Ha ocurrido un error generando la carta de desembolsos. ID Desembolso -> {}", disbursementId, ex);
             }
-            zipOutputStream.close();
-        } catch (Exception ex) {
-            log.info("Ha ocurrido un error generando la carta de desembolsos. ID Desembolso -> {}", disbursementId, ex);
-        }
+        });
         return new ByteArrayResource(stream.toByteArray()) {
             @Override
             public String getFilename() {
