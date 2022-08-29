@@ -411,3 +411,16 @@ CREATE TABLE if not exists desembolsos (
 	CONSTRAINT desembolsos_conceptos_amarilo_FK FOREIGN KEY (concepto_amarilo_id) REFERENCES conceptos_amarilo(id),
 	CONSTRAINT desembolsos_grupos_desembolso_FK FOREIGN KEY (grupo_desembolso_id) REFERENCES grupos_desembolso(id)
 );
+
+CREATE TABLE fiduciaria_proyecto (
+	id INT auto_increment NOT NULL,
+	fiduciaria_id int(10) unsigned NOT NULL,
+	proyecto_id int(10) unsigned NOT NULL,
+	numero_obligacion varchar(100) NULL,
+	nit_banco varchar(100) NULL,
+	nombre_titular varchar(100) NULL,
+	anexo_titular varchar(100) NULL,
+	CONSTRAINT fiduciaria_proyecto_pk PRIMARY KEY (id),
+	CONSTRAINT fiduciaria_proyecto_proyecto_FK FOREIGN KEY (proyecto_id) REFERENCES proyectos(id);
+    CONSTRAINT fiduciaria_proyecto_fiduciaria_FK FOREIGN KEY (fiduciaria_id) REFERENCES fiduciarias(id);
+);

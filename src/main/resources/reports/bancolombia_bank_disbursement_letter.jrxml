@@ -24,51 +24,81 @@
 	<parameter name="where" class="java.lang.String"/>
 	<queryString language="plsql">
 		<![CDATA[select 
-p.nombre_proyecto as nombreProyecto,
-valor,
-t.nombre,
-t.id_contribuyente as identificacion,
-cuenta_destino as cuentaDestino,
-(select cast(cast(sum(valor) as UNSIGNED) as CHAR) from desembolsos d where $P!{where}) as valorTotal,
-(select cast(cast(sum(valor_gmf) as UNSIGNED) as CHAR) from desembolsos d where $P!{where}) as valorGmf
+fp.numero_obligacion as numeroObligacion,
+p.nombre_proyecto as proyecto,
+fp.nit_banco as nitTitularCredito,
+fp.nombre_titular as nombreTitularCredito,
+d.preoperativo,
+d.valor,
+t.nombre as tasa,
+t2.nombre as representanteLegal,
+t2.id_contribuyente  as representanteLegalId,
+t3.nombre as titular,
+t3.id_contribuyente  as titularId
 from grupos_desembolso gd 
 inner join desembolsos d on d.grupo_desembolso_id = gd.id
-inner join proyectos p on p.id = gd.proyecto_id
-inner join terceros t on t.id = d.tercero_id
+inner join proyectos p on p.id = d.proyecto_id
+inner join cupos c on c.id = d.cupo_id
+inner join tasas t on t.id = c.tasa_id
+left join terceros t2 on t2.id = d.representante_legal_id 
+left join terceros t3 on t3.id = d.titular_id 
+left join fiduciaria_proyecto fp on fp.proyecto_id = d.proyecto_id and fp.fiduciaria_id 
 where $P!{where}]]>
 	</queryString>
-	<field name="nombreProyecto" class="java.lang.String">
+	<field name="numeroObligacion" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="numero_obligacion"/>
+		<property name="com.jaspersoft.studio.field.label" value="numeroObligacion"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fiduciaria_proyecto"/>
+	</field>
+	<field name="proyecto" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="nombre_proyecto"/>
-		<property name="com.jaspersoft.studio.field.label" value="nombreProyecto"/>
+		<property name="com.jaspersoft.studio.field.label" value="proyecto"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="proyectos"/>
+	</field>
+	<field name="nitTitularCredito" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nit_banco"/>
+		<property name="com.jaspersoft.studio.field.label" value="nitTitularCredito"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fiduciaria_proyecto"/>
+	</field>
+	<field name="nombreTitularCredito" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre_titular"/>
+		<property name="com.jaspersoft.studio.field.label" value="nombreTitularCredito"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="fiduciaria_proyecto"/>
+	</field>
+	<field name="preoperativo" class="java.lang.Boolean">
+		<property name="com.jaspersoft.studio.field.name" value="preoperativo"/>
+		<property name="com.jaspersoft.studio.field.label" value="preoperativo"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="desembolsos"/>
 	</field>
 	<field name="valor" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="valor"/>
 		<property name="com.jaspersoft.studio.field.label" value="valor"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="desembolsos"/>
 	</field>
-	<field name="nombre" class="java.lang.String">
+	<field name="tasa" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="nombre"/>
-		<property name="com.jaspersoft.studio.field.label" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="tasa"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="tasas"/>
+	</field>
+	<field name="representanteLegal" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="representanteLegal"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="terceros"/>
 	</field>
-	<field name="identificacion" class="java.lang.String">
+	<field name="representanteLegalId" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.name" value="id_contribuyente"/>
-		<property name="com.jaspersoft.studio.field.label" value="identificacion"/>
+		<property name="com.jaspersoft.studio.field.label" value="representanteLegalId"/>
 		<property name="com.jaspersoft.studio.field.tree.path" value="terceros"/>
 	</field>
-	<field name="cuentaDestino" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="cuenta_destino"/>
-		<property name="com.jaspersoft.studio.field.label" value="cuentaDestino"/>
-		<property name="com.jaspersoft.studio.field.tree.path" value="desembolsos"/>
+	<field name="titular" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="nombre"/>
+		<property name="com.jaspersoft.studio.field.label" value="titular"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="terceros"/>
 	</field>
-	<field name="valorTotal" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="valorTotal"/>
-		<property name="com.jaspersoft.studio.field.label" value="valorTotal"/>
-	</field>
-	<field name="valorGmf" class="java.lang.String">
-		<property name="com.jaspersoft.studio.field.name" value="valorGmf"/>
-		<property name="com.jaspersoft.studio.field.label" value="valorGmf"/>
+	<field name="titularId" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.name" value="id_contribuyente"/>
+		<property name="com.jaspersoft.studio.field.label" value="titularId"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="terceros"/>
 	</field>
 	<background>
 		<band splitType="Stretch"/>
@@ -150,7 +180,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{numeroObligacion}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="19" width="270" height="17" backcolor="#DBE5F1" uuid="9e15841f-11c1-454d-9eba-ca63d2c0c476">
@@ -180,7 +210,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{proyecto}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="36" width="270" height="17" backcolor="#DBE5F1" uuid="4dadf598-5842-4254-b57f-238e42779cb6">
@@ -210,7 +240,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nitTitularCredito}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="53" width="270" height="17" backcolor="#DBE5F1" uuid="fc2e2064-04bb-4f2c-bfee-ea997d35aac2">
@@ -240,7 +270,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nombreTitularCredito}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="70" width="270" height="17" backcolor="#DBE5F1" uuid="dd55f9a2-6300-4729-998f-ea0de6297928">
@@ -373,7 +403,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{tasa}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement mode="Transparent" x="270" y="121" width="140" height="17" backcolor="#DBE5F1" uuid="a36ceb4e-2023-43c2-b21c-cc112a5f78e6">
@@ -403,7 +433,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement mode="Transparent" x="0" y="138" width="130" height="17" backcolor="#DBE5F1" uuid="0fb35153-4d3e-4985-9465-a6edd6366a65">
@@ -463,7 +493,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement mode="Transparent" x="0" y="155" width="540" height="26" backcolor="#DBE5F1" uuid="96eb224a-050f-4b9d-97f1-14e02a530b20"/>
@@ -582,7 +612,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="110" y="269" width="129" height="17" uuid="71bab80d-447a-419d-a450-863fb0e4eb1e">
@@ -597,7 +627,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="110" y="286" width="129" height="17" uuid="38fc2784-1222-4537-9d9a-3985002d0342">
@@ -612,7 +642,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="110" y="303" width="129" height="17" uuid="93bdad51-31ff-4065-bbde-af32eec24256">
@@ -627,7 +657,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="239" y="252" width="91" height="17" uuid="f6472308-2e10-4328-bdf7-53a197cce717">
@@ -642,7 +672,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="239" y="269" width="91" height="17" uuid="33a116ca-83bf-45a0-962b-784fffe27043">
@@ -657,7 +687,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="239" y="286" width="91" height="17" uuid="19f5ad02-a0b7-4ba9-8687-9c480781e1c1">
@@ -672,7 +702,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="239" y="303" width="91" height="17" uuid="e673a4fe-5ce8-4ea1-9a82-deb618ab017f">
@@ -687,7 +717,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="330" y="252" width="100" height="17" uuid="4cb7d907-658f-4928-861b-0e2ba01754e9">
@@ -702,7 +732,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="330" y="286" width="100" height="17" uuid="501af9e0-a656-423c-8226-7d740eb469cc">
@@ -717,7 +747,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="330" y="269" width="100" height="17" uuid="2ce8bbec-eebc-40b0-b763-9b9df5185a0f"/>
@@ -730,7 +760,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="330" y="303" width="100" height="17" uuid="8f7cfb05-c3e1-4676-95cf-6c18cbbc8117">
@@ -745,7 +775,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="430" y="252" width="110" height="17" uuid="fc41a004-dff9-4416-851e-7782235aa429">
@@ -760,7 +790,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="430" y="269" width="110" height="17" uuid="4e77c51c-c39c-4bcf-b939-705919ee4c6c">
@@ -775,7 +805,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="430" y="286" width="110" height="17" uuid="34af55de-b1c6-43e9-bbbb-77f8df1d62f9">
@@ -790,7 +820,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="430" y="303" width="110" height="17" uuid="e2452d17-4141-4247-8c79-d8559b74d1e9">
@@ -805,7 +835,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement mode="Opaque" x="330" y="320" width="100" height="31" backcolor="#DBE5F1" uuid="ef5db6ba-0e3b-40e7-b92e-c5038c8e80c2"/>
@@ -833,7 +863,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement mode="Opaque" x="239" y="320" width="91" height="31" backcolor="#DBE5F1" uuid="e9347af6-c454-491f-afc8-c0edcecc1231"/>
@@ -887,7 +917,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="430" y="351" width="110" height="17" uuid="e2fbc1f4-c1a9-4570-a772-f2073d8e3a83">
@@ -902,7 +932,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="110" y="351" width="129" height="17" uuid="bf94112c-d90c-484f-a2e2-a5eaa209b1ab">
@@ -917,7 +947,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="320" width="110" height="65" backcolor="#D9D9D9" uuid="b62a848c-2ff0-474c-941b-a1920fb5b6a9"/>
@@ -945,7 +975,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="239" y="368" width="91" height="17" uuid="88fedbb0-53f7-4294-809f-c29dcf919913">
@@ -960,7 +990,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="330" y="368" width="100" height="17" uuid="63524d6e-4f92-4758-af1f-a8618ea1cc15">
@@ -975,7 +1005,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="430" y="368" width="110" height="17" uuid="9715226c-7a25-4010-9800-57965c96e8fe">
@@ -990,7 +1020,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="110" y="402" width="320" height="17" uuid="fe3b6dee-ba7b-4346-88df-ee16dfc7d3c2">
@@ -1005,7 +1035,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="430" y="402" width="110" height="17" uuid="25dff3f2-42b9-45af-ae86-5a914c1b9cd6">
@@ -1020,7 +1050,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement mode="Opaque" x="430" y="385" width="110" height="17" backcolor="#DBE5F1" uuid="dead7fe4-ef0c-4a98-94d6-0c32e992f394">
@@ -1102,7 +1132,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement mode="Opaque" x="240" y="437" width="130" height="17" backcolor="#DBE5F1" uuid="ed905749-6f3d-4167-95db-31fbfd79bd67">
@@ -1233,7 +1263,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{representanteLegal}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="130" y="488" width="300" height="17" uuid="41e8581e-6ea5-41a3-b19e-1b25166fd031">
@@ -1248,7 +1278,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{representanteLegalId}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="130" y="505" width="300" height="17" uuid="2887404e-2595-49d8-a6c6-290e269a0398">
@@ -1263,7 +1293,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{titular}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="130" y="522" width="300" height="17" uuid="edd16aed-7d74-40b8-adc0-b9d70362e080">
@@ -1278,7 +1308,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[""]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="130" y="539" width="300" height="17" uuid="d0a891fb-ce46-495a-824a-0d6727d432cc">
@@ -1293,7 +1323,7 @@ where $P!{where}]]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Text Field"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{titularId}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement mode="Transparent" x="430" y="471" width="110" height="84" backcolor="#DBE5F1" uuid="0e024747-9c40-43aa-9b78-fa0d7109362b"/>
@@ -1321,6 +1351,30 @@ where $P!{where}]]>
 				</textElement>
 				<text><![CDATA[<style isBold="true">DERECHO ENTIDAD ACREEDORA EN CASO DE INCUMPLIMIENTO POR PARTE DEL DEUDOR:</style> El incumplimiento o retardo en el pago de una cualquiera de las cuotas de amortización a capital o de los intereses, dará lugar a que el acreedor declare vencida la obligación y exija el pago de la totalidad de la deuda.  <style isBold="true">DERECHO DEL DEUDOR:</style>  El deudor tendrá derecho a solicitarle al Banco la última calificación y clasificación de riesgo que se le ha asignado junto con los fundamentos que la justifican.]]></text>
 			</staticText>
+			<image>
+				<reportElement x="380" y="72" width="20" height="14" uuid="e8f49b12-ea11-4768-a76e-7599b8c9109e"/>
+				<imageExpression><![CDATA[!$F{preoperativo} ? $P{ROOT_DIR} + "/checked.jpg" :  $P{ROOT_DIR} + "/unchecked.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="510" y="72" width="20" height="14" uuid="c84df8f7-a862-4cbc-bf61-115770ffc46c"/>
+				<imageExpression><![CDATA[$F{preoperativo} ? $P{ROOT_DIR} + "/checked.jpg" :  $P{ROOT_DIR} + "/unchecked.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="430" y="439" width="20" height="14" uuid="b61f895f-a1bd-4a45-812b-c6dc99957370"/>
+				<imageExpression><![CDATA[$P{ROOT_DIR} + "/check_empty.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="516" y="439" width="20" height="14" uuid="4b65bccf-26db-44a9-b644-775d2cc574ed"/>
+				<imageExpression><![CDATA[$P{ROOT_DIR} + "/check_empty.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="110" y="140" width="20" height="14" uuid="597cbc9a-fc9e-4a70-8d93-b0fff11cefbc"/>
+				<imageExpression><![CDATA[$P{ROOT_DIR} + "/check_empty.jpg"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="250" y="140" width="20" height="14" uuid="8d331ede-c24f-4d2a-955b-3cb88be66bef"/>
+				<imageExpression><![CDATA[$P{ROOT_DIR} + "/check_empty.jpg"]]></imageExpression>
+			</image>
 		</band>
 	</detail>
 </jasperReport>
