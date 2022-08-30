@@ -43,8 +43,10 @@ public class ReportServiceImpl implements ReportService {
     private final JasperReportService jasperReportService;
     private final DisbursementService disbursementService;
 
-    private static final String BANCOLOMBIA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos Banco Bancolombia.pdf";
-    private static final String BOGOTA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos Banco Bogota.pdf";
+    private static final String BANCOLOMBIA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos Banco Bancolombia %s.pdf";
+    private static final String BOGOTA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos Banco Bogota constructor.pdf";
+
+    private static final String BOGOTA_BANK_DISBURSEMENT_PREOPERATIVE_LETTER_FILENAME = "Carta desembolsos Banco Bogota.pdf";
     private static final String BBVA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos Banco BBVA.pdf";
     private static final String DAVIVIENDA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos Banco Davivienda.pdf";
 
@@ -64,7 +66,7 @@ public class ReportServiceImpl implements ReportService {
                     switch (disbursementListByQuota.get(0).getSourceBank().getCode()) {
                         case BANCOLOMBIA_BANK_CODE:
                             for (DisbursementDto disbursementDto : disbursementListByQuota) {
-                                buildLetterWithOneDisbursement(BANCOLOMBIA_BANK_DISBURSEMENT_LETTER_FILENAME,
+                                buildLetterWithOneDisbursement(String.format(BANCOLOMBIA_BANK_DISBURSEMENT_LETTER_FILENAME, "_" + disbursementDto.getId().toString()),
                                         BANCOLOMBIA_DISBURSEMENT_JASPER_LETTER,
                                         disbursementDto.getId(), zipOutputStream);
                             }
@@ -79,7 +81,7 @@ public class ReportServiceImpl implements ReportService {
                                     .collect(Collectors.groupingBy(DisbursementDto::isPreoperative));
                             for (var preoperative : groupByPreoperative.entrySet()) {
                                 if (Boolean.TRUE.equals(preoperative.getKey())) {
-                                    buildLetterWithMultipleDisbursements(BOGOTA_BANK_DISBURSEMENT_LETTER_FILENAME,
+                                    buildLetterWithMultipleDisbursements(BOGOTA_BANK_DISBURSEMENT_PREOPERATIVE_LETTER_FILENAME,
                                             BOGOTA_DISBURSEMENT_PREOPERATIVE_JASPER_LETTER,
                                             preoperative.getValue(), zipOutputStream);
                                 } else {

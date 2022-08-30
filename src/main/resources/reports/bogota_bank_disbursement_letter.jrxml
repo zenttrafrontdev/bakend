@@ -44,6 +44,7 @@
 	</style>
 	<subDataset name="dataset1" uuid="e4cab52a-6aaf-4c8a-9dcc-ba41f8d45cfe">
 		<property name="com.jaspersoft.studio.data.defaultdataadapter" value="DataAdapter.jrdax"/>
+		<parameter name="where" class="java.lang.String"/>
 		<queryString language="plsql">
 			<![CDATA[select
 d.valor,
@@ -53,7 +54,7 @@ from grupos_desembolso gd
 inner join desembolsos d on d.grupo_desembolso_id = gd.id
 inner join proyectos p on p.id = gd.proyecto_id
 inner join terceros t on t.id = d.tercero_id
-where d.id in (22, 23)]]>
+where $P!{where}]]>
 		</queryString>
 		<field name="valor" class="java.lang.String">
 			<property name="com.jaspersoft.studio.field.name" value="valor"/>
@@ -292,7 +293,10 @@ group by p.nombre_proyecto]]>
 					<property name="com.jaspersoft.studio.table.style.detail" value="Table_TD"/>
 				</reportElement>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
-					<datasetRun subDataset="dataset1" uuid="938841fa-2aab-42db-8e58-2fc5648b44d6">
+					<datasetRun subDataset="dataset1" uuid="c9bba455-7c8b-4482-960f-ee5349d38e6c">
+						<datasetParameter name="where">
+							<datasetParameterExpression><![CDATA[$P{where}]]></datasetParameterExpression>
+						</datasetParameter>
 						<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
 					</datasetRun>
 					<jr:column width="200" uuid="4eda0791-690a-4fd4-bb06-f8a6ed472ab0">
