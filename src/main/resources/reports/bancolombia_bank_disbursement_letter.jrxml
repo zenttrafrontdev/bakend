@@ -42,7 +42,7 @@ inner join cupos c on c.id = d.cupo_id
 inner join tasas t on t.id = c.tasa_id
 left join terceros t2 on t2.id = d.representante_legal_id 
 left join terceros t3 on t3.id = d.titular_id 
-left join fiduciaria_proyecto fp on fp.proyecto_id = d.proyecto_id and fp.fiduciaria_id 
+left join fiduciaria_proyecto fp on fp.proyecto_id = d.proyecto_id and fp.fiduciaria_id = c.fiduciaria_id
 where $P!{where}]]>
 	</queryString>
 	<field name="numeroObligacion" class="java.lang.String">

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.List;
 
 
@@ -25,7 +26,7 @@ public class ReportController {
     @GetMapping("disbursement-bank-letter")
     public ResponseEntity<Resource> generateDisbursementBankLetter(
             @RequestParam("disbursementIds") List<Integer> disbursementIds
-    ) {
+    ) throws IOException {
         ByteArrayResource resource = reportService.generateDisbursementBankLetter(disbursementIds);
 
         HttpHeaders header = new HttpHeaders();

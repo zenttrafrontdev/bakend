@@ -43,15 +43,15 @@ public class ReportServiceImpl implements ReportService {
     private final JasperReportService jasperReportService;
     private final DisbursementService disbursementService;
 
-    private static final String BANCOLOMBIA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos Banco Bancolombia %s.pdf";
-    private static final String BOGOTA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos Banco Bogota constructor.pdf";
+    private static final String BANCOLOMBIA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos Banco Bancolombia%s.pdf";
+    private static final String BOGOTA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos Banco Bogota constructor%s.pdf";
 
-    private static final String BOGOTA_BANK_DISBURSEMENT_PREOPERATIVE_LETTER_FILENAME = "Carta desembolsos Banco Bogota.pdf";
-    private static final String BBVA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos Banco BBVA.pdf";
-    private static final String DAVIVIENDA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos Banco Davivienda.pdf";
+    private static final String BOGOTA_BANK_DISBURSEMENT_PREOPERATIVE_LETTER_FILENAME = "Carta desembolsos Banco Bogota%s.pdf";
+    private static final String BBVA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos Banco BBVA%s.pdf";
+    private static final String DAVIVIENDA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos Banco Davivienda%s.pdf";
 
     @Override
-    public ByteArrayResource generateDisbursementBankLetter(List<Integer> disbursementIds) {
+    public ByteArrayResource generateDisbursementBankLetter(List<Integer> disbursementIds) throws IOException {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         ZipOutputStream zipOutputStream = new ZipOutputStream(stream);
 
@@ -66,7 +66,8 @@ public class ReportServiceImpl implements ReportService {
                     switch (disbursementListByQuota.get(0).getSourceBank().getCode()) {
                         case BANCOLOMBIA_BANK_CODE:
                             for (DisbursementDto disbursementDto : disbursementListByQuota) {
-                                buildLetterWithOneDisbursement(String.format(BANCOLOMBIA_BANK_DISBURSEMENT_LETTER_FILENAME, "_" + disbursementDto.getId().toString()),
+                                buildLetterWithOneDisbursement(String.format(BANCOLOMBIA_BANK_DISBURSEMENT_LETTER_FILENAME,
+                                                "_" + disbursementDto.getId().toString()),
                                         BANCOLOMBIA_DISBURSEMENT_JASPER_LETTER,
                                         disbursementDto.getId(), zipOutputStream);
                             }
@@ -100,11 +101,11 @@ public class ReportServiceImpl implements ReportService {
                             throw new BusinessException("No existe una carta de desembolso disponible");
                     }
                 }
-                zipOutputStream.close();
             } catch (Exception ex) {
                 log.info("Ha ocurrido un error generando la carta de desembolsos. ID Desembolso -> {}", disbursementId, ex);
             }
         });
+        zipOutputStream.close();
         return new ByteArrayResource(stream.toByteArray()) {
             @Override
             public String getFilename() {
@@ -118,7 +119,7 @@ public class ReportServiceImpl implements ReportService {
             throws IOException {
         log.info("Setting parameters- Disbursement id -> {}", disbursementId);
         Map<String, Object> parameters = new HashMap<>();
-        parameters.put("ROOT_DIR", "./reports");
+        parameters.put("ROOT_DIR", "reports");
         parameters.put("where", String.format("d.id = %s", disbursementId));
         generateReportAndZipIt(fileName, reportFileName, parameters, zipOutputStream);
     }
@@ -134,7 +135,8 @@ public class ReportServiceImpl implements ReportService {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("ROOT_DIR", "reports");
         parameters.put("where", String.format("d.id in (%s)", String.join(",", idList)));
-        generateReportAndZipIt(fileName, reportFileName, parameters, zipOutputStream);
+        generateReportAndZipIt(String.format(fileName,
+                "_" + String.join("-", idList)), reportFileName, parameters, zipOutputStream);
     }
 
     private void generateReportAndZipIt(String fileName, String reportFileName, Map<String, Object> parameters, ZipOutputStream zipOutputStream) throws IOException {

@@ -5,6 +5,13 @@ spring:
     multipart:
       max-file-size: 100000KB
       max-request-size: 100000KB
+  datasource:
+    hikari:
+      minimumIdle: 5
+      maximumPoolSize: 20
+      idleTimeout: 120000
+      connectionTimeout: 300000
+      leakDetectionThreshold: 300000
 
 logging:
   pattern:
