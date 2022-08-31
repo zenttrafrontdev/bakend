@@ -59,13 +59,13 @@ public class ReportServiceImpl implements ReportService {
             var disbursementGroupDto = disbursementService.findById(disbursementId);
             try {
                 log.info("Generating disbursement letter for ids -> {}", disbursementId);
-                var map = disbursementGroupDto.getDisbursementList().stream()
-                        .collect(Collectors.groupingBy(DisbursementDto::getQuota));
-                for (var entry : map.entrySet()) {
-                    var disbursementListByQuota = entry.getValue();
-                    switch (disbursementListByQuota.get(0).getSourceBank().getCode()) {
+                var mapGroupBySourceBank = disbursementGroupDto.getDisbursementList().stream()
+                        .collect(Collectors.groupingBy(DisbursementDto::getSourceBank));
+                for (var entry : mapGroupBySourceBank.entrySet()) {
+                    var disbursementListBySourceBank = entry.getValue();
+                    switch (disbursementListBySourceBank.get(0).getSourceBank().getCode()) {
                         case BANCOLOMBIA_BANK_CODE:
-                            for (DisbursementDto disbursementDto : disbursementListByQuota) {
+                            for (DisbursementDto disbursementDto : disbursementListBySourceBank) {
                                 buildLetterWithOneDisbursement(String.format(BANCOLOMBIA_BANK_DISBURSEMENT_LETTER_FILENAME,
                                                 "_" + disbursementDto.getId().toString()),
                                         BANCOLOMBIA_DISBURSEMENT_JASPER_LETTER,
@@ -75,10 +75,10 @@ public class ReportServiceImpl implements ReportService {
                         case BBVA_BANK_CODE:
                             buildLetterWithMultipleDisbursements(BBVA_BANK_DISBURSEMENT_LETTER_FILENAME,
                                     BBVA_DISBURSEMENT_JASPER_LETTER,
-                                    disbursementListByQuota, zipOutputStream);
+                                    disbursementListBySourceBank, zipOutputStream);
                             break;
                         case BOGOTA_BANK_CODE:
-                            var groupByPreoperative = disbursementListByQuota.stream()
+                            var groupByPreoperative = disbursementListBySourceBank.stream()
                                     .collect(Collectors.groupingBy(DisbursementDto::isPreoperative));
                             for (var preoperative : groupByPreoperative.entrySet()) {
                                 if (Boolean.TRUE.equals(preoperative.getKey())) {
@@ -95,7 +95,7 @@ public class ReportServiceImpl implements ReportService {
                         case DAVIVIENDA_BANK_CODE:
                             buildLetterWithMultipleDisbursements(DAVIVIENDA_BANK_DISBURSEMENT_LETTER_FILENAME,
                                     DAVIVIENDA_DISBURSEMENT_JASPER_LETTER,
-                                    disbursementListByQuota, zipOutputStream);
+                                    disbursementListBySourceBank, zipOutputStream);
                             break;
                         default:
                             throw new BusinessException("No existe una carta de desembolso disponible");
