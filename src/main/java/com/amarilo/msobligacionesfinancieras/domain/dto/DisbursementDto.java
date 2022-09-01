@@ -27,10 +27,8 @@ public class DisbursementDto {
     private FinanceThirdDto paymentProvider;
     private String targetAccount;
     private GenericMasterDto accountType;
-    private GenericMasterDto targetBank;
     private String disbursementInvoiceNumber;
     private String outlayDisbursement;
-    private GenericMasterDto sourceBank;
     private String gmfValue;
     private FinanceThirdDto legalRepresentative;
     private FinanceThirdDto owner;

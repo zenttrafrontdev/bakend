@@ -15,7 +15,8 @@ import java.time.LocalDate;
 @Builder
 public class DisbursementGroupSearchCriteria {
     private Integer consecutive;
-    private LocalDate date;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private Integer projectId;
     private String obligationNumber;
     private String oracleId;

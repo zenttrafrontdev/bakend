@@ -8,12 +8,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.List;
 
 
 @AllArgsConstructor
@@ -23,11 +22,10 @@ public class ReportController {
 
     private final ReportService reportService;
 
-    @GetMapping("disbursement-bank-letter")
-    public ResponseEntity<Resource> generateDisbursementBankLetter(
-            @RequestParam("disbursementIds") List<Integer> disbursementIds
-    ) throws IOException {
-        ByteArrayResource resource = reportService.generateDisbursementBankLetter(disbursementIds);
+    @GetMapping("disbursement-bank-letter/{disbursementId}")
+    public ResponseEntity<Resource> generateDisbursementBankLetter(@PathVariable Integer disbursementId)
+            throws IOException {
+        ByteArrayResource resource = reportService.generateDisbursementBankLetter(disbursementId);
 
         HttpHeaders header = new HttpHeaders();
         header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + resource.getFilename());

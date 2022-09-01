@@ -45,10 +45,11 @@ import java.util.stream.Collectors;
 
 import static com.amarilo.msobligacionesfinancieras.commons.Utility.validateNotNullGreaterThanZeroInteger;
 import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.DisbursementGroupSpecification.hasConsecutive;
-import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.DisbursementGroupSpecification.hasDate;
+import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.DisbursementGroupSpecification.hasEndDateLessThan;
 import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.DisbursementGroupSpecification.hasObligationNumber;
 import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.DisbursementGroupSpecification.hasOracleId;
 import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.DisbursementGroupSpecification.hasProjectId;
+import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.DisbursementGroupSpecification.hasStartDateGreaterThan;
 import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.SpecificationUtils.buildAndSpecification;
 
 @Slf4j
@@ -218,8 +219,12 @@ public class DisbursementServiceImpl implements DisbursementService {
             specification = buildAndSpecification(null, hasConsecutive(searchCriteria.getConsecutive()));
         }
 
-        if (Optional.ofNullable(searchCriteria.getDate()).isPresent()) {
-            specification = buildAndSpecification(specification, hasDate(searchCriteria.getDate()));
+        if (Optional.ofNullable(searchCriteria.getStartDate()).isPresent()) {
+            specification = buildAndSpecification(specification, hasStartDateGreaterThan(searchCriteria.getStartDate()));
+        }
+
+        if (Optional.ofNullable(searchCriteria.getEndDate()).isPresent()) {
+            specification = buildAndSpecification(specification, hasEndDateLessThan(searchCriteria.getEndDate()));
         }
 
         if (validateNotNullGreaterThanZeroInteger(searchCriteria.getProjectId())) {

@@ -19,9 +19,15 @@ public class DisbursementGroupSpecification {
         ));
     }
 
-    public static Specification<DisbursementGroupEntity> hasDate(LocalDate date) {
+    public static Specification<DisbursementGroupEntity> hasStartDateGreaterThan(LocalDate startDate) {
         return ((root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.and(
-                criteriaBuilder.equal(root.get("date"), date)
+                criteriaBuilder.greaterThanOrEqualTo(root.get("date"), startDate)
+        ));
+    }
+
+    public static Specification<DisbursementGroupEntity> hasEndDateLessThan(LocalDate endDate) {
+        return ((root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.and(
+                criteriaBuilder.lessThanOrEqualTo(root.get("date"), endDate)
         ));
     }
 

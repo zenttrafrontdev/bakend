@@ -74,16 +74,10 @@ public class DisbursementEntity{
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "tipo_cuenta_id", nullable = false)
     private AccountTypeEntity accountType;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "banco_destino_id", nullable = false)
-    private BankEntity targetBank;
     @Column(name = "numero_factura_desembolso")
     private String disbursementInvoiceNumber;
     @Column(name = "egreso_desembolso")
     private String outlayDisbursement;
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "banco_origen_id", nullable = false)
-    private BankEntity sourceBank;
     @Column(name = "valor_gmf")
     private String gmfValue;
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
