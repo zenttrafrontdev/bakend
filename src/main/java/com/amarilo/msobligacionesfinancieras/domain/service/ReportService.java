@@ -1,10 +1,10 @@
 package com.amarilo.msobligacionesfinancieras.domain.service;
 
-import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.Resource;
 
 import java.io.IOException;
 
 public interface ReportService {
 
-    ByteArrayResource generateDisbursementBankLetter(Integer disbursementId) throws IOException;
+    Resource generateDisbursementBankLetter(Integer disbursementId) throws IOException;
 }

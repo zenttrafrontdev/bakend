@@ -7,23 +7,13 @@ import com.amarilo.msobligacionesfinancieras.domain.service.ReportService;
 import com.amarilo.msobligacionesfinancieras.exception.BusinessException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import static com.amarilo.msobligacionesfinancieras.commons.Constants.BANCOLOMBIA_BANK_CODE;
 import static com.amarilo.msobligacionesfinancieras.commons.Constants.BANCOLOMBIA_DISBURSEMENT_JASPER_LETTER;
@@ -43,55 +33,45 @@ public class ReportServiceImpl implements ReportService {
     private final JasperReportService jasperReportService;
     private final DisbursementService disbursementService;
 
-    private static final String BANCOLOMBIA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos Banco Bancolombia%s.pdf";
-    private static final String BOGOTA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos Banco Bogota constructor%s.pdf";
-
-    private static final String BOGOTA_BANK_DISBURSEMENT_PREOPERATIVE_LETTER_FILENAME = "Carta desembolsos Banco Bogota%s.pdf";
-    private static final String BBVA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos Banco BBVA%s.pdf";
-    private static final String DAVIVIENDA_BANK_DISBURSEMENT_LETTER_FILENAME = "Carta desembolsos Banco Davivienda%s.pdf";
-
     @Override
-    public ByteArrayResource generateDisbursementBankLetter(Integer disbursementId) throws IOException {
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        ZipOutputStream zipOutputStream = new ZipOutputStream(stream);
-
+    public ByteArrayResource generateDisbursementBankLetter(Integer disbursementId) {
         var disbursementGroupDto = disbursementService.findById(disbursementId);
         var disbursementList = disbursementGroupDto.getDisbursementList();
+        byte[] file = new byte[0];
         try {
             log.info("Generating disbursement letter for ids -> {}", disbursementId);
             switch (disbursementList.get(0).getQuota().getBank().getCode()) {
                 case BANCOLOMBIA_BANK_CODE:
                     for (DisbursementDto disbursementDto : disbursementList) {
-                        buildLetterWithOneDisbursement(String.format(BANCOLOMBIA_BANK_DISBURSEMENT_LETTER_FILENAME,
-                                        "_" + disbursementDto.getId().toString()),
+                        file = buildLetterWithOneDisbursement(
                                 BANCOLOMBIA_DISBURSEMENT_JASPER_LETTER,
-                                disbursementDto.getId(), zipOutputStream);
+                                disbursementDto.getId());
                     }
                     break;
                 case BBVA_BANK_CODE:
-                    buildLetterWithMultipleDisbursements(BBVA_BANK_DISBURSEMENT_LETTER_FILENAME,
+                    file = buildLetterWithMultipleDisbursements(
                             BBVA_DISBURSEMENT_JASPER_LETTER,
-                            disbursementList, zipOutputStream);
+                            disbursementList);
                     break;
                 case BOGOTA_BANK_CODE:
                     var groupByPreoperative = disbursementList.stream()
                             .collect(Collectors.groupingBy(DisbursementDto::isPreoperative));
                     for (var preoperative : groupByPreoperative.entrySet()) {
                         if (Boolean.TRUE.equals(preoperative.getKey())) {
-                            buildLetterWithMultipleDisbursements(BOGOTA_BANK_DISBURSEMENT_PREOPERATIVE_LETTER_FILENAME,
+                            file = buildLetterWithMultipleDisbursements(
                                     BOGOTA_DISBURSEMENT_PREOPERATIVE_JASPER_LETTER,
-                                    preoperative.getValue(), zipOutputStream);
+                                    preoperative.getValue());
                         } else {
-                            buildLetterWithMultipleDisbursements(BOGOTA_BANK_DISBURSEMENT_LETTER_FILENAME,
+                            file = buildLetterWithMultipleDisbursements(
                                     BOGOTA_DISBURSEMENT_JASPER_LETTER,
-                                    preoperative.getValue(), zipOutputStream);
+                                    preoperative.getValue());
                         }
                     }
                     break;
                 case DAVIVIENDA_BANK_CODE:
-                    buildLetterWithMultipleDisbursements(DAVIVIENDA_BANK_DISBURSEMENT_LETTER_FILENAME,
+                    file = buildLetterWithMultipleDisbursements(
                             DAVIVIENDA_DISBURSEMENT_JASPER_LETTER,
-                            disbursementList, zipOutputStream);
+                            disbursementList);
                     break;
                 default:
                     throw new BusinessException("No existe una carta de desembolso disponible");
@@ -100,28 +80,27 @@ public class ReportServiceImpl implements ReportService {
         } catch (Exception ex) {
             log.info("Ha ocurrido un error generando la carta de desembolsos. ID Desembolso -> {}", disbursementId, ex);
         }
-        zipOutputStream.close();
-        return new ByteArrayResource(stream.toByteArray()) {
+
+        return new ByteArrayResource(file) {
             @Override
             public String getFilename() {
-                return "cartas-desembolsos.zip";
+                return "cartas-desembolsos.pdf";
             }
         };
+
     }
 
-    private void buildLetterWithOneDisbursement(String fileName, String reportFileName,
-                                                Integer disbursementId, ZipOutputStream zipOutputStream)
-            throws IOException {
+    private byte[] buildLetterWithOneDisbursement(String reportFileName,
+                                                  Integer disbursementId) {
         log.info("Setting parameters- Disbursement id -> {}", disbursementId);
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("ROOT_DIR", "reports");
         parameters.put("where", String.format("d.id = %s", disbursementId));
-        generateReportAndZipIt(fileName, reportFileName, parameters, zipOutputStream);
+        return generateReport(reportFileName, parameters);
     }
 
-    private void buildLetterWithMultipleDisbursements(String fileName, String reportFileName,
-                                                      List<DisbursementDto> disbursements, ZipOutputStream zipOutputStream)
-            throws IOException {
+    private byte[] buildLetterWithMultipleDisbursements(String reportFileName,
+                                                        List<DisbursementDto> disbursements) {
         var idList = disbursements.stream()
                 .map(DisbursementDto::getId)
                 .map(String::valueOf)
@@ -130,19 +109,10 @@ public class ReportServiceImpl implements ReportService {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("ROOT_DIR", "reports");
         parameters.put("where", String.format("d.id in (%s)", String.join(",", idList)));
-        generateReportAndZipIt(String.format(fileName,
-                "_" + String.join("-", idList)), reportFileName, parameters, zipOutputStream);
+        return generateReport(reportFileName, parameters);
     }
 
-    private void generateReportAndZipIt(String fileName, String reportFileName, Map<String, Object> parameters, ZipOutputStream zipOutputStream) throws IOException {
-        byte[] report = jasperReportService.exportReport(reportFileName, parameters);
-        var file = new File(fileName);
-        Files.write(Paths.get(file.getAbsolutePath()), report);
-        zipOutputStream.putNextEntry(new ZipEntry(fileName));
-        FileInputStream fileInputStream = new FileInputStream(file);
-        IOUtils.copy(fileInputStream, zipOutputStream);
-        fileInputStream.close();
-        Files.delete(Path.of(file.getPath()));
-        zipOutputStream.closeEntry();
+    private byte[] generateReport(String reportFileName, Map<String, Object> parameters) {
+        return jasperReportService.exportReport(reportFileName, parameters);
     }
 }

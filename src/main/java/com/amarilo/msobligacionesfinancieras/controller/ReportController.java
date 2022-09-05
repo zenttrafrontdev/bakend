@@ -25,7 +25,7 @@ public class ReportController {
     @GetMapping("disbursement-bank-letter/{disbursementId}")
     public ResponseEntity<Resource> generateDisbursementBankLetter(@PathVariable Integer disbursementId)
             throws IOException {
-        ByteArrayResource resource = reportService.generateDisbursementBankLetter(disbursementId);
+        ByteArrayResource resource = (ByteArrayResource) reportService.generateDisbursementBankLetter(disbursementId);
 
         HttpHeaders header = new HttpHeaders();
         header.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + resource.getFilename());
