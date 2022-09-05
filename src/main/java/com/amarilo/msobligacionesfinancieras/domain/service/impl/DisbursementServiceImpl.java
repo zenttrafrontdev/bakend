@@ -1,6 +1,7 @@
 package com.amarilo.msobligacionesfinancieras.domain.service.impl;
 
 import com.amarilo.msobligacionesfinancieras.controller.request.DisbursementCsvDto;
+import com.amarilo.msobligacionesfinancieras.controller.request.DisbursementGroupPartialRequestDto;
 import com.amarilo.msobligacionesfinancieras.controller.request.DisbursementGroupSearchCriteria;
 import com.amarilo.msobligacionesfinancieras.controller.request.PageRequestDto;
 import com.amarilo.msobligacionesfinancieras.controller.response.PageResponseDto;
@@ -19,6 +20,7 @@ import com.amarilo.msobligacionesfinancieras.infraestructure.entity.Disbursement
 import com.amarilo.msobligacionesfinancieras.infraestructure.entity.FinanceThirdEntity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.entity.QuotaEntity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.AmariloConceptRepository;
+import com.amarilo.msobligacionesfinancieras.infraestructure.generic.CapitalAmortizationRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.DisbursementOperationRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.FiduciaryConceptRepository;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -66,6 +68,7 @@ public class DisbursementServiceImpl implements DisbursementService {
     private final ProjectFiduciaryRepository projectFiduciaryRepository;
     private final AmariloConceptRepository amariloConceptRepository;
     private final FiduciaryConceptRepository fiduciaryConceptRepository;
+    private final CapitalAmortizationRepository capitalAmortizationRepository;
 
     @Override
     public PageResponseDto<DisbursementGroupDto> findAllDisbursementsGroupBySearchCriteria(PageRequestDto<DisbursementGroupSearchCriteria> pageRequestDto) {
@@ -97,6 +100,23 @@ public class DisbursementServiceImpl implements DisbursementService {
     @Override
     public DisbursementGroupDto updateDisbursementGroup(DisbursementGroupDto disbursementDto) {
         DisbursementGroupEntity disbursementGroupEntity = DisbursementGroupMapper.INSTANCE.disbursementGroupDtoToDisbursementGroupEntity(disbursementDto);
+        return DisbursementGroupMapper.INSTANCE.disbursementGroupEntityToDisbursementGroupDto(disbursementGroupRepository.save(disbursementGroupEntity));
+    }
+
+    @Override
+    public DisbursementGroupDto partialUpdateDisbursementGroup(Integer id, DisbursementGroupPartialRequestDto disbursementGroupPartialRequestDto) {
+        var disbursementGroupEntity = disbursementGroupRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("El grupo de desembolso no existe"));
+
+        disbursementGroupEntity.setConsecutive(disbursementGroupPartialRequestDto.getConsecutive());
+        disbursementGroupEntity.setSpread(disbursementGroupPartialRequestDto.getSpread());
+        disbursementGroupEntity.setExpirationDate(disbursementGroupPartialRequestDto.getExpirationDate());
+        disbursementGroupEntity.setObligationNumber(disbursementGroupPartialRequestDto.getObligationNumber());
+        if (Optional.ofNullable(disbursementGroupPartialRequestDto.getCapitalAmortization()).isPresent()) {
+            disbursementGroupEntity.setCapitalAmortization(capitalAmortizationRepository.findById(disbursementGroupPartialRequestDto.getCapitalAmortization().getId())
+                    .orElseThrow(() -> new BusinessException("La amortización de capital no existe")));
+        }
+
         return DisbursementGroupMapper.INSTANCE.disbursementGroupEntityToDisbursementGroupDto(disbursementGroupRepository.save(disbursementGroupEntity));
     }
 

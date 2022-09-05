@@ -1,5 +1,6 @@
 package com.amarilo.msobligacionesfinancieras.domain.service;
 
+import com.amarilo.msobligacionesfinancieras.controller.request.DisbursementGroupPartialRequestDto;
 import com.amarilo.msobligacionesfinancieras.controller.request.DisbursementGroupSearchCriteria;
 import com.amarilo.msobligacionesfinancieras.controller.request.PageRequestDto;
 import com.amarilo.msobligacionesfinancieras.controller.response.PageResponseDto;
@@ -18,6 +19,8 @@ public interface DisbursementService {
     DisbursementGroupDto saveDisbursementGroup(DisbursementGroupDto disbursementGroupDto);
 
     DisbursementGroupDto updateDisbursementGroup(DisbursementGroupDto disbursementGroupDto);
+
+    DisbursementGroupDto partialUpdateDisbursementGroup(Integer id, DisbursementGroupPartialRequestDto disbursementGroupPartialRequestDto);
 
     List<DisbursementGroupDto> processDisbursementFile(MultipartFile file) throws IOException;
 }

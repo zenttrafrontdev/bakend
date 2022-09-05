@@ -1,5 +1,6 @@
 package com.amarilo.msobligacionesfinancieras.controller;
 
+import com.amarilo.msobligacionesfinancieras.controller.request.DisbursementGroupPartialRequestDto;
 import com.amarilo.msobligacionesfinancieras.controller.request.DisbursementGroupSearchCriteria;
 import com.amarilo.msobligacionesfinancieras.controller.request.PageRequestDto;
 import com.amarilo.msobligacionesfinancieras.controller.response.PageResponseDto;
@@ -120,6 +121,23 @@ public class DisbursementController {
                                                                    @RequestBody DisbursementGroupDto disbursementGroupDto) {
         disbursementGroupDto.setId(id);
         return ResponseEntity.ok(disbursementService.updateDisbursementGroup(disbursementGroupDto));
+    }
+
+    @Operation(summary = "Permite actualizar un grupo de desembolso de algunos atributos")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se ha actualizado el grupo desembolso exitosamente",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = DisbursementGroupDto.class))}),
+            @ApiResponse(responseCode = "204", description = "No existen registros",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "application/json")})
+    })
+    @PatchMapping("{id}")
+    public ResponseEntity<DisbursementGroupDto> partialUpdateDisbursement(@PathVariable Integer id,
+                                                                          @RequestBody DisbursementGroupPartialRequestDto disbursementGroupPartialRequestDto) {
+        return ResponseEntity.ok(disbursementService.partialUpdateDisbursementGroup(id, disbursementGroupPartialRequestDto));
     }
 }
 
