@@ -64,4 +64,5 @@ public class QuotaDto {
     @NotNull(message = "El plazo del cupo no puede ser vacío")
     private Integer deadLine;
     private List<FileBusinessDto> files;
+    private ThirdPartyFinancierDto thirdPartyFinancier;
 }

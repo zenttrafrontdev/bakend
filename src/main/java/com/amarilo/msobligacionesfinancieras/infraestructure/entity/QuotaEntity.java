@@ -74,4 +74,7 @@ public class QuotaEntity {
     private LocalDate expirationQuotaDate;
     @Column(name = "plazo")
     private Integer deadLine;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "tercero_financiador_id")
+    private ThirdPartyFinancierEntity thirdPartyFinancier;
 }

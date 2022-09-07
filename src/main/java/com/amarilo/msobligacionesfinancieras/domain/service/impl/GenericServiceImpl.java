@@ -12,6 +12,7 @@ import com.amarilo.msobligacionesfinancieras.infraestructure.generic.BankReposit
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.BusinessAreaRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.CapitalAmortizationRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.CreditTypeRepository;
+import com.amarilo.msobligacionesfinancieras.infraestructure.generic.DebtTypeRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.FiduciaryConceptRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.FileBusinessTypeRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.FiscalClassificationRepository;
@@ -51,6 +52,7 @@ public class GenericServiceImpl implements GenericService {
     private final FileBusinessTypeRepository fileBusinessTypeRepository;
     private final AmariloConceptRepository amariloConceptRepository;
     private final FiduciaryConceptRepository fiduciaryConceptRepository;
+    private final DebtTypeRepository debtTypeRepository;
 
     @Override
     public List<GenericMasterDto> findAllFinanceThirdTypes() {
@@ -196,6 +198,15 @@ public class GenericServiceImpl implements GenericService {
     public List<GenericMasterDto> findAllFiduciaryConcepts() {
         return GenericMasterMapper.INSTANCE.genericMasterListToGenericMasterDtoList(
                 fiduciaryConceptRepository.findAll()
+                        .stream()
+                        .map(GenericMasterEntity.class::cast)
+                        .collect(Collectors.toList()));
+    }
+
+    @Override
+    public List<GenericMasterDto> findAllDebtTypes() {
+        return GenericMasterMapper.INSTANCE.genericMasterListToGenericMasterDtoList(
+                debtTypeRepository.findAll()
                         .stream()
                         .map(GenericMasterEntity.class::cast)
                         .collect(Collectors.toList()));

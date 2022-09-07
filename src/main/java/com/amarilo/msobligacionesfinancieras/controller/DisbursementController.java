@@ -85,7 +85,7 @@ public class DisbursementController {
                     content = {@Content(mediaType = "application/json")})
     })
     @PostMapping
-    public ResponseEntity<DisbursementGroupDto> saveDisbursement(@RequestBody @Valid DisbursementGroupDto disbursementGroupDto) {
+    public ResponseEntity<DisbursementGroupDto> saveDisbursement(@Valid @RequestBody DisbursementGroupDto disbursementGroupDto) {
         return ResponseEntity.ok(disbursementService.saveDisbursementGroup(disbursementGroupDto));
     }
 

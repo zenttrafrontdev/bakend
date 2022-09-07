@@ -61,6 +61,11 @@ public class DisbursementGroupEntity {
     private CapitalAmortizationEntity capitalAmortization;
     @Column(name = "carta_desembolso_impresa")
     private boolean disbursementLetterPrinted;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "tasa_id", nullable = false)
+    private FeeEntity fee;
+    @Column(name = "fecha_efectiva")
+    private LocalDate effectiveDate;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "grupo_desembolso_id", nullable = false)
     private List<DisbursementEntity> disbursementList;

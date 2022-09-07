@@ -3,6 +3,7 @@ package com.amarilo.msobligacionesfinancieras.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -11,6 +12,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import java.nio.file.AccessDeniedException;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 @Slf4j
@@ -61,4 +63,11 @@ public class ErrorHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorDto(ex.getMessage()));
     }
 
+    @ExceptionHandler({MethodArgumentNotValidException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex) {
+        String error = ex.getFieldErrors().stream().map(f -> f.getDefaultMessage()).collect(Collectors.joining(","));
+        log.error(error, ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDto(error));
+    }
 }

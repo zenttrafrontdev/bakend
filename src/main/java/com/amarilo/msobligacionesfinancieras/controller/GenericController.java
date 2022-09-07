@@ -296,4 +296,20 @@ public class GenericController {
     public ResponseEntity<List<GenericMasterDto>> findAllFiduciaryConcepts() {
         return ResponseEntity.ok(genericService.findAllFiduciaryConcepts());
     }
+
+    @Operation(summary = "Permite obtener el listado de tipos de deuda")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se obtiene el listado de de tipos de deuda",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = GenericMasterDto.class))}),
+            @ApiResponse(responseCode = "204", description = "No existen registros",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "application/json")})
+    })
+    @GetMapping("debt-types")
+    public ResponseEntity<List<GenericMasterDto>> findAllDebtTypes() {
+        return ResponseEntity.ok(genericService.findAllDebtTypes());
+    }
 }

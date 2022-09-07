@@ -222,6 +222,17 @@ create table if not exists periodos_tasas (
  constraint fk__tasas foreign key (tasa_id) references tasas (id) on delete restrict on update cascade
 );
 
+create table if not exists terceros_financiadores (
+ id int unsigned not null auto_increment,
+ tercero_id INT UNSIGNED NULL,
+ codigo varchar(350) not null,
+ nombre varchar(350) not null,
+ creado timestamp not null default current_timestamp,
+ actualizado timestamp not null default current_timestamp on update current_timestamp,
+ CONSTRAINT terceros_financieros_pk PRIMARY KEY (id),
+ CONSTRAINT terceros_financieros_tercero_FK FOREIGN KEY (tercero_id) REFERENCES terceros(id)
+);
+
 create table if not exists cupos (
  id int unsigned not null auto_increment,
  tipologia_cupo_id int unsigned not null,
@@ -238,6 +249,7 @@ create table if not exists cupos (
  fecha_aprobacion_cupo date not null,
  fecha_vencimiento_cupo date not null,
  plazo int not null,
+ tercero_financiador_id int unsigned null,
  creado timestamp not null default current_timestamp,
  actualizado timestamp not null default current_timestamp on update current_timestamp,
  primary key (id) using btree,
@@ -246,8 +258,9 @@ create table if not exists cupos (
  constraint fk_unidad_negocio_id foreign key (unidad_negocio_id) references unidades_negocio (id) on delete restrict on update cascade,
  constraint fk_banco_id foreign key (banco_id) references bancos (id) on delete restrict on update cascade,
  constraint fk_tipo_credito_id foreign key (tipo_credito_id) references tipos_credito (id) on delete restrict on update cascade,
- constraint fk_tasa_id foreign key (tasa) references tasas (id) on delete restrict on update cascade,
- constraint fk_fiduciaria_id foreign key (tasa) references tasas (id) on delete restrict on update cascade
+ constraint fk_tasa_id foreign key (tasa_id) references tasas (id) on delete restrict on update cascade,
+ constraint fk_fiduciaria_id foreign key (fiduciaria_id) references fiduciarias (id) on delete restrict on update cascade
+ CONSTRAINT fk_tercero_financiador_id FOREIGN KEY (tercero_financiador_id) REFERENCES terceros_financiadores(id)
 );
 
 create table if not exists archivos_negocio (
@@ -358,10 +371,13 @@ CREATE TABLE grupos_desembolso (
 	periodicidad_interes_id int(10) unsigned NOT NULL,
 	amortizacion_capital_id int(10) unsigned NOT NULL,
 	carta_desembolso_impresa BIT DEFAULT 0 NOT NULL,
+	fecha_efectiva DATE NULL,
+	tasa_id int(10) unsigned NOT NULL,
 	creado timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
 	actualizado timestamp DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL,
 	CONSTRAINT grupos_desembolso_pk PRIMARY KEY (id),
-	CONSTRAINT grupos_desembolso_proyecto_FK FOREIGN KEY (proyecto_id) REFERENCES `obligaciones-financieras`.proyectos(id)
+	CONSTRAINT grupos_desembolso_proyecto_FK FOREIGN KEY (proyecto_id) REFERENCES proyectos(id),
+	CONSTRAINT grupos_desembolso_tasa_FK FOREIGN KEY (tasa_id) REFERENCES tasas(id)
 );
 
 
