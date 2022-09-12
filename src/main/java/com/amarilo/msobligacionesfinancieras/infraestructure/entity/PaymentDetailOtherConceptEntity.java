@@ -1,0 +1,36 @@
+package com.amarilo.msobligacionesfinancieras.infraestructure.entity;
+
+import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.PaymentConceptEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+@Entity
+@Table(name = "detalle_pagos_otros_conceptos")
+public class PaymentDetailOtherConceptEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "concepto_pago_id", nullable = false)
+    private PaymentConceptEntity paymentConcept;
+    @Column(name = "valor")
+    private String value;
+}

@@ -41,4 +41,12 @@ public interface GenericService {
     List<GenericMasterDto> findAllFiduciaryConcepts();
 
     List<GenericMasterDto> findAllDebtTypes();
+
+    List<GenericMasterDto> findAllDisbursementOperationTypes();
+
+    List<GenericMasterDto> findAllPaymentTypes();
+
+    List<GenericMasterDto> findAllPaymentSources();
+
+    List<GenericMasterDto> findAllPaymentConcepts();
 }

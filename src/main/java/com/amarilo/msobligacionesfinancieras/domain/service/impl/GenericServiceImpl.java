@@ -13,11 +13,15 @@ import com.amarilo.msobligacionesfinancieras.infraestructure.generic.BusinessAre
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.CapitalAmortizationRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.CreditTypeRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.DebtTypeRepository;
+import com.amarilo.msobligacionesfinancieras.infraestructure.generic.DisbursementOperationRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.FiduciaryConceptRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.FileBusinessTypeRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.FiscalClassificationRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.FiscalClassificationTypeRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.FiscalOrganizationTypeRepository;
+import com.amarilo.msobligacionesfinancieras.infraestructure.generic.PaymentConceptRepository;
+import com.amarilo.msobligacionesfinancieras.infraestructure.generic.PaymentSourceRepository;
+import com.amarilo.msobligacionesfinancieras.infraestructure.generic.PaymentTypeRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.PeriodicityInterestRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.QuotaClassificationRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.QuotaTypeRepository;
@@ -53,6 +57,10 @@ public class GenericServiceImpl implements GenericService {
     private final AmariloConceptRepository amariloConceptRepository;
     private final FiduciaryConceptRepository fiduciaryConceptRepository;
     private final DebtTypeRepository debtTypeRepository;
+    private final DisbursementOperationRepository disbursementOperationRepository;
+    private final PaymentSourceRepository paymentSourceRepository;
+    private final PaymentTypeRepository paymentTypeRepository;
+    private final PaymentConceptRepository paymentConceptRepository;
 
     @Override
     public List<GenericMasterDto> findAllFinanceThirdTypes() {
@@ -207,6 +215,42 @@ public class GenericServiceImpl implements GenericService {
     public List<GenericMasterDto> findAllDebtTypes() {
         return GenericMasterMapper.INSTANCE.genericMasterListToGenericMasterDtoList(
                 debtTypeRepository.findAll()
+                        .stream()
+                        .map(GenericMasterEntity.class::cast)
+                        .collect(Collectors.toList()));
+    }
+
+    @Override
+    public List<GenericMasterDto> findAllDisbursementOperationTypes() {
+        return GenericMasterMapper.INSTANCE.genericMasterListToGenericMasterDtoList(
+                disbursementOperationRepository.findAll()
+                        .stream()
+                        .map(GenericMasterEntity.class::cast)
+                        .collect(Collectors.toList()));
+    }
+
+    @Override
+    public List<GenericMasterDto> findAllPaymentTypes() {
+        return GenericMasterMapper.INSTANCE.genericMasterListToGenericMasterDtoList(
+                paymentTypeRepository.findAll()
+                        .stream()
+                        .map(GenericMasterEntity.class::cast)
+                        .collect(Collectors.toList()));
+    }
+
+    @Override
+    public List<GenericMasterDto> findAllPaymentSources() {
+        return GenericMasterMapper.INSTANCE.genericMasterListToGenericMasterDtoList(
+                paymentSourceRepository.findAll()
+                        .stream()
+                        .map(GenericMasterEntity.class::cast)
+                        .collect(Collectors.toList()));
+    }
+
+    @Override
+    public List<GenericMasterDto> findAllPaymentConcepts() {
+        return GenericMasterMapper.INSTANCE.genericMasterListToGenericMasterDtoList(
+                paymentConceptRepository.findAll()
                         .stream()
                         .map(GenericMasterEntity.class::cast)
                         .collect(Collectors.toList()));

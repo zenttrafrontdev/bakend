@@ -299,7 +299,7 @@ public class GenericController {
 
     @Operation(summary = "Permite obtener el listado de tipos de deuda")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Se obtiene el listado de de tipos de deuda",
+            @ApiResponse(responseCode = "200", description = "Se obtiene el listado de tipos de deuda",
                     content = {@Content(mediaType = "application/json", schema = @Schema(implementation = GenericMasterDto.class))}),
             @ApiResponse(responseCode = "204", description = "No existen registros",
                     content = {@Content(mediaType = "application/json")}),
@@ -311,5 +311,69 @@ public class GenericController {
     @GetMapping("debt-types")
     public ResponseEntity<List<GenericMasterDto>> findAllDebtTypes() {
         return ResponseEntity.ok(genericService.findAllDebtTypes());
+    }
+
+    @Operation(summary = "Permite obtener el listado de tipos de operaciones de desembolso")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se obtiene el listado de operaciones de desembolso",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = GenericMasterDto.class))}),
+            @ApiResponse(responseCode = "204", description = "No existen registros",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "application/json")})
+    })
+    @GetMapping("disbursement-operation-types")
+    public ResponseEntity<List<GenericMasterDto>> findAllDisbursementOperationTypes() {
+        return ResponseEntity.ok(genericService.findAllDisbursementOperationTypes());
+    }
+
+    @Operation(summary = "Permite obtener el listado de tipos pagos")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se obtiene el listado de tipos de pagos",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = GenericMasterDto.class))}),
+            @ApiResponse(responseCode = "204", description = "No existen registros",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "application/json")})
+    })
+    @GetMapping("payment-types")
+    public ResponseEntity<List<GenericMasterDto>> findAllPaymentTypes() {
+        return ResponseEntity.ok(genericService.findAllPaymentTypes());
+    }
+
+    @Operation(summary = "Permite obtener el listado de fuentes de pagos")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se obtiene el listado de fuentes de pagos",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = GenericMasterDto.class))}),
+            @ApiResponse(responseCode = "204", description = "No existen registros",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "application/json")})
+    })
+    @GetMapping("payment-sources")
+    public ResponseEntity<List<GenericMasterDto>> findAllPaymentSources() {
+        return ResponseEntity.ok(genericService.findAllPaymentSources());
+    }
+
+    @Operation(summary = "Permite obtener el listado de conceptos de pagos")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se obtiene el listado de conceptos de pagos",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = GenericMasterDto.class))}),
+            @ApiResponse(responseCode = "204", description = "No existen registros",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "application/json")})
+    })
+    @GetMapping("payment-concepts")
+    public ResponseEntity<List<GenericMasterDto>> findAllPaymentConcepts() {
+        return ResponseEntity.ok(genericService.findAllPaymentConcepts());
     }
 }

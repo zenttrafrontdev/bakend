@@ -73,3 +73,11 @@ INSERT INTO conceptos_fiduciaria (codigo, nombre) VALUES('006', 'RESTITUCIÓN AP
 INSERT INTO conceptos_fiduciaria (codigo, nombre) VALUES('007', 'RESTITUCIÓN APORTES');
 INSERT INTO conceptos_fiduciaria (codigo, nombre) VALUES('008', 'ANTICIPO BENEFICIOS');
 INSERT INTO conceptos_fiduciaria (codigo, nombre) VALUES('009', 'ANTICIPO UTILIDADES');
+
+INSERT INTO tipos_de_pagos (codigo, nombre) VALUES('001', 'Novación');
+INSERT INTO tipos_de_pagos (codigo, nombre) VALUES('002', 'Prorroga');
+INSERT INTO tipos_de_pagos (codigo, nombre) VALUES('003', 'Capitalización');
+
+INSERT INTO fuentes_de_pago (codigo, nombre) VALUES('001', 'Cuenta administrativa');
+INSERT INTO fuentes_de_pago (codigo, nombre) VALUES('002', 'Fiducia');
+INSERT INTO fuentes_de_pago (codigo, nombre) VALUES('003', 'Desembolso');

@@ -2,7 +2,6 @@ package com.amarilo.msobligacionesfinancieras.infraestructure.entity;
 
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.AccountTypeEntity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.AmariloConceptEntity;
-import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.BankEntity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.CreditTypeEntity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.DebtTypeEntity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.DisbursementOperationTypeEntity;
@@ -30,7 +29,7 @@ import javax.persistence.Table;
 @Builder
 @Entity
 @Table(name = "desembolsos")
-public class DisbursementEntity{
+public class DisbursementEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

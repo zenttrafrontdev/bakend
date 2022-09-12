@@ -172,6 +172,34 @@ create table if not exists tipos_archivos_negocio (
  primary key (id) using btree
 );
 
+create table if not exists fuentes_de_pago (
+ id int unsigned not null auto_increment,
+ codigo varchar(350) not null,
+ nombre varchar(350) not null,
+ creado timestamp not null default current_timestamp,
+ actualizado timestamp not null default current_timestamp on update current_timestamp,
+ primary key (id)
+);
+
+create table if not exists tipos_de_pagos (
+ id int unsigned not null auto_increment,
+ codigo varchar(350) not null,
+ nombre varchar(350) not null,
+ creado timestamp not null default current_timestamp,
+ actualizado timestamp not null default current_timestamp on update current_timestamp,
+ primary key (id)
+);
+
+CREATE TABLE if not exists conceptos_de_pago (
+	id INT UNSIGNED auto_increment NOT NULL,
+	codigo varchar(100) NULL,
+	nombre varchar(100) NULL,
+	creado timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	actualizado timestamp DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL,
+	CONSTRAINT conceptos_de_pago_pk PRIMARY KEY (id)
+);
+
+
 create table if not exists terceros (
  id int unsigned not null auto_increment,
  nombre varchar(500) not null,
@@ -424,7 +452,7 @@ CREATE TABLE if not exists desembolsos (
 	CONSTRAINT desembolsos_grupos_desembolso_FK FOREIGN KEY (grupo_desembolso_id) REFERENCES grupos_desembolso(id)
 );
 
-CREATE TABLE fiduciaria_proyecto (
+CREATE TABLE if not exists fiduciaria_proyecto (
 	id INT auto_increment NOT NULL,
 	fiduciaria_id int(10) unsigned NOT NULL,
 	proyecto_id int(10) unsigned NOT NULL,
@@ -433,6 +461,38 @@ CREATE TABLE fiduciaria_proyecto (
 	nombre_titular varchar(100) NULL,
 	anexo_titular varchar(100) NULL,
 	CONSTRAINT fiduciaria_proyecto_pk PRIMARY KEY (id),
-	CONSTRAINT fiduciaria_proyecto_proyecto_FK FOREIGN KEY (proyecto_id) REFERENCES proyectos(id);
-    CONSTRAINT fiduciaria_proyecto_fiduciaria_FK FOREIGN KEY (fiduciaria_id) REFERENCES fiduciarias(id);
+	CONSTRAINT fiduciaria_proyecto_proyecto_FK FOREIGN KEY (proyecto_id) REFERENCES proyectos(id),
+    CONSTRAINT fiduciaria_proyecto_fiduciaria_FK FOREIGN KEY (fiduciaria_id) REFERENCES fiduciarias(id)
+);
+
+CREATE TABLE if not exists detalle_pagos_otros_conceptos (
+	id INT UNSIGNED auto_increment NOT NULL,
+	concepto_pago_id INT UNSIGNED NOT NULL,
+	pago_id INT UNSIGNED NOT NULL,
+	valor varchar(350) NOT NULL,
+	creado timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+	actualizado timestamp DEFAULT CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL,
+	CONSTRAINT detalle_pagos_otros_conceptos_pk PRIMARY KEY (id),
+	CONSTRAINT detalle_pagos_otros_conceptos_conceptos_pago_FK FOREIGN KEY (concepto_pago_id) REFERENCES conceptos_de_pago(id),
+	CONSTRAINT detalle_pagos_otros_conceptos_pagos_FK FOREIGN KEY (pago_id) REFERENCES pagos(id)
+);
+
+CREATE TABLE if not exists pagos (
+	id INT auto_increment NOT NULL,
+	grupo_desembolso_id int(10) NOT NULL,
+	tipo_pago_id int(10) unsigned NOT NULL,
+	fuente_pago_id int(10) unsigned NOT NULL,
+	fecha DATE  NOT NULL,
+	fecha_aplicada DATE NULL,
+	capital varchar(350) NOT NULL,
+	intereses varchar(350) NOT NULL,
+	valor varchar(350) NOT NULL,
+	valor_total varchar(350) NOT NULL,
+	id_oracle varchar(100) NULL,
+    creado timestamp not null default current_timestamp,
+    actualizado timestamp not null default current_timestamp on update current_timestamp,
+	CONSTRAINT pagos_pk PRIMARY KEY (id),
+    CONSTRAINT pagos_grupos_desembolso_FK FOREIGN KEY (grupo_desembolso_id) REFERENCES grupos_desembolso(id),
+    CONSTRAINT pagos_tipo_pago_FK FOREIGN KEY (tipo_pago_id) REFERENCES tipos_de_pagos(id),
+    CONSTRAINT pagos_fuente_pago_FK FOREIGN KEY (fuente_pago_id) REFERENCES fuentes_de_pago(id)
 );
