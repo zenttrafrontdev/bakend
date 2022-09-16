@@ -4,11 +4,15 @@ import com.amarilo.msobligacionesfinancieras.controller.request.PageRequestDto;
 import com.amarilo.msobligacionesfinancieras.controller.request.PaymentSearchCriteria;
 import com.amarilo.msobligacionesfinancieras.controller.response.PageResponseDto;
 import com.amarilo.msobligacionesfinancieras.domain.dto.PaymentDto;
+import com.amarilo.msobligacionesfinancieras.domain.enums.AppEventProcessEnum;
+import com.amarilo.msobligacionesfinancieras.domain.enums.AppEventTypeEnum;
 import com.amarilo.msobligacionesfinancieras.domain.mapper.PaymentMapper;
+import com.amarilo.msobligacionesfinancieras.domain.service.AppEventService;
 import com.amarilo.msobligacionesfinancieras.domain.service.PaymentService;
 import com.amarilo.msobligacionesfinancieras.exception.BusinessException;
 import com.amarilo.msobligacionesfinancieras.infraestructure.DisbursementGroupRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.PaymentRepository;
+import com.amarilo.msobligacionesfinancieras.infraestructure.entity.AppEventEntity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.entity.PaymentEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static com.amarilo.msobligacionesfinancieras.infraestructure.specification.PaymentSpecification.hasDisbursementGroupByObligationNumber;
@@ -32,6 +37,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final DisbursementGroupRepository disbursementGroupRepository;
+    private final AppEventService appEventService;
 
     @Override
     public PaymentDto findById(Integer id) {
@@ -55,15 +61,15 @@ public class PaymentServiceImpl implements PaymentService {
 
     private void setTotalPaymentValue(PaymentEntity paymentEntity) {
         BigInteger totalValue = new BigInteger("0");
-        if(paymentEntity.getCapital().isBlank()){
+        if (paymentEntity.getCapital().isBlank()) {
             totalValue.add(new BigInteger(paymentEntity.getCapital()));
         }
 
-        if(paymentEntity.getRates().isBlank()){
+        if (paymentEntity.getRates().isBlank()) {
             totalValue.add(new BigInteger(paymentEntity.getRates()));
         }
 
-        if(paymentEntity.getPaymentDetailOtherConcepts() != null && !paymentEntity.getPaymentDetailOtherConcepts().isEmpty()){
+        if (paymentEntity.getPaymentDetailOtherConcepts() != null && !paymentEntity.getPaymentDetailOtherConcepts().isEmpty()) {
             paymentEntity.getPaymentDetailOtherConcepts().forEach(x -> totalValue.add(new BigInteger(x.getValue())));
         }
 
@@ -75,7 +81,9 @@ public class PaymentServiceImpl implements PaymentService {
     public PaymentDto savePayment(PaymentDto paymentDto) {
         var paymentEntity = PaymentMapper.INSTANCE.paymentDtoToPaymentEntity(paymentDto);
         setTotalPaymentValue(paymentEntity);
-        return PaymentMapper.INSTANCE.paymentEntityToPaymentDto(paymentRepository.save(paymentEntity));
+        var paymentSaved = paymentRepository.save(paymentEntity);
+        sentPaymentAccountPayableMigration(paymentSaved);
+        return PaymentMapper.INSTANCE.paymentEntityToPaymentDto(paymentSaved);
     }
 
     @Transactional
@@ -87,6 +95,11 @@ public class PaymentServiceImpl implements PaymentService {
                 .orElseThrow(() -> new BusinessException("El pago que desea actualizar no existe"));
         setTotalPaymentValue(paymentEntity);
         return PaymentMapper.INSTANCE.paymentEntityToPaymentDto(paymentRepository.save(paymentEntity));
+    }
+
+    @Override
+    public String getAccountPayableTransactionResponseLog(Integer paymentId) {
+        return appEventService.getLogs(paymentId.toString(), AppEventTypeEnum.MIGRATIONS.getValue(), AppEventProcessEnum.ACCOUNT_PAYABLE.getValue());
     }
 
     private Specification<PaymentEntity> getSpecificationFromQuery(PaymentSearchCriteria searchCriteria) {
@@ -107,5 +120,22 @@ public class PaymentServiceImpl implements PaymentService {
             specification = buildAndSpecification(specification, hasEndDateLessThan(searchCriteria.getEndDate()));
         }
         return specification;
+    }
+
+    private void sentPaymentAccountPayableMigration(PaymentEntity paymentEntity) {
+        paymentEntity.setOracleId("000001");
+        paymentRepository.save(paymentEntity);
+        saveExternalTransactionResponse(paymentEntity.getId(), "Transacción exitosa");
+    }
+
+    private void saveExternalTransactionResponse(Integer paymentId, String log) {
+        appEventService.saveAppEvent(AppEventEntity.builder()
+                .eventType(AppEventTypeEnum.MIGRATIONS.getValue())
+                .eventDate(LocalDateTime.now())
+                .process(AppEventProcessEnum.ACCOUNT_PAYABLE.getValue())
+                .recordId(paymentId.toString())
+                .comments("Se realiza comunicación con la integración de cuentas por pagar")
+                .log(log)
+                .build());
     }
 }

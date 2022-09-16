@@ -489,6 +489,7 @@ CREATE TABLE if not exists pagos (
 	valor varchar(350) NOT NULL,
 	valor_total varchar(350) NOT NULL,
 	id_oracle varchar(100) NULL,
+	comments varchar(350) NOT NULL,
     creado timestamp not null default current_timestamp,
     actualizado timestamp not null default current_timestamp on update current_timestamp,
 	CONSTRAINT pagos_pk PRIMARY KEY (id),

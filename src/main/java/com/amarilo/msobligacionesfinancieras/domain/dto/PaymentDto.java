@@ -35,5 +35,6 @@ public class PaymentDto {
     private GenericMasterDto paymentSource;
     @NotNull(message = "El tipo de pago es requerido")
     private GenericMasterDto paymentType;
+    private String comments;
     private List<PaymentDetailOtherConceptDto> paymentDetailOtherConcepts;
 }

@@ -96,6 +96,21 @@ public class PaymentController {
         return ResponseEntity.ok(paymentService.updatePayment(id, paymentDto));
     }
 
+    @Operation(summary = "Permite obtener el log de la integración de cuentas por cobrar por el id del pago")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se obtiene el log",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PaymentDto.class))}),
+            @ApiResponse(responseCode = "204", description = "No existen registros",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "application/json")})
+    })
+    @GetMapping("integration/log/{id}")
+    public ResponseEntity<String> getAccountPayableTransactionResponseLog(@PathVariable Integer id) {
+        return ResponseEntity.ok(paymentService.getAccountPayableTransactionResponseLog(id));
+    }
 }
 
 class PageResponsePayment extends PageResponseDto<PaymentDto> {

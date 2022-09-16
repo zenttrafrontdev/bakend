@@ -58,6 +58,8 @@ public class PaymentEntity {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "tipo_pago_id", nullable = false)
     private PaymentTypeEntity paymentType;
+    @Column(name = "comentarios")
+    private String comments;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "pago_id", nullable = false)
     private List<PaymentDetailOtherConceptEntity> paymentDetailOtherConcepts;

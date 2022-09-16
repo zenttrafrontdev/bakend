@@ -13,4 +13,6 @@ public interface PaymentService {
     PaymentDto savePayment(PaymentDto paymentDto);
 
     PaymentDto updatePayment(Integer id, PaymentDto paymentDto);
+
+    String getAccountPayableTransactionResponseLog(Integer paymentId);
 }
