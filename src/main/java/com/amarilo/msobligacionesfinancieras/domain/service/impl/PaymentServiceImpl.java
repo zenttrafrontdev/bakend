@@ -1,11 +1,13 @@
 package com.amarilo.msobligacionesfinancieras.domain.service.impl;
 
 import com.amarilo.msobligacionesfinancieras.controller.request.PageRequestDto;
+import com.amarilo.msobligacionesfinancieras.controller.request.PaymentPartialRequestDto;
 import com.amarilo.msobligacionesfinancieras.controller.request.PaymentSearchCriteria;
 import com.amarilo.msobligacionesfinancieras.controller.response.PageResponseDto;
 import com.amarilo.msobligacionesfinancieras.domain.dto.PaymentDto;
 import com.amarilo.msobligacionesfinancieras.domain.enums.AppEventProcessEnum;
 import com.amarilo.msobligacionesfinancieras.domain.enums.AppEventTypeEnum;
+import com.amarilo.msobligacionesfinancieras.domain.mapper.GenericMasterMapper;
 import com.amarilo.msobligacionesfinancieras.domain.mapper.PaymentMapper;
 import com.amarilo.msobligacionesfinancieras.domain.service.AppEventService;
 import com.amarilo.msobligacionesfinancieras.domain.service.PaymentService;
@@ -14,6 +16,8 @@ import com.amarilo.msobligacionesfinancieras.infraestructure.DisbursementGroupRe
 import com.amarilo.msobligacionesfinancieras.infraestructure.PaymentRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.entity.AppEventEntity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.entity.PaymentEntity;
+import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.AccountingStatusEntity;
+import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.PaymentStatusEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -95,6 +99,21 @@ public class PaymentServiceImpl implements PaymentService {
                 .orElseThrow(() -> new BusinessException("El pago que desea actualizar no existe"));
         setTotalPaymentValue(paymentEntity);
         return PaymentMapper.INSTANCE.paymentEntityToPaymentDto(paymentRepository.save(paymentEntity));
+    }
+
+    @Override
+    public void updatePartialPayment(Integer id, PaymentPartialRequestDto paymentPartialRequestDto) {
+        var paymentEntity = paymentRepository.findById(id)
+                .orElseThrow(() -> new BusinessException("El pago que desea actualizar no existe"));
+
+        if(Optional.ofNullable(paymentPartialRequestDto.getPaymentStatus()).isPresent()){
+            paymentEntity.setPaymentStatus((PaymentStatusEntity) GenericMasterMapper.INSTANCE.genericMasterDtoToGenericMaster(paymentPartialRequestDto.getPaymentStatus()));
+        }
+
+        if(Optional.ofNullable(paymentPartialRequestDto.getAccountingStatus()).isPresent()){
+            paymentEntity.setAccountingStatus((AccountingStatusEntity) GenericMasterMapper.INSTANCE.genericMasterDtoToGenericMaster(paymentPartialRequestDto.getAccountingStatus()));
+        }
+        paymentRepository.save(paymentEntity);
     }
 
     @Override

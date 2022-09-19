@@ -199,6 +199,23 @@ CREATE TABLE if not exists conceptos_de_pago (
 	CONSTRAINT conceptos_de_pago_pk PRIMARY KEY (id)
 );
 
+create table if not exists estados_de_pago (
+ id int unsigned not null auto_increment,
+ codigo varchar(350) not null,
+ nombre varchar(350) not null,
+ creado timestamp not null default current_timestamp,
+ actualizado timestamp not null default current_timestamp on update current_timestamp,
+ primary key (id) using btree
+);
+
+create table if not exists estados_contables (
+ id int unsigned not null auto_increment,
+ codigo varchar(350) not null,
+ nombre varchar(350) not null,
+ creado timestamp not null default current_timestamp,
+ actualizado timestamp not null default current_timestamp on update current_timestamp,
+ primary key (id) using btree
+);
 
 create table if not exists terceros (
  id int unsigned not null auto_increment,
@@ -490,10 +507,14 @@ CREATE TABLE if not exists pagos (
 	valor_total varchar(350) NOT NULL,
 	id_oracle varchar(100) NULL,
 	comments varchar(350) NOT NULL,
+	estado_pago_id int(10) NOT NULL,
+	estado_contable_id int(10) NOT NULL,
     creado timestamp not null default current_timestamp,
     actualizado timestamp not null default current_timestamp on update current_timestamp,
 	CONSTRAINT pagos_pk PRIMARY KEY (id),
     CONSTRAINT pagos_grupos_desembolso_FK FOREIGN KEY (grupo_desembolso_id) REFERENCES grupos_desembolso(id),
     CONSTRAINT pagos_tipo_pago_FK FOREIGN KEY (tipo_pago_id) REFERENCES tipos_de_pagos(id),
-    CONSTRAINT pagos_fuente_pago_FK FOREIGN KEY (fuente_pago_id) REFERENCES fuentes_de_pago(id)
+    CONSTRAINT pagos_fuente_pago_FK FOREIGN KEY (fuente_pago_id) REFERENCES fuentes_de_pago(id),
+    CONSTRAINT pagos_estado_pago_FK FOREIGN KEY (estado_pago) REFERENCES estados_de_pago(id),
+    CONSTRAINT pagos_estado_contable_FK FOREIGN KEY (estado_contable) REFERENCES estados_contables(id)
 );

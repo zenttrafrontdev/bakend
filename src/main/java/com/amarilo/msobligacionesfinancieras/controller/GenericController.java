@@ -376,4 +376,36 @@ public class GenericController {
     public ResponseEntity<List<GenericMasterDto>> findAllPaymentConcepts() {
         return ResponseEntity.ok(genericService.findAllPaymentConcepts());
     }
+
+    @Operation(summary = "Permite obtener el listado de estados de pago")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se obtiene el listado de estados de pagos",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = GenericMasterDto.class))}),
+            @ApiResponse(responseCode = "204", description = "No existen registros",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "application/json")})
+    })
+    @GetMapping("payment-status")
+    public ResponseEntity<List<GenericMasterDto>> findAllPaymentStatus() {
+        return ResponseEntity.ok(genericService.findAllPaymentStatus());
+    }
+
+    @Operation(summary = "Permite obtener el listado de estados contables")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se obtiene el listado de estados contables",
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = GenericMasterDto.class))}),
+            @ApiResponse(responseCode = "204", description = "No existen registros",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "application/json")})
+    })
+    @GetMapping("accounting-status")
+    public ResponseEntity<List<GenericMasterDto>> findAllAccountingStatus() {
+        return ResponseEntity.ok(genericService.findAllAccountingStatus());
+    }
 }

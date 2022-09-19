@@ -1,7 +1,9 @@
 package com.amarilo.msobligacionesfinancieras.infraestructure.entity;
 
+import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.AccountingStatusEntity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.PaymentConceptEntity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.PaymentSourceEntity;
+import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.PaymentStatusEntity;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.entity.PaymentTypeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -60,6 +62,12 @@ public class PaymentEntity {
     private PaymentTypeEntity paymentType;
     @Column(name = "comentarios")
     private String comments;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "estado_contable_id", nullable = false)
+    private AccountingStatusEntity accountingStatus;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "estado_pago_id", nullable = false)
+    private PaymentStatusEntity paymentStatus;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "pago_id", nullable = false)
     private List<PaymentDetailOtherConceptEntity> paymentDetailOtherConcepts;

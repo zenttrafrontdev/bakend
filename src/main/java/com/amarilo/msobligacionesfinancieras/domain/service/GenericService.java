@@ -49,4 +49,6 @@ public interface GenericService {
     List<GenericMasterDto> findAllPaymentSources();
 
     List<GenericMasterDto> findAllPaymentConcepts();
+    List<GenericMasterDto> findAllPaymentStatus();
+    List<GenericMasterDto> findAllAccountingStatus();
 }

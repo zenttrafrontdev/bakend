@@ -7,6 +7,7 @@ import com.amarilo.msobligacionesfinancieras.domain.mapper.GenericMasterMapper;
 import com.amarilo.msobligacionesfinancieras.domain.service.GenericService;
 import com.amarilo.msobligacionesfinancieras.infraestructure.FinanceThirdTypeRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.AccountTypeRepository;
+import com.amarilo.msobligacionesfinancieras.infraestructure.generic.AccountingStatusRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.AmariloConceptRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.BankRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.BusinessAreaRepository;
@@ -21,6 +22,7 @@ import com.amarilo.msobligacionesfinancieras.infraestructure.generic.FiscalClass
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.FiscalOrganizationTypeRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.PaymentConceptRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.PaymentSourceRepository;
+import com.amarilo.msobligacionesfinancieras.infraestructure.generic.PaymentStatusRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.PaymentTypeRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.PeriodicityInterestRepository;
 import com.amarilo.msobligacionesfinancieras.infraestructure.generic.QuotaClassificationRepository;
@@ -61,7 +63,8 @@ public class GenericServiceImpl implements GenericService {
     private final PaymentSourceRepository paymentSourceRepository;
     private final PaymentTypeRepository paymentTypeRepository;
     private final PaymentConceptRepository paymentConceptRepository;
-
+    private final PaymentStatusRepository paymentStatusRepository;
+    private final AccountingStatusRepository accountingStatusRepository;
     @Override
     public List<GenericMasterDto> findAllFinanceThirdTypes() {
         return GenericMasterMapper.INSTANCE.genericMasterListToGenericMasterDtoList(
@@ -251,6 +254,24 @@ public class GenericServiceImpl implements GenericService {
     public List<GenericMasterDto> findAllPaymentConcepts() {
         return GenericMasterMapper.INSTANCE.genericMasterListToGenericMasterDtoList(
                 paymentConceptRepository.findAll()
+                        .stream()
+                        .map(GenericMasterEntity.class::cast)
+                        .collect(Collectors.toList()));
+    }
+
+    @Override
+    public List<GenericMasterDto> findAllPaymentStatus() {
+        return GenericMasterMapper.INSTANCE.genericMasterListToGenericMasterDtoList(
+                paymentStatusRepository.findAll()
+                        .stream()
+                        .map(GenericMasterEntity.class::cast)
+                        .collect(Collectors.toList()));
+    }
+
+    @Override
+    public List<GenericMasterDto> findAllAccountingStatus() {
+        return GenericMasterMapper.INSTANCE.genericMasterListToGenericMasterDtoList(
+                accountingStatusRepository.findAll()
                         .stream()
                         .map(GenericMasterEntity.class::cast)
                         .collect(Collectors.toList()));

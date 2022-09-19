@@ -1,6 +1,7 @@
 package com.amarilo.msobligacionesfinancieras.controller;
 
 import com.amarilo.msobligacionesfinancieras.controller.request.PageRequestDto;
+import com.amarilo.msobligacionesfinancieras.controller.request.PaymentPartialRequestDto;
 import com.amarilo.msobligacionesfinancieras.controller.request.PaymentSearchCriteria;
 import com.amarilo.msobligacionesfinancieras.controller.response.PageResponseDto;
 import com.amarilo.msobligacionesfinancieras.domain.dto.PaymentDto;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -99,7 +101,7 @@ public class PaymentController {
     @Operation(summary = "Permite obtener el log de la integración de cuentas por cobrar por el id del pago")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Se obtiene el log",
-                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = PaymentDto.class))}),
+                    content = {@Content(mediaType = "application/json", schema = @Schema(implementation = String.class))}),
             @ApiResponse(responseCode = "204", description = "No existen registros",
                     content = {@Content(mediaType = "application/json")}),
             @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
@@ -110,6 +112,24 @@ public class PaymentController {
     @GetMapping("integration/log/{id}")
     public ResponseEntity<String> getAccountPayableTransactionResponseLog(@PathVariable Integer id) {
         return ResponseEntity.ok(paymentService.getAccountPayableTransactionResponseLog(id));
+    }
+
+    @Operation(summary = "Permite actualizar parcialmente un pago")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se ha actualizado parcialmente el pago exitosamente",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "204", description = "No existen registros",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "401", description = "Usuario no autenticado",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "403", description = "Usuario sin permisos",
+                    content = {@Content(mediaType = "application/json")})
+    })
+    @PatchMapping("{id}")
+    public ResponseEntity updatePartialPayment(@PathVariable Integer id,
+                                                    @RequestBody PaymentPartialRequestDto paymentPartialRequestDto) {
+        paymentService.updatePartialPayment(id, paymentPartialRequestDto);
+        return ResponseEntity.ok().build();
     }
 }
 
